@@ -4,6 +4,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column('boolean')
+  isConfirm: boolean;
+
   @Column('text')
   lastname: string;
 
