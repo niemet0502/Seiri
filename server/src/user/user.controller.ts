@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   Param,
   Patch,
   Post,
@@ -17,7 +18,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body(new CreateUserValidatorPipe()) createUserDto: CreateUserDto) {
+  async create(
+    @Body(new CreateUserValidatorPipe()) createUserDto: CreateUserDto,
+  ) {
+    let user = await this.userService.findByEmail(createUserDto.email);
+
+    if (user) {
+      const errors = { email: 'email already use' };
+      throw new HttpException({ errors }, 401);
+    }
+
     return this.userService.create(createUserDto);
   }
 

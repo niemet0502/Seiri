@@ -11,4 +11,12 @@ export class UserRepository {
   findAll() {
     return this.usersRepository.find();
   }
+
+  async findByEmail(email: string) {
+    return await this.usersRepository.findOne({ where: { email: email } });
+  }
+
+  async save(user: User) {
+    return await this.usersRepository.save(user);
+  }
 }

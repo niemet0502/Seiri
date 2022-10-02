@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -8,8 +9,14 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const { email, password } = createUserDto;
+    const user = new User();
+    user.email = email;
+    user.password = await bcrypt.hash(password, 10);
+    user.isConfirm = false;
+
+    return await this.save(user);
   }
 
   findAll(): Promise<User[]> {
@@ -26,5 +33,13 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRepository.findByEmail(email);
+  }
+
+  async save(user: User) {
+    return await this.userRepository.save(user);
   }
 }

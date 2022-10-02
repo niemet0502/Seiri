@@ -7,10 +7,10 @@ export class User {
   @Column('boolean')
   isConfirm: boolean;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   lastname: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   firstname: string;
 
   @Column('text')
