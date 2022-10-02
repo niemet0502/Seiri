@@ -19,4 +19,12 @@ export class UserRepository {
   async save(user: User) {
     return await this.usersRepository.save(user);
   }
+
+  async findById(id: number) {
+    return await this.usersRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
 }

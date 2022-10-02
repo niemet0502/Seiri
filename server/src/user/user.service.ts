@@ -27,8 +27,12 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    let toUpdate = await this.userRepository.findById(id);
+    delete toUpdate.password;
+
+    let updated = Object.assign(toUpdate, updateUserDto);
+    return await this.userRepository.save(updated);
   }
 
   remove(id: number) {
