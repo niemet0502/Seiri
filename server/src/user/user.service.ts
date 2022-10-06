@@ -11,12 +11,16 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
-    const user = new User();
+    let user = new User();
     user.email = email;
     user.password = await bcrypt.hash(password, 10);
     user.isConfirm = false;
 
-    return await this.save(user);
+    user = await this.save(user);
+
+    delete user.password;
+
+    return user;
   }
 
   findAll(): Promise<User[]> {
