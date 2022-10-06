@@ -39,10 +39,6 @@ export class UserService {
     return await this.userRepository.save(updated);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
-
   async findByEmail(email: string) {
     return await this.userRepository.findByEmail(email);
   }

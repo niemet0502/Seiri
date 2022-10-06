@@ -45,7 +45,7 @@ describe('UserRepository', () => {
       expect(mockRepository.findOne).toBeCalledWith({
         where: { id: userId },
       });
-      expect(mockRepository.findOne).toBeCalledTimes(1);
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -59,6 +59,7 @@ describe('UserRepository', () => {
       expect(mockRepository.findOne).toBeCalledWith({
         where: { email: email },
       });
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(2);
     });
   });
 
