@@ -13,4 +13,14 @@ export class ProjectRepository {
   async save(project: Project) {
     return await this.projectsRepository.save(project);
   }
+  async findById(id: number): Promise<Project | undefined> {
+    return await this.projectsRepository.findOne({ where: { id: id } });
+  }
+
+  async findAllByUser(id: number): Promise<Project[] | undefined> {
+    return await this.projectsRepository.find({
+      order: { id: 'DESC' },
+      where: { user: { id: id } },
+    });
+  }
 }
