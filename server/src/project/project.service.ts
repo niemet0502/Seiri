@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from 'src/user/entities/user.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -38,5 +38,20 @@ export class ProjectService {
 
   async findAllByUser(id: number): Promise<Project[] | undefined> {
     return await this.projectRepository.findAllByUser(id);
+  }
+
+  async findArchivedProjectByUser(id: number): Promise<Project[] | undefined> {
+    return await this.projectRepository.findArchivedProjectByUser(id);
+  }
+
+  async delete(id: number) {
+    const project = await this.findById(id);
+
+    if (!project) {
+      const errors = { project: 'project not found' };
+      throw new BadRequestException({ errors });
+    }
+
+    return await this.projectRepository.remove(project);
   }
 }

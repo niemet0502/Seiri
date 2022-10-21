@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Param,
@@ -42,8 +43,25 @@ export class ProjectController {
     return await this.projectService.findAllByUser(+id);
   }
 
+  @Get('/archived/:id')
+  async findAllArchived(
+    @Param('id') id: number,
+  ): Promise<Project[] | undefined> {
+    // replace by req.user after the auth setup
+
+    return await this.projectService.findArchivedProjectByUser(+id);
+  }
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.update(+id, updateProjectDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    return await this.projectService.update(+id, updateProjectDto);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.projectService.delete(+id);
   }
 }

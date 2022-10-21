@@ -20,7 +20,18 @@ export class ProjectRepository {
   async findAllByUser(id: number): Promise<Project[] | undefined> {
     return await this.projectsRepository.find({
       order: { id: 'DESC' },
-      where: { user: { id: id } },
+      where: { user: { id: id }, isArchive: false },
     });
+  }
+
+  async findArchivedProjectByUser(id: number): Promise<Project[] | undefined> {
+    return await this.projectsRepository.find({
+      order: { id: 'DESC' },
+      where: { user: { id: id }, isArchive: true },
+    });
+  }
+
+  async remove(project: Project) {
+    return await this.projectsRepository.remove(project);
   }
 }
