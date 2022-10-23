@@ -25,7 +25,7 @@ export class ProjectService {
   }
 
   async update(id: number, updateProjectDto: UpdateProjectDto) {
-    const toUpdate = await this.findById(id);
+    const toUpdate = await this.projectRepository.findById(id);
 
     const updated = Object.assign(toUpdate, updateProjectDto);
 
@@ -45,7 +45,7 @@ export class ProjectService {
   }
 
   async delete(id: number) {
-    const project = await this.findById(id);
+    const project = await this.projectRepository.findById(id);
 
     if (!project) {
       const errors = { project: 'project not found' };
