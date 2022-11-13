@@ -9,6 +9,9 @@ export class Task {
   @Column('text', { nullable: false })
   title: string;
 
+  @Column('boolean', { default: false })
+  isDone: boolean;
+
   @Column('text', { nullable: true })
   description: string;
 

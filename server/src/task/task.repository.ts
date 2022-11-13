@@ -20,7 +20,9 @@ export class TaskRepository {
   }
 
   async findAllByProject(project: Project): Promise<Task[]> {
-    return await this.tasksRepository.find({ where: { project: project } });
+    return await this.tasksRepository.find({
+      where: { project: project, isDone: false },
+    });
   }
 
   async findById(id: number): Promise<Task | undefined> {
