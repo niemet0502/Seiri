@@ -20,7 +20,8 @@ export class Project {
 
   @ManyToOne(() => User, (user) => user.projects) user: User;
 
-  @OneToMany(() => Task, (task) => task.project) tasks: Task[];
+  @OneToMany(() => Task, (task) => task.project)
+  tasks: Task[];
 
   @Column('boolean', { default: false })
   isArchive: boolean;
