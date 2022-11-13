@@ -37,7 +37,7 @@ export class TaskController {
     return this.taskService.create(createTaskDto, project);
   }
 
-  @Get(':id')
+  @Get('/project/:id')
   async findAllByProject(@Param('id') id: string) {
     const project = await this.projectService.findById(+id);
 
