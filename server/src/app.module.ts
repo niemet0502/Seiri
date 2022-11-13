@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Project } from './project/entities/project.entity';
 import { ProjectModule } from './project/project.module';
+import { Task } from './task/entities/task.entity';
+import { TaskModule } from './task/task.module';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 
@@ -17,11 +19,12 @@ import { UserModule } from './user/user.module';
       username: 'root',
       password: '',
       database: 'thot',
-      entities: [User, Project],
+      entities: [User, Project, Task],
       synchronize: true,
     }),
     UserModule,
     ProjectModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
