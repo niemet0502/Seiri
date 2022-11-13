@@ -9,8 +9,9 @@ export class Note {
   @Column('text')
   title: string;
 
-  @Column('longtext')
+  @Column('longtext', { nullable: true })
   content: string;
 
-  @ManyToOne(() => Project, (project) => project.notes) project: Project;
+  @ManyToOne(() => Project, (project) => project.notes, { onDelete: 'CASCADE' })
+  project: Project;
 }
