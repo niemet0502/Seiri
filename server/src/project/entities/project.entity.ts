@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Note } from 'src/note/entities/note.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 @Entity()
 export class Project {
@@ -12,6 +19,8 @@ export class Project {
   description: string;
 
   @ManyToOne(() => User, (user) => user.projects) user: User;
+
+  @OneToMany(() => Note, (note) => note.project) notes: Note[];
 
   @Column('boolean', { default: false })
   isArchive: boolean;
