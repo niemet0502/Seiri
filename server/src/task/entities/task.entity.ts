@@ -1,5 +1,5 @@
 import { Project } from 'src/project/entities/project.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Task {
@@ -12,7 +12,8 @@ export class Task {
   @Column('text', { nullable: true })
   description: string;
 
-  @OneToMany(() => Project, (project) => project.tasks) project: Project;
+  @ManyToOne(() => Project, (project) => project.tasks, { onDelete: 'CASCADE' })
+  project: Project;
 
   @Column('boolean', { default: false })
   isDeleted: boolean;
