@@ -9,6 +9,7 @@ const project = {
   description: 'DSA resources',
   isArchive: false,
   user: null,
+  tasks: null,
 };
 
 const projects = [project];
@@ -49,6 +50,7 @@ describe('ProjectService', () => {
         description: 'DSA resources',
         isArchive: false,
         user: null,
+        tasks: null,
       };
 
       jest.spyOn(mockRepository, 'save').mockReturnValue(project);
