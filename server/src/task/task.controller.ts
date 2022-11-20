@@ -42,7 +42,7 @@ export class TaskController {
     const project = await this.projectService.findById(+id);
 
     if (!project) {
-      const errors = { project: 'user not found' };
+      const errors = { project: 'project not found' };
       return new HttpException({ errors }, 401);
     }
 
@@ -55,12 +55,12 @@ export class TaskController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(+id, updateTaskDto);
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    return await this.taskService.update(+id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.taskService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.taskService.remove(+id);
   }
 }
