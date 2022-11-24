@@ -50,8 +50,8 @@ export class NoteController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.noteService.findById(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.noteService.findById(+id);
   }
 
   @Patch(':id')
