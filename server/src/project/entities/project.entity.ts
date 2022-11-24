@@ -1,4 +1,3 @@
-import { Note } from 'src/note/entities/note.entity';
 import {
   Column,
   Entity,
@@ -6,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Note } from '../../note/entities/note.entity';
 import { User } from '../../user/entities/user.entity';
 @Entity()
 export class Project {
