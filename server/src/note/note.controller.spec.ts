@@ -96,9 +96,41 @@ describe('NoteController', () => {
     });
   });
 
-  // describe('NoteController.__findAllByProject', () => {
-  //   it('', async () => {});
-  // });
+  describe('NoteController.__findAllByProject', () => {
+    it('should throw a HttpException error ', async () => {
+      const createNoteDto = {
+        title: 'note title',
+        content: 'empty content',
+        projectId: 1,
+      };
+      jest.spyOn(mockProjectService, 'findById').mockReturnValue(null);
+
+      try {
+        await controller.create(createNoteDto);
+      } catch (e) {
+        expect(e).toBeInstanceOf(HttpException);
+        expect(mockProjectService.findById).toBeCalled();
+      }
+    });
+
+    it('should create a new note and return it', async () => {
+      const createNoteDto = {
+        title: 'note title',
+        content: 'empty content',
+        projectId: 1,
+      };
+      jest.spyOn(mockProjectService, 'findById').mockReturnValue(project);
+      jest.spyOn(mockNoteService, 'create').mockReturnValue(note);
+
+      const result = await controller.create(createNoteDto);
+
+      expect(result).toEqual(note);
+      expect(mockNoteService.create).toBeCalledWith(createNoteDto, project);
+      expect(mockProjectService.findById).toBeCalledWith(
+        createNoteDto.projectId,
+      );
+    });
+  });
 
   describe('NoteController.__findOne', () => {
     it('should find and return a note', async () => {
@@ -135,7 +167,31 @@ describe('NoteController', () => {
     });
   });
 
-  // describe('NoteController.__remove', () => {
-  //   it('', async () => {});
-  // });
+  describe('NoteController.__remove', () => {
+    it('should throw a HttpException error', async () => {
+      //arrange
+      const id = '1';
+      jest.spyOn(mockNoteService, 'findById').mockReturnValue(null);
+
+      try {
+        await controller.remove(id);
+      } catch (e) {
+        expect(mockNoteService.findById).toBeCalled();
+        expect(mockNoteService.findById).toBeCalledWith(+id);
+        expect(e).toBeInstanceOf(HttpException);
+      }
+    });
+
+    it('should remove a given note and return it ', async () => {
+      const id = '1';
+      jest.spyOn(mockNoteService, 'findById').mockReturnValue(note);
+      jest.spyOn(mockNoteService, 'remove').mockReturnValue(note);
+
+      const result = await controller.remove(id);
+
+      expect(result).toEqual(note);
+      expect(mockNoteService.findById).toBeCalledWith(+id);
+      expect(mockNoteService.remove).toBeCalledWith(note);
+    });
+  });
 });
