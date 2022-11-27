@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { LoginDto } from 'src/auth/dto/login.dto';
+import { SECRET } from 'src/config';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -27,8 +30,23 @@ export class UserService {
     return this.userRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findById(id: number) {
+    return await this.userRepository.findById(id);
+  }
+
+  async findOne({ email, password }: LoginDto): Promise<User | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (!user) {
+      return null;
+    }
+
+    if (await bcrypt.compare(password, user.password)) {
+      delete user.password;
+      return user;
+    }
+
+    return null;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
@@ -45,5 +63,20 @@ export class UserService {
 
   async save(user: User) {
     return await this.userRepository.save(user);
+  }
+
+  generateJWT(user: User) {
+    let today = new Date();
+    let exp = new Date(today);
+    exp.setDate(today.getDate() + 60);
+
+    return jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        exp: exp.getTime() / 1000,
+      },
+      SECRET,
+    );
   }
 }

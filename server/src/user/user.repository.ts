@@ -11,7 +11,9 @@ export class UserRepository {
   ) {}
 
   findAll() {
-    return this.usersRepository.find();
+    return this.usersRepository.find({
+      select: ['id', 'lastname', 'isConfirm', 'firstname', 'email'],
+    });
   }
 
   async findByEmail(email: string) {
@@ -24,6 +26,7 @@ export class UserRepository {
 
   async findById(id: number) {
     return await this.usersRepository.findOne({
+      select: ['id', 'lastname', 'isConfirm', 'firstname', 'email'],
       where: {
         id: id,
       },
