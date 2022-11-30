@@ -10,8 +10,8 @@ export class UserRepository {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll() {
-    return this.usersRepository.find({
+  async findAll() {
+    return await this.usersRepository.find({
       select: ['id', 'lastname', 'isConfirm', 'firstname', 'email'],
     });
   }

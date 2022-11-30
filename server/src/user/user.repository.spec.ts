@@ -43,6 +43,7 @@ describe('UserRepository', () => {
 
       expect(await userRepository.findById(userId)).toEqual(user);
       expect(mockRepository.findOne).toBeCalledWith({
+        select: ['id', 'lastname', 'isConfirm', 'firstname', 'email'],
         where: { id: userId },
       });
       expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
