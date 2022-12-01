@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { Session } from './auth/entities/session.entity';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: '',
       database: 'thot',
-      entities: [User],
+      entities: [User, Session],
       synchronize: true,
     }),
     UserModule,
