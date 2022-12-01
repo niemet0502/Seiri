@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { LoginDto } from '../auth/dto/login.dto';
-import { SECRET } from '../config';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -63,20 +61,5 @@ export class UserService {
 
   async save(user: User) {
     return await this.userRepository.save(user);
-  }
-
-  generateJWT(user: User) {
-    let today = new Date();
-    let exp = new Date(today);
-    exp.setDate(today.getDate() + 60);
-
-    return jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        exp: exp.getTime() / 1000,
-      },
-      SECRET,
-    );
   }
 }
