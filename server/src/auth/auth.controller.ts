@@ -1,4 +1,12 @@
-import { Body, Controller, HttpException, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  HttpException,
+  Post,
+} from '@nestjs/common';
+import { User } from 'src/user/user.decorator';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -23,5 +31,18 @@ export class AuthController {
     const session = await this.authService.generateJWT(user);
 
     return { user, token: session.token };
+  }
+
+  @Post('logout')
+  @HttpCode(204)
+  async logout(@User('token') token: string) {
+    const session = await this.authService.findOne(token);
+
+    if (!session) {
+      const errors = { session: 'session not found' };
+      throw new BadRequestException({ errors });
+    }
+
+    return await this.authService.remove(session);
   }
 }
