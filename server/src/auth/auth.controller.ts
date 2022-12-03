@@ -6,7 +6,7 @@ import {
   HttpException,
   Post,
 } from '@nestjs/common';
-import { User } from '../user/user.decorator';
+import { UserDecorator } from '../user/user.decorator';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -35,7 +35,7 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(204)
-  async logout(@User('token') token: string) {
+  async logout(@UserDecorator('token') token: string) {
     const session = await this.authService.findOne(token);
 
     if (!session) {
