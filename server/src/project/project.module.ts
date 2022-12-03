@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { UserModule } from 'src/user/user.module';
 import { Project } from './entities/project.entity';
 import { ProjectController } from './project.controller';
@@ -12,4 +13,8 @@ import { ProjectService } from './project.service';
   providers: [ProjectService, ProjectRepository],
   exports: [ProjectService],
 })
-export class ProjectModule {}
+export class ProjectModule {
+  public configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('project');
+  }
+}
