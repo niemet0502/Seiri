@@ -21,6 +21,7 @@ const project = {
   description: 'DSA resources',
   isArchive: false,
   user: user,
+  notes: null,
 };
 
 const projects = [project];
