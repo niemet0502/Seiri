@@ -12,7 +12,7 @@ export class AuthService {
     @InjectRepository(Session) private sessionRepository: Repository<Session>,
   ) {}
 
-  async generateJWT(user: User) {
+  async createSession(user: User) {
     const session = new Session();
     let today = new Date();
 

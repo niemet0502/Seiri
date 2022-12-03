@@ -1,5 +1,5 @@
-import { Session } from 'src/auth/entities/session.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Session } from '../../auth/entities/session.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()

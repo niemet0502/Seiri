@@ -6,7 +6,7 @@ import {
   HttpException,
   Post,
 } from '@nestjs/common';
-import { User } from 'src/user/user.decorator';
+import { User } from '../user/user.decorator';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -28,7 +28,7 @@ export class AuthController {
       throw new HttpException({ errors }, 401);
     }
 
-    const session = await this.authService.generateJWT(user);
+    const session = await this.authService.createSession(user);
 
     return { user, token: session.token };
   }
