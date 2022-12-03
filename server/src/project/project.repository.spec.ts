@@ -9,6 +9,7 @@ const project = {
   description: 'DSA resources',
   isArchive: false,
   user: null,
+  tasks: null,
   notes: null,
 };
 
@@ -59,6 +60,7 @@ describe('ProjectRepository', () => {
         description: 'DSA resources',
         isArchive: false,
         user: null,
+        tasks: null,
         notes: null,
       };
 

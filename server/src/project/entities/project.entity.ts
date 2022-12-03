@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Note } from '../../note/entities/note.entity';
+import { Task } from '../../task/entities/task.entity';
 import { User } from '../../user/entities/user.entity';
 @Entity()
 export class Project {
@@ -19,6 +20,9 @@ export class Project {
   description: string;
 
   @ManyToOne(() => User, (user) => user.projects) user: User;
+
+  @OneToMany(() => Task, (task) => task.project)
+  tasks: Task[];
 
   @OneToMany(() => Note, (note) => note.project) notes: Note[];
 

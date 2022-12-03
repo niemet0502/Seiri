@@ -55,6 +55,7 @@ describe('NoteService', () => {
         isArchive: false,
         user: null,
         notes: null,
+        tasks: null,
       };
       jest.spyOn(mockRepository, 'save').mockReturnValue(note);
 
@@ -77,6 +78,7 @@ describe('NoteService', () => {
         isArchive: false,
         user: null,
         notes: null,
+        tasks: null,
       };
       jest.spyOn(mockRepository, 'findAllByProject').mockReturnValue(notes);
 
