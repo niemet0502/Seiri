@@ -10,6 +10,7 @@ const project = {
   isArchive: false,
   user: null,
   tasks: null,
+  notes: null,
 };
 
 const projects = [project];
@@ -60,6 +61,7 @@ describe('ProjectRepository', () => {
         isArchive: false,
         user: null,
         tasks: null,
+        notes: null,
       };
 
       jest.spyOn(mockRepository, 'save').mockReturnValue(project);
