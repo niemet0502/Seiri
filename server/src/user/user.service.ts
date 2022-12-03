@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { LoginDto } from '../auth/dto/login.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -27,8 +28,23 @@ export class UserService {
     return this.userRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findById(id: number) {
+    return await this.userRepository.findById(id);
+  }
+
+  async findOne({ email, password }: LoginDto): Promise<User | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (!user) {
+      return null;
+    }
+
+    if (await bcrypt.compare(password, user.password)) {
+      delete user.password;
+      return user;
+    }
+
+    return null;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
