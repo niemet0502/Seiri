@@ -20,6 +20,9 @@ export class AuthService {
       {
         id: user.id,
         email: user.email,
+        isConfirm: user.isConfirm,
+        lastname: user.lastname,
+        firstname: user.firstname,
       },
       SECRET,
     );
