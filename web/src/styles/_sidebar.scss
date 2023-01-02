@@ -1,0 +1,17 @@
+.content-wrapper {
+  background-color: $background-color;
+  color: white;
+  height: 100vh;
+}
+
+.feature-sidebar {
+  width: 48px;
+  border-right: 1px solid var(--sidebar-border-color, #2c2d3c);
+  transition: opacity 0.05s ease-in-out 0s;
+}
+
+.project-sidebar {
+  width: 305px;
+  border-right: 1px solid var(--sidebar-border-color, #2c2d3c);
+  transition: opacity 0.05s ease-in-out 0s;
+}
