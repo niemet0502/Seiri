@@ -1,0 +1,12 @@
+.input-wrapper {
+  input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid $white;
+
+    &:focus,
+    &:focus-visible {
+      border: 1px solid $primary;
+    }
+  }
+}

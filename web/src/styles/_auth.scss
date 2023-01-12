@@ -1,0 +1,32 @@
+.login-wrapper-content {
+  height: 100vh;
+  width: 100%;
+  background-color: $background-color;
+
+  .login-wrapper-content-child:first-child {
+    width: 60%;
+  }
+
+  .login-wrapper-content-child:last-child {
+    width: 40%;
+  }
+
+  .form-container {
+    width: 500px;
+
+    h3 {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+      font-weight: 800;
+      color: $white;
+    }
+
+    .form-header {
+      margin-bottom: 20px;
+    }
+  }
+  .logo-border {
+    border-left: 1px solid $white;
+    flex: 2;
+  }
+}

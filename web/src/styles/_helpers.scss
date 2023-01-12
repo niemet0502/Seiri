@@ -8,3 +8,45 @@
 .text-center {
   text-align: center;
 }
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.border-debug {
+  border: 1px solid red;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+.gap-2 {
+  gap: 10px;
+}
+
+.gap-3 {
+  gap: 20px;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.p-2 {
+  padding: 10px;
+}
+
+.p-l-0 {
+  padding-left: 0px;
+}
+
+.primary {
+  color: $primary;
+}

@@ -1,0 +1,11 @@
+button {
+  background-color: $primary;
+  border: 1px solid $primary;
+
+  padding: 12px;
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
