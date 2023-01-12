@@ -1,12 +1,8 @@
 import "./App.css";
+import { ResetPassword } from "./pages/Auth/ResetPassword";
 
 function App() {
-  return (
-    <div className="content-wrapper flex">
-      <div className="feature-sidebar">Test</div>
-      <div className="project-sidebar">Test</div>
-    </div>
-  );
+  return <ResetPassword />;
 }
 
 export default App;
