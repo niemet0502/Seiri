@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { SearchInput } from "../../components/Input";
 
@@ -9,7 +10,10 @@ export const SignIn: React.FC = () => {
           <div className="form-header">
             <h3>Sign in to your account</h3>
             <span>
-              Or <span className="primary">create a new account</span>
+              Or{" "}
+              <NavLink to="/auth/login" className="primary">
+                create a new account
+              </NavLink>
             </span>
           </div>
 
@@ -24,7 +28,9 @@ export const SignIn: React.FC = () => {
                 <label htmlFor="remember">Remember me</label>
               </span>
 
-              <span>Forgot your password ? </span>
+              <NavLink to="/auth/forgot-password" className="white">
+                Forgot your password ?{" "}
+              </NavLink>
             </div>
 
             <Button type="submit"> Sign up </Button>

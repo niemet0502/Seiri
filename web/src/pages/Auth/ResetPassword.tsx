@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { SearchInput } from "../../components/Input";
 
@@ -9,7 +10,10 @@ export const ResetPassword: React.FC = () => {
           <div className="form-header">
             <h3>Reset your password</h3>
             <span>
-              Or <span className="primary">sign in to your account</span>
+              Or{" "}
+              <NavLink to="/auth/login" className="primary">
+                sign in to your account
+              </NavLink>
             </span>
           </div>
 
