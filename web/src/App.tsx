@@ -4,6 +4,7 @@ import "./App.css";
 import { Login } from "./pages/Auth/Login";
 import { ResetPassword } from "./pages/Auth/ResetPassword";
 import { SignIn } from "./pages/Auth/SignIn";
+import { Content } from "./pages/Content/Content";
 
 const history = createBrowserHistory();
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/auth/login" component={Login} />
         <Route path="/auth/signin" component={SignIn} />
         <Route path="/auth/forgot-password" component={ResetPassword} />
+        <Route path="/" component={Content} />
       </Switch>
     </Router>
   );
