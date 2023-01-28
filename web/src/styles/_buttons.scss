@@ -9,3 +9,14 @@ button {
     cursor: pointer;
   }
 }
+
+.icon-c {
+  padding: 5px;
+  border-radius: 10%;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgb(133, 134, 153);
+  }
+}

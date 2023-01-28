@@ -1,4 +1,5 @@
 .page-content {
+  background-color: rgb(24, 25, 34);
   justify-content: center;
   overflow: auto;
 
@@ -55,7 +56,7 @@
     align-content: flex-start;
 
     .note-card {
-      background: #1f2130;
+      background: rgb(29, 30, 43);
       padding: 10px;
       width: 300px;
       height: 150px;
@@ -71,7 +72,7 @@
         cursor: pointer;
         transition-duration: 0.1s;
         transition-property: box-shadow;
-        background-color: rgb(41, 43, 65);
+        background-color: rgb(31, 33, 48);
       }
 
       .icons div {
@@ -97,6 +98,101 @@
       p {
         font-size: 15px;
       }
+    }
+  }
+
+  .tasks-list {
+    width: 90%;
+    max-width: 850px;
+    padding-top: 30px;
+
+    .header {
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #2c2d3c;
+      margin-bottom: 50px;
+
+      svg {
+        font-size: 25px;
+      }
+    }
+
+    .body {
+      flex-direction: column;
+      gap: 15px;
+
+      .task {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #2c2d3c;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .icon-c svg {
+          font-size: 20px;
+          visibility: hidden;
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          svg {
+            visibility: inherit;
+          }
+        }
+
+        .infos {
+          align-items: center;
+
+          &.isdone-true {
+            text-decoration: line-through;
+          }
+
+          .statut {
+            height: 17px;
+            width: 17px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &.isdone-false {
+              border: 1px solid #2c2d3c;
+
+              svg {
+                color: #2c2d3c;
+                visibility: hidden;
+              }
+              &:hover {
+                border-color: $white;
+
+                svg {
+                  transition: ease-in;
+                  transition-duration: 0.2s;
+                  visibility: inherit;
+                  color: $white;
+                }
+              }
+            }
+
+            &.isdone-true {
+              border: 1px solid greenyellow;
+              background-color: greenyellow;
+
+              svg {
+                color: #2c2d3c;
+                visibility: inherit;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .add-task {
+      cursor: pointer;
     }
   }
 }

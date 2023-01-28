@@ -5,6 +5,7 @@
 }
 
 .feature-sidebar {
+  background-color: rgb(25, 26, 35);
   width: 48px;
   border-right: 1px solid var(--sidebar-border-color, #2c2d3c);
   transition: opacity 0.05s ease-in-out 0s;
@@ -42,6 +43,7 @@
 }
 
 .project-sidebar {
+  background-color: rgb(25, 26, 35);
   width: 305px;
   border-right: 1px solid var(--sidebar-border-color, #2c2d3c);
   transition: opacity 0.05s ease-in-out 0s;
