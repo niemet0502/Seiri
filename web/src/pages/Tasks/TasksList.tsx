@@ -57,10 +57,10 @@ export const TasksList: React.FC = () => {
 
       <div className="body flex">
         {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} />
+          <TaskItem key={task.id} task={task} editable={true} />
         ))}
 
-        <div className="icon-c align-self-center add-task">
+        <div className="icon-c align-self-center add-task align-items-center">
           <AiOutlinePlus /> Add task
         </div>
       </div>
