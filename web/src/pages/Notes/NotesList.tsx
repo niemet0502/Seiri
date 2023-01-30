@@ -6,103 +6,58 @@ export const NotesList: React.FC = () => {
   const notes = [
     {
       id: 1,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
     {
       id: 2,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
     {
       id: 3,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
     {
       id: 4,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
     {
       id: 5,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
     {
       id: 6,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
     {
       id: 7,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 8,
+      title: "First note",
+      description: "description",
       content:
         "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
     },
   ];
   return (
-    <div className="flex notes-list border-debug">
+    <div className="flex notes-list">
       {notes.map((note) => (
-        <NoteCard key={note.id} />
-      ))}
-      {notes.map((note) => (
-        <NoteCard key={note.id} />
-      ))}
-      {notes.map((note) => (
-        <NoteCard key={note.id} />
-      ))}
-      {notes.map((note) => (
-        <NoteCard key={note.id} />
+        <NoteCard key={note.id} note={note} />
       ))}
     </div>
   );
