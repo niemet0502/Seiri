@@ -11,6 +11,8 @@
     flex-shrink: 0;
 
     .note-header {
+      margin-bottom: 30px;
+
       textarea {
         font-size: 36px;
         width: 90%;
@@ -44,11 +46,6 @@
     margin: 0;
     list-style: none;
     -ms-box-orient: horizontal;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -moz-flex;
-    display: -webkit-flex;
     display: flex;
 
     -webkit-flex-wrap: wrap;
@@ -120,79 +117,99 @@
 
     .body {
       flex-direction: column;
-      gap: 15px;
-
-      .task {
-        padding-bottom: 10px;
-        border-bottom: 1px solid #2c2d3c;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .icon-c svg {
-          font-size: 20px;
-          visibility: hidden;
-        }
-
-        &:hover {
-          cursor: pointer;
-
-          svg {
-            visibility: inherit;
-          }
-        }
-
-        .infos {
-          align-items: center;
-
-          &.isdone-true {
-            text-decoration: line-through;
-          }
-
-          .statut {
-            height: 17px;
-            width: 17px;
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            &.isdone-false {
-              border: 1px solid #2c2d3c;
-
-              svg {
-                color: #2c2d3c;
-                visibility: hidden;
-              }
-              &:hover {
-                border-color: $white;
-
-                svg {
-                  transition: ease-in;
-                  transition-duration: 0.2s;
-                  visibility: inherit;
-                  color: $white;
-                }
-              }
-            }
-
-            &.isdone-true {
-              border: 1px solid greenyellow;
-              background-color: greenyellow;
-
-              svg {
-                color: #2c2d3c;
-                visibility: inherit;
-              }
-            }
-          }
-        }
-      }
     }
 
     .add-task {
       cursor: pointer;
+    }
+  }
+
+  .task-details {
+    width: 100%;
+    display: flex;
+
+    .task-content {
+      flex: 2;
+      padding-left: 5%;
+      padding-right: 5%;
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 25px 5px;
+        border-bottom: 1px solid #2c2d3c;
+
+        h4 {
+          font-size: 15px;
+        }
+      }
+      .body {
+        display: flex;
+        margin-top: 30px;
+        flex-direction: column;
+        gap: 20px;
+
+        textarea {
+          background-color: rgb(24, 25, 34);
+          padding: 10px;
+        }
+
+        textarea.task-description {
+          min-height: 120px;
+          border-radius: 5px;
+          border: 1px solid #2c2d3c;
+          color: $white;
+        }
+
+        textarea.task-title {
+          border: none;
+          color: white;
+          font-size: 22px;
+          height: 30px;
+        }
+      }
+    }
+
+    .task-attributes {
+      border-left: 1px solid #2c2d3c;
+      min-width: 320px;
+      max-width: 480px;
+      background-color: rgb(29, 30, 43);
+
+      .row {
+        margin: 20px;
+
+        .attributes {
+          .label {
+            color: rgb(133, 134, 153);
+            flex: 1;
+          }
+          div {
+            flex: 1;
+          }
+
+          div:last-child {
+            color: $white;
+            border: 1px solid transparent;
+            padding: 2px;
+
+            &:hover {
+              background-color: rgb(24, 25, 34);
+              cursor: pointer;
+              border-radius: 2px;
+              border: 1px solid $border-color;
+            }
+          }
+        }
+      }
+
+      .task-detail-header {
+        padding: 25px 0px;
+        border-bottom: 1px solid $border-color;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
   }
 }

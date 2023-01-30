@@ -2,7 +2,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { RxDotFilled } from "react-icons/rx";
 import { Features } from "../../container/Features";
-import { TasksList } from "../Tasks/TasksList";
+import { TaskDetails } from "../Tasks/TaskDetails";
 
 export const Content: React.FC = () => {
   const projects = [
@@ -61,11 +61,12 @@ export const Content: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className=" flex page-content p-2" style={{ flex: "2" }}>
+      <div className=" flex page-content" style={{ flex: "2" }}>
         {/* <NotesList /> */}
         {/* <NoteDetails /> */}
 
-        <TasksList />
+        {/* <TasksList /> */}
+        <TaskDetails />
       </div>
     </div>
   );

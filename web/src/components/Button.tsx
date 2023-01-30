@@ -1,9 +1,10 @@
 export const Button: React.FC<{
   type?: "button" | "submit" | "reset";
   children?: any;
-}> = ({ type, children }) => {
+  variant?: string;
+}> = ({ type, children, variant }) => {
   return (
-    <button className="button" type={type}>
+    <button className={`button ${variant || "b-primary"}`} type={type}>
       {children}
     </button>
   );
