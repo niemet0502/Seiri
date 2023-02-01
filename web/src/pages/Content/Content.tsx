@@ -42,7 +42,7 @@ export const Content: React.FC = () => {
     <div className="content-wrapper flex">
       <Features />
       <div className="project-sidebar">
-        <div className="flex">
+        <div className="flex header">
           Projects
           <AiOutlinePlus />
         </div>
