@@ -1,8 +1,14 @@
 import { BsDot } from "react-icons/bs";
+import { HiDotsHorizontal } from "react-icons/hi";
+import { PageHeader } from "../../components/PageHeader";
 
 export const NoteDetails: React.FC = () => {
   return (
-    <div className="note ">
+    <div className="note">
+      <PageHeader>
+        <h4>2023 Roadmap &gt; Thot v0</h4>
+        <HiDotsHorizontal />
+      </PageHeader>
       <div className="note-header">
         <textarea>Thot v0</textarea>
         <div className="br"></div>

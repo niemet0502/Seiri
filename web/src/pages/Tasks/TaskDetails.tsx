@@ -1,5 +1,6 @@
 import { HiDotsHorizontal } from "react-icons/hi";
 import { Button } from "../../components/Button";
+import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 
 export const TaskDetails: React.FC = () => {
@@ -28,10 +29,10 @@ export const TaskDetails: React.FC = () => {
   return (
     <div className="task-details">
       <div className="task-content">
-        <div className="header flex">
+        <PageHeader>
           <h4>2023 Roadmap &gt; Deploy Tefnout backend</h4>
           <HiDotsHorizontal />
-        </div>
+        </PageHeader>
         <div className="body">
           <textarea className="task-title">Deploy Tefnout backend</textarea>
 

@@ -1,4 +1,6 @@
+import { HiDotsHorizontal } from "react-icons/hi";
 import { NoteCard } from "../../components/NoteCard";
+import { PageHeader } from "../../components/PageHeader";
 
 export const NotesList: React.FC = () => {
   // get the project id from the url and fetch its notes
@@ -55,10 +57,18 @@ export const NotesList: React.FC = () => {
     },
   ];
   return (
-    <div className="flex notes-list">
-      {notes.map((note) => (
-        <NoteCard key={note.id} note={note} />
-      ))}
+    <div className="flex flex-column">
+      <div className="notes-list-header">
+        <PageHeader>
+          <h4>2023 Roadmap</h4>
+          <HiDotsHorizontal />
+        </PageHeader>
+      </div>
+      <div className="flex notes-list">
+        {notes.map((note) => (
+          <NoteCard key={note.id} note={note} />
+        ))}
+      </div>
     </div>
   );
 };

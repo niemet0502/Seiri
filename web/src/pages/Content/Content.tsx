@@ -1,6 +1,7 @@
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { RxDotFilled } from "react-icons/rx";
+import { PageHeader } from "../../components/PageHeader";
 import { Features } from "../../container/Features";
 import { TaskDetails } from "../Tasks/TaskDetails";
 
@@ -42,10 +43,10 @@ export const Content: React.FC = () => {
     <div className="content-wrapper flex">
       <Features />
       <div className="project-sidebar">
-        <div className="flex header">
-          Projects
+        <PageHeader>
+          <span>Projects</span>
           <AiOutlinePlus />
-        </div>
+        </PageHeader>
         <div className="project-list">
           {projects.map((project) => (
             <div key={project.id} className="project-items flex">

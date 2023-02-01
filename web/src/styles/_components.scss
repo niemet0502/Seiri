@@ -115,3 +115,12 @@ button {
     }
   }
 }
+
+.page-header {
+  justify-content: space-between;
+  display: flex;
+  width: 100%;
+  padding-bottom: 13px;
+  border-bottom: 1px solid $border-color;
+  font-size: 12px;
+}
