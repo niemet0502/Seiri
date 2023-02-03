@@ -1,6 +1,7 @@
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { RxDotFilled } from "react-icons/rx";
 import { Project } from "../types";
+import { Dropdown } from "./Dropdown";
 
 export const ProjectItem: React.FC<{ project: Project }> = ({ project }) => {
   return (
@@ -13,8 +14,12 @@ export const ProjectItem: React.FC<{ project: Project }> = ({ project }) => {
         <span style={{ fontSize: "14px" }}>{project.name}</span>
       </div>
       <div className="flex align-items-center">
-        <span className="notes-count">{project.notes.length}</span>
-        <BiDotsHorizontalRounded className="dot-icon" />
+        <Dropdown
+          left="-120px"
+          trigger={(toggle) => <BiDotsHorizontalRounded onClick={toggle} />}
+        >
+          <div style={{ width: "100px" }}>Test</div>
+        </Dropdown>
       </div>
     </div>
   );

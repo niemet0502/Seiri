@@ -6,11 +6,12 @@
   .note {
     position: relative;
     width: calc(100% - 120px);
-    margin: 70px auto 24px;
+    margin: 30px auto 24px;
     max-width: 860px;
     flex-shrink: 0;
 
     .note-header {
+      margin-top: 30px;
       margin-bottom: 30px;
 
       textarea {
@@ -39,6 +40,13 @@
         }
       }
     }
+  }
+
+  .notes-list-header {
+    padding-top: 30px;
+    width: 80%;
+    align-self: center;
+    margin-bottom: 30px;
   }
 
   .notes-list {
@@ -129,6 +137,7 @@
     display: flex;
 
     .task-content {
+      padding-top: 30px;
       flex: 2;
       padding-left: 5%;
       padding-right: 5%;
@@ -158,8 +167,30 @@
         textarea.task-description {
           min-height: 120px;
           border-radius: 5px;
-          border: 1px solid #2c2d3c;
+          border: none;
           color: $white;
+          font-family: $sans-serif;
+          font-size: 12px;
+
+          &:focus {
+            border: none;
+          }
+        }
+
+        .desc {
+          color: $white;
+          font-family: $sans-serif;
+          font-size: 12px;
+          margin-left: 10px;
+        }
+
+        .form {
+          border: 1px solid $border-color;
+          gap: 10px;
+        }
+
+        .plain-content {
+          border: 1px solid transparent;
         }
 
         textarea.task-title {
@@ -167,7 +198,18 @@
           color: white;
           font-size: 22px;
           height: 30px;
+          font-family: $sans-serif;
+
+          &:focus {
+            border: none;
+          }
         }
+      }
+    }
+
+    @media screen and (max-width: 1300px) {
+      .task-attributes {
+        display: none;
       }
     }
 
@@ -205,10 +247,9 @@
       }
 
       .task-detail-header {
-        padding: 25px 0px;
-        border-bottom: 1px solid $border-color;
         margin-left: 20px;
         margin-right: 20px;
+        margin-top: 30px;
       }
     }
   }

@@ -12,3 +12,13 @@ export interface Task {
   description: string;
   children?: Task[];
 }
+
+export interface Project {
+  id: number;
+  name: string;
+  description: string;
+  color: string;
+  tasks: Task[];
+  notes: Note[];
+  isArchive: boolean;
+}
