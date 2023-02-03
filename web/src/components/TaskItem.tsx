@@ -1,6 +1,7 @@
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import { Task } from "../types";
+import { IconButton } from "./Button";
 
 export const TaskItem: React.FC<{ task: Task; editable?: boolean }> = ({
   task,
@@ -17,13 +18,13 @@ export const TaskItem: React.FC<{ task: Task; editable?: boolean }> = ({
         </div>
         <div className="flex gap-2">
           {editable && (
-            <div className="icon-c">
+            <IconButton>
               <AiOutlineEdit />
-            </div>
+            </IconButton>
           )}
-          <div className="icon-c">
+          <IconButton>
             <AiOutlineDelete />
-          </div>
+          </IconButton>
         </div>
       </div>
       {task.children && (

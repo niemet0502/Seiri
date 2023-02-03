@@ -1,4 +1,4 @@
-button {
+.btn {
   color: $white;
 
   &.b-primary {
@@ -37,8 +37,12 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
+  border: none;
+  color: $white;
 
   &:hover {
+    cursor: pointer;
     background-color: rgb(133, 134, 153);
   }
 }
@@ -161,6 +165,34 @@ button {
 
     .notes-count {
       display: none;
+    }
+  }
+}
+
+.dropdown {
+  background-color: rgb(29, 30, 43);
+  border: 1px solid rgb(82, 82, 111);
+  position: absolute;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  min-width: min-content;
+  box-shadow: rgb(0 0 0 / 5%) 0px 4px 16px 0px;
+  border-radius: 3px;
+  padding: 10px;
+
+  .dropdown-item {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-self: flex-start;
+    color: $white;
+    padding: 5px;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(133, 134, 153);
+      transition: 0.2s;
     }
   }
 }
