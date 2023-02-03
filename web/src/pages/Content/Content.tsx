@@ -2,7 +2,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { PageHeader } from "../../components/PageHeader";
 import { ProjectItem } from "../../components/Project";
 import { Features } from "../../container/Features";
-import { TaskDetails } from "../Tasks/TaskDetails";
+import { TasksList } from "../Tasks/TasksList";
 
 export const Content: React.FC = () => {
   const projects = [
@@ -71,8 +71,8 @@ export const Content: React.FC = () => {
         {/* <NotesList /> */}
         {/* <NoteDetails /> */}
 
-        {/* <TasksList /> */}
-        <TaskDetails />
+        <TasksList />
+        {/* <TaskDetails /> */}
       </div>
     </div>
   );

@@ -196,3 +196,51 @@
     }
   }
 }
+
+.dialog {
+  position: fixed;
+  inset: 0px;
+
+  // background-color: rgba(17, 15, 36, 0.7);
+  // perspective: 2200px;
+  // perspective-origin: 16px 54px;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  padding: 8px;
+  z-index: 10;
+  display: flex;
+  min-width: 0px;
+  min-height: 0px;
+  flex: 0 0 auto;
+  align-self: auto;
+  flex-direction: column;
+  padding-top: 150px;
+  background-color: rgba(25, 26, 35, 0.25);
+
+  .content {
+    min-height: 350px !important;
+    flex: 0 1 auto;
+    border-radius: 8px;
+    font-size: 16px;
+    overflow: hidden;
+    display: flex;
+    min-width: 0px;
+    min-height: 0px;
+    align-self: auto;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    flex-direction: column;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    background-color: rgb(29, 30, 43);
+    border: 1px solid rgb(82, 82, 111);
+    box-shadow: rgb(0 0 0 / 50%) 0px 16px 70px;
+
+    .header {
+      padding: 10px;
+
+      border-bottom: 1px solid $border-color;
+    }
+  }
+}
