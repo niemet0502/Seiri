@@ -9,3 +9,9 @@ body {
 a {
   text-decoration: none;
 }
+
+textarea:focus {
+  outline: none;
+  border: 1px solid $primary !important;
+  border-radius: 5px;
+}
