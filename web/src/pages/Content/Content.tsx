@@ -1,10 +1,16 @@
+import { useCallback, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
+import { IconButton } from "../../components/Button";
 import { PageHeader } from "../../components/PageHeader";
 import { ProjectItem } from "../../components/Project";
 import { Features } from "../../container/Features";
-import { TasksList } from "../Tasks/TasksList";
+import { Deferred } from "../../utils/Deferred";
+import { ProjectModal } from "../Project/ProjectModal";
+import { TaskDetails } from "../Tasks/TaskDetails";
 
 export const Content: React.FC = () => {
+  const [newProjectHandler, setNewProjectHandler] = useState<Deferred<void>>();
+
   const projects = [
     {
       id: 1,
@@ -53,13 +59,27 @@ export const Content: React.FC = () => {
     },
   ];
 
+  const addNewProject = useCallback(async () => {
+    const deferred = new Deferred<void>();
+
+    setNewProjectHandler(deferred);
+
+    try {
+      await deferred.promise;
+    } catch (e) {
+      setNewProjectHandler(undefined);
+    }
+  }, []);
+
   return (
     <div className="content-wrapper flex">
       <Features />
       <div className="project-sidebar">
         <PageHeader>
           <span>Projects</span>
-          <AiOutlinePlus />
+          <IconButton handler={addNewProject}>
+            <AiOutlinePlus />
+          </IconButton>
         </PageHeader>
         <div className="project-list">
           {projects.map((project) => (
@@ -71,9 +91,11 @@ export const Content: React.FC = () => {
         {/* <NotesList /> */}
         {/* <NoteDetails /> */}
 
-        <TasksList />
-        {/* <TaskDetails /> */}
+        {/* <TasksList /> */}
+        <TaskDetails />
       </div>
+
+      {newProjectHandler && <ProjectModal deferred={newProjectHandler} />}
     </div>
   );
 };

@@ -120,6 +120,45 @@
   }
 }
 
+.statut {
+  height: 17px;
+  width: 17px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.isdone-false {
+    border: 1px solid #2c2d3c;
+
+    svg {
+      color: #2c2d3c;
+      visibility: hidden;
+    }
+    &:hover {
+      border-color: $white;
+
+      svg {
+        transition: ease-in;
+        transition-duration: 0.2s;
+        visibility: inherit;
+        color: $white;
+      }
+    }
+  }
+
+  &.isdone-true {
+    border: 1px solid greenyellow;
+    background-color: greenyellow;
+
+    svg {
+      color: #2c2d3c;
+      visibility: inherit;
+    }
+  }
+}
+
 .page-header {
   justify-content: space-between;
   display: flex;
@@ -200,10 +239,6 @@
 .dialog {
   position: fixed;
   inset: 0px;
-
-  // background-color: rgba(17, 15, 36, 0.7);
-  // perspective: 2200px;
-  // perspective-origin: 16px 54px;
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
