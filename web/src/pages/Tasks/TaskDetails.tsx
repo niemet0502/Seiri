@@ -1,16 +1,36 @@
-import { useState } from "react";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { useCallback, useState } from "react";
+import {
+  AiOutlineCheck,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlinePlus,
+} from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { BsArchive } from "react-icons/bs";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
+import { Deferred } from "../../utils/Deferred";
+import { NewTaskDialog } from "./NewTaskDialog";
 
 export const TaskDetails: React.FC = () => {
-  const [editing, setEditing] = useState<boolean>(false);
-
   // get task id from the url and fetch from database
+  const [editing, setEditing] = useState<boolean>(false);
+  const [newTaskHandler, setNewTaskHandler] = useState<Deferred<void>>();
+
+  const addTask = useCallback(async () => {
+    const deferred = new Deferred<void>();
+
+    setNewTaskHandler(deferred);
+
+    try {
+      await deferred.promise;
+    } catch (e) {
+      setNewTaskHandler(undefined);
+    }
+  }, []);
 
   const task = {
     id: 1,
@@ -53,17 +73,23 @@ export const TaskDetails: React.FC = () => {
             <DropdownItem>
               <AiOutlineDelete /> Delete
             </DropdownItem>
+
+            <DropdownItem>
+              <BsArchive /> Archive
+            </DropdownItem>
           </Dropdown>
         </PageHeader>
         <div className="body">
           {!editing && (
-            <div
-              className="plain-content flex flex-column"
-              style={{ padding: "10px", gap: "25px" }}
-            >
-              <span style={{ fontSize: "22px", marginLeft: "9px" }}>
-                Deploy Tefnout backend
-              </span>
+            <div className="plain-content flex flex-column gap-3">
+              <div className="flex align-items-center">
+                <div className={`statut isdone-${task.isDone}`}>
+                  <AiOutlineCheck />
+                </div>
+                <span style={{ fontSize: "22px", marginLeft: "9px" }}>
+                  Deploy Tefnout backend
+                </span>
+              </div>
 
               <p className="desc">Add description</p>
             </div>
@@ -71,10 +97,7 @@ export const TaskDetails: React.FC = () => {
 
           {editing && (
             <form action="">
-              <div
-                className="flex flex-column form"
-                style={{ padding: "10px" }}
-              >
+              <div className="flex flex-column form p-1">
                 <textarea className="task-title" autoFocus>
                   Deploy Tefnout backend
                 </textarea>
@@ -98,7 +121,12 @@ export const TaskDetails: React.FC = () => {
             </form>
           )}
 
-          <h6>Sub-tasks</h6>
+          <div className="flex align-items-center justify-content-between">
+            <h6>Sub-tasks</h6>
+            <IconButton handler={addTask}>
+              <AiOutlinePlus />
+            </IconButton>
+          </div>
           <div className="">
             {task.children.map((task) => (
               <TaskItem key={task.id} task={task} editable={false} />
@@ -125,6 +153,8 @@ export const TaskDetails: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
     </div>
   );
 };

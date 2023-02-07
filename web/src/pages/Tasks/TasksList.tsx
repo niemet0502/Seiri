@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { IconButton } from "../../components/Button";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { Task } from "../../types";
+import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
 export const TasksList: React.FC = () => {
   // get the project's id from the url and then fetch its tasks
 
-  const [newTaskHandler, setNewTaskHandler] = useState<boolean>();
+  const [newTaskHandler, setNewTaskHandler] = useState<Deferred<void>>();
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: 1,
@@ -52,9 +53,17 @@ export const TasksList: React.FC = () => {
     },
   ]);
 
-  useEffect(() => {
-    console.log(newTaskHandler);
-  }, [newTaskHandler]);
+  const addTask = useCallback(async () => {
+    const deferred = new Deferred<void>();
+
+    setNewTaskHandler(deferred);
+
+    try {
+      await deferred.promise;
+    } catch (e) {
+      setNewTaskHandler(undefined);
+    }
+  }, []);
 
   return (
     <div className="tasks-list ">
@@ -71,14 +80,14 @@ export const TasksList: React.FC = () => {
         ))}
 
         <div
-          className="icon-c align-self-center add-task align-items-center"
-          onClick={() => setNewTaskHandler((prev) => !prev)}
+          className="icon-c align-self-center add-task align-items-center mt-2"
+          onClick={addTask}
         >
           <AiOutlinePlus /> Add task
         </div>
       </div>
 
-      {newTaskHandler && <NewTaskDialog />}
+      {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
     </div>
   );
 };
