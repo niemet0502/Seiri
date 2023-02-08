@@ -1,7 +1,14 @@
 import { useCallback, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { HiDotsHorizontal } from "react-icons/hi";
+import {
+  AiOutlineCheckCircle,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlinePlus,
+} from "react-icons/ai";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { IconButton } from "../../components/Button";
+import { Dropdown } from "../../components/Dropdown";
+import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { Task } from "../../types";
@@ -69,9 +76,27 @@ export const TasksList: React.FC = () => {
     <div className="tasks-list ">
       <PageHeader>
         <h3>2023 Roadmap</h3>
-        <IconButton>
-          <HiDotsHorizontal />
-        </IconButton>
+        <Dropdown
+          left="-120px"
+          width="150px"
+          trigger={(toggle) => (
+            <IconButton handler={toggle}>
+              <BiDotsHorizontalRounded />
+            </IconButton>
+          )}
+        >
+          <DropdownItem>
+            <AiOutlineEdit /> Edit
+          </DropdownItem>
+
+          <DropdownItem>
+            <AiOutlineDelete /> Delete
+          </DropdownItem>
+
+          <DropdownItem>
+            <AiOutlineCheckCircle /> Hide completed
+          </DropdownItem>
+        </Dropdown>
       </PageHeader>
 
       <div className="body flex mt-2">
