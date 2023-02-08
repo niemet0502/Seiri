@@ -1,7 +1,11 @@
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { BsArchive } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import { Project } from "../types";
+import { IconButton } from "./Button";
 import { Dropdown } from "./Dropdown";
+import { DropdownItem } from "./DropdownItem";
 
 export const ProjectItem: React.FC<{ project: Project }> = ({ project }) => {
   return (
@@ -13,12 +17,26 @@ export const ProjectItem: React.FC<{ project: Project }> = ({ project }) => {
         <RxDotFilled style={{ color: project.color }} />
         <span style={{ fontSize: "14px" }}>{project.name}</span>
       </div>
-      <div className="flex align-items-center">
+      <div className="flex align-items-center" style={{ fontSize: "12px" }}>
         <Dropdown
           left="-120px"
-          trigger={(toggle) => <BiDotsHorizontalRounded onClick={toggle} />}
+          trigger={(toggle) => (
+            <IconButton handler={toggle}>
+              <BiDotsHorizontalRounded />
+            </IconButton>
+          )}
         >
-          <div style={{ width: "100px" }}>Test</div>
+          <DropdownItem>
+            <AiOutlineEdit /> Edit
+          </DropdownItem>
+
+          <DropdownItem>
+            <AiOutlineDelete /> Delete
+          </DropdownItem>
+
+          <DropdownItem>
+            <BsArchive /> Archive
+          </DropdownItem>
         </Dropdown>
       </div>
     </div>

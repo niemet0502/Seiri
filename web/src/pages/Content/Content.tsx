@@ -5,8 +5,8 @@ import { PageHeader } from "../../components/PageHeader";
 import { ProjectItem } from "../../components/Project";
 import { Features } from "../../container/Features";
 import { Deferred } from "../../utils/Deferred";
+import { NoteDetails } from "../Notes/NoteDetails";
 import { ProjectModal } from "../Project/ProjectModal";
-import { TaskDetails } from "../Tasks/TaskDetails";
 
 export const Content: React.FC = () => {
   const [newProjectHandler, setNewProjectHandler] = useState<Deferred<void>>();
@@ -89,10 +89,10 @@ export const Content: React.FC = () => {
       </div>
       <div className=" flex page-content" style={{ flex: "2" }}>
         {/* <NotesList /> */}
-        {/* <NoteDetails /> */}
+        <NoteDetails />
 
         {/* <TasksList /> */}
-        <TaskDetails />
+        {/* <TaskDetails /> */}
       </div>
 
       {newProjectHandler && <ProjectModal deferred={newProjectHandler} />}

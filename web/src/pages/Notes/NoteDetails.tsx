@@ -1,5 +1,9 @@
-import { BsDot } from "react-icons/bs";
-import { HiDotsHorizontal } from "react-icons/hi";
+import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { BsBook, BsCodeSlash, BsDot } from "react-icons/bs";
+import { IconButton } from "../../components/Button";
+import { Dropdown } from "../../components/Dropdown";
+import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 
 export const NoteDetails: React.FC = () => {
@@ -7,7 +11,31 @@ export const NoteDetails: React.FC = () => {
     <div className="note">
       <PageHeader>
         <h4>2023 Roadmap &gt; Thot v0</h4>
-        <HiDotsHorizontal />
+        <Dropdown
+          left="-150px"
+          width="150px"
+          trigger={(toggle) => (
+            <IconButton handler={toggle}>
+              <BiDotsHorizontalRounded />
+            </IconButton>
+          )}
+        >
+          <DropdownItem>
+            <BsBook /> Reading view
+          </DropdownItem>
+
+          <DropdownItem>
+            <BsCodeSlash /> Source code
+          </DropdownItem>
+
+          <DropdownItem>
+            <AiOutlineEye /> Instant preview
+          </DropdownItem>
+
+          <DropdownItem>
+            <AiOutlineDelete /> Delete
+          </DropdownItem>
+        </Dropdown>
       </PageHeader>
       <div className="note-header">
         <textarea>Thot v0</textarea>
