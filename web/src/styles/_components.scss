@@ -31,6 +31,21 @@
   }
 }
 
+.input-wrapper {
+  &.dark {
+    input,
+    textarea {
+      background-color: rgb(29, 30, 43);
+      border: 1px solid $border-color;
+    }
+
+    textarea {
+      height: 120px;
+      border-radius: 5px;
+    }
+  }
+}
+
 .icon-c {
   padding: 5px;
   border-radius: 10%;
@@ -227,11 +242,16 @@
     color: $white;
     padding: 5px;
     border-radius: 5px;
+    align-items: center;
 
     &:hover {
       cursor: pointer;
       background-color: rgb(133, 134, 153);
       transition: 0.2s;
+    }
+
+    svg {
+      font-size: 16px;
     }
   }
 }

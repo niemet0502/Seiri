@@ -5,7 +5,14 @@ export const Dropdown: React.FC<{
   right?: string;
   left?: string;
   children: React.ReactNode;
-}> = ({ trigger, children, left = "-20px", right = "0px" }) => {
+  width?: string;
+}> = ({
+  trigger,
+  children,
+  left = "-20px",
+  right = "0px",
+  width = "120px",
+}) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const onClick = () => setIsActive((prevVal) => !prevVal);
@@ -43,6 +50,7 @@ export const Dropdown: React.FC<{
           transform: isActive ? "translateY(0)" : "translateY(-20px)",
           right: right,
           left: left,
+          width: width,
         }}
         onClick={() => setIsActive(false)}
       >
