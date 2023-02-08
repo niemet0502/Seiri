@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
-import { SearchInput } from "../../components/Input";
+import { FormInput } from "../../components/Input";
 
 export const ResetPassword: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ export const ResetPassword: React.FC = () => {
           </div>
 
           <div className="form-body flex gap-3 flex-column">
-            <SearchInput label="Email address" />
+            <FormInput label="Email address" />
 
             <Button> Reset password</Button>
           </div>

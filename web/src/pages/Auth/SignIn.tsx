@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
-import { SearchInput } from "../../components/Input";
+import { FormInput } from "../../components/Input";
 
 export const SignIn: React.FC = () => {
   return (
@@ -18,9 +18,9 @@ export const SignIn: React.FC = () => {
           </div>
 
           <div className="form-body flex gap-3 flex-column">
-            <SearchInput label="Email address" />
+            <FormInput label="Email address" />
 
-            <SearchInput label="Password" type="password" />
+            <FormInput label="Password" type="password" />
 
             <div className="flex justify-content-between align-items-center ">
               <span className="flex gap-2">
