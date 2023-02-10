@@ -20,9 +20,10 @@ export const Button: React.FC<{
 export const IconButton: React.FC<{
   children: React.ReactNode;
   handler?: MouseEventHandler;
-}> = ({ children, handler }) => {
+  active?: string | null;
+}> = ({ children, handler, active }) => {
   return (
-    <button className="icon-c" onClick={handler}>
+    <button className={`icon-c ${active}`} onClick={handler}>
       {children}
     </button>
   );

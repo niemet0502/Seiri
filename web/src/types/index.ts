@@ -22,3 +22,9 @@ export interface Project {
   notes: Note[];
   isArchive: boolean;
 }
+
+export enum FeatureEnum {
+  Undefined = 0,
+  Task = 1,
+  Note = 2,
+}

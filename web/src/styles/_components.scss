@@ -60,6 +60,10 @@
     cursor: pointer;
     background-color: rgb(133, 134, 153);
   }
+
+  &.active {
+    background-color: rgb(133, 134, 153);
+  }
 }
 
 .task {
