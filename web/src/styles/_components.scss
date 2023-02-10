@@ -188,6 +188,10 @@
   cursor: pointer;
   border-radius: 5px;
 
+  a {
+    color: $white;
+  }
+
   .dot-icon {
     color: gray;
     display: none;

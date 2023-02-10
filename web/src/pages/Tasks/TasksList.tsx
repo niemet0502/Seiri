@@ -73,46 +73,48 @@ export const TasksList: React.FC = () => {
   }, []);
 
   return (
-    <div className="tasks-list ">
-      <PageHeader>
-        <h3>2023 Roadmap</h3>
-        <Dropdown
-          left="-120px"
-          width="150px"
-          trigger={(toggle) => (
-            <IconButton handler={toggle}>
-              <BiDotsHorizontalRounded />
-            </IconButton>
-          )}
-        >
-          <DropdownItem>
-            <AiOutlineEdit /> Edit
-          </DropdownItem>
+    <div className="flex page-content flex-2">
+      <div className="tasks-list ">
+        <PageHeader>
+          <h3>2023 Roadmap</h3>
+          <Dropdown
+            left="-120px"
+            width="150px"
+            trigger={(toggle) => (
+              <IconButton handler={toggle}>
+                <BiDotsHorizontalRounded />
+              </IconButton>
+            )}
+          >
+            <DropdownItem>
+              <AiOutlineEdit /> Edit
+            </DropdownItem>
 
-          <DropdownItem>
-            <AiOutlineDelete /> Delete
-          </DropdownItem>
+            <DropdownItem>
+              <AiOutlineDelete /> Delete
+            </DropdownItem>
 
-          <DropdownItem>
-            <AiOutlineCheckCircle /> Hide completed
-          </DropdownItem>
-        </Dropdown>
-      </PageHeader>
+            <DropdownItem>
+              <AiOutlineCheckCircle /> Hide completed
+            </DropdownItem>
+          </Dropdown>
+        </PageHeader>
 
-      <div className="body flex mt-2">
-        {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} editable={true} />
-        ))}
+        <div className="body flex mt-2">
+          {tasks.map((task) => (
+            <TaskItem key={task.id} task={task} editable={true} />
+          ))}
 
-        <div
-          className="icon-c align-self-center add-task align-items-center mt-2"
-          onClick={addTask}
-        >
-          <AiOutlinePlus /> Add task
+          <div
+            className="icon-c align-self-center add-task align-items-center mt-2"
+            onClick={addTask}
+          >
+            <AiOutlinePlus /> Add task
+          </div>
         </div>
-      </div>
 
-      {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
+        {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
+      </div>
     </div>
   );
 };

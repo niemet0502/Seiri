@@ -62,42 +62,44 @@ export const NotesList: React.FC = () => {
     },
   ];
   return (
-    <div className="flex flex-column">
-      <div className="notes-list-header">
-        <PageHeader>
-          <h4>2023 Roadmap</h4>
+    <div className="flex page-content flex-2">
+      <div className="flex flex-column">
+        <div className="notes-list-header">
+          <PageHeader>
+            <h4>2023 Roadmap</h4>
 
-          <div className="flex">
-            <IconButton>
-              <AiOutlinePlus />
-            </IconButton>
-            <Dropdown
-              left="-120px"
-              trigger={(toggle) => (
-                <IconButton handler={toggle}>
-                  <BiDotsHorizontalRounded />
-                </IconButton>
-              )}
-            >
-              <DropdownItem>
-                <AiOutlineEdit /> Edit
-              </DropdownItem>
+            <div className="flex">
+              <IconButton>
+                <AiOutlinePlus />
+              </IconButton>
+              <Dropdown
+                left="-120px"
+                trigger={(toggle) => (
+                  <IconButton handler={toggle}>
+                    <BiDotsHorizontalRounded />
+                  </IconButton>
+                )}
+              >
+                <DropdownItem>
+                  <AiOutlineEdit /> Edit
+                </DropdownItem>
 
-              <DropdownItem>
-                <AiOutlineDelete /> Delete
-              </DropdownItem>
+                <DropdownItem>
+                  <AiOutlineDelete /> Delete
+                </DropdownItem>
 
-              <DropdownItem>
-                <BsArchive /> Archive
-              </DropdownItem>
-            </Dropdown>
-          </div>
-        </PageHeader>
-      </div>
-      <div className="flex notes-list">
-        {notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
-        ))}
+                <DropdownItem>
+                  <BsArchive /> Archive
+                </DropdownItem>
+              </Dropdown>
+            </div>
+          </PageHeader>
+        </div>
+        <div className="flex notes-list">
+          {notes.map((note) => (
+            <NoteCard key={note.id} note={note} />
+          ))}
+        </div>
       </div>
     </div>
   );
