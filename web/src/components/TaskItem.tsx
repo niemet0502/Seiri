@@ -1,5 +1,5 @@
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { Task } from "../types";
 import { IconButton } from "./Button";
 
@@ -7,6 +7,7 @@ export const TaskItem: React.FC<{ task: Task; editable?: boolean }> = ({
   task,
   editable,
 }) => {
+  const { projectId } = useParams<{ projectId: string }>();
   return (
     <>
       <div className="task" key={task.id}>
@@ -14,7 +15,9 @@ export const TaskItem: React.FC<{ task: Task; editable?: boolean }> = ({
           <div className={`statut isdone-${task.isDone}`}>
             <AiOutlineCheck />
           </div>
-          <NavLink to="/">{task.title}</NavLink>
+          <NavLink to={`/project/${projectId}/task/${task.id}`}>
+            {task.title}
+          </NavLink>
         </div>
         <div className="flex gap-2">
           {editable && (

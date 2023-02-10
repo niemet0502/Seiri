@@ -7,6 +7,9 @@ import { ProjectItem } from "../Project";
 export const Projects: React.FC<{ newProjecthandler: () => void }> = ({
   newProjecthandler,
 }) => {
+  // get the current feature
+  // if it's note, fetch project that handle notes
+  // or fetch project that handle tasks
   return (
     <div className="project-sidebar">
       <PageHeader>

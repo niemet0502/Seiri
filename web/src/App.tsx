@@ -2,34 +2,37 @@ import { createBrowserHistory } from "history";
 import { Route, Router, Switch } from "react-router";
 import "./App.css";
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { TasksList } from "./pages/Tasks/TasksList";
+import { NoteDetails } from "./pages/Notes/NoteDetails";
+import { BaseList } from "./pages/Project/BaseList";
+import { TaskDetails } from "./pages/Tasks/TaskDetails";
+import { CurrentFeatureProvider } from "./provider/currentFeatureProvider";
 
 const history = createBrowserHistory();
 
 function App() {
   return (
-    <div className="content-wrapper flex">
-      <Router history={history}>
-        <Sidebar />
-        <Switch>
-          {/* <Route path="/auth/login" component={Login} /> */}
-          {/* <Route path="/auth/signin" component={SignIn} /> */}
-          {/* <Route path="/auth/forgot-password" component={ResetPassword} /> */}
-          {/* <Route
-            path="/project/:projectId/task/:taskId/details"
-            component={TaskDetails}
-          />
+    <CurrentFeatureProvider>
+      <div className="content-wrapper flex">
+        <Router history={history}>
+          <Sidebar />
+          <Switch>
+            <Route
+              exact
+              path="/project/:projectId/task/:taskId"
+              component={TaskDetails}
+            />
 
-          <Route path="/" />
-          <Route
-            path="/project/:projectId/note/:noteId/details"
-            component={NoteDetails}
-          /> */}
+            <Route
+              exact
+              path="/project/:projectId/note/:noteId"
+              component={NoteDetails}
+            />
 
-          <Route path="/" component={TasksList} />
-        </Switch>
-      </Router>
-    </div>
+            <Route exact path="/project/:projectId" component={BaseList} />
+          </Switch>
+        </Router>
+      </div>
+    </CurrentFeatureProvider>
   );
 }
 

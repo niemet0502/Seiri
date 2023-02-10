@@ -14,7 +14,7 @@ export const ProjectItem: React.FC<{ project: Project }> = ({ project }) => {
       key={project.id}
       className="project-items flex justify-content-between align-items-center"
     >
-      <NavLink to="/" className="flex-2">
+      <NavLink to={`/project/${project.id}`} className="flex-2">
         <div className="flex align-items-center project-title flex-2">
           <RxDotFilled style={{ color: project.color }} />
           <span style={{ fontSize: "14px" }}>{project.name}</span>
