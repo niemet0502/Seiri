@@ -6,61 +6,11 @@ import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { NoteCard } from "../../components/NoteCard";
 import { PageHeader } from "../../components/PageHeader";
+import { notes } from "../../utils/data";
 
 export const NotesList: React.FC = () => {
   // get the project id from the url and fetch its notes
 
-  const notes = [
-    {
-      id: 1,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 2,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 3,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 4,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 5,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 6,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-    {
-      id: 7,
-      title: "First note",
-      description: "description",
-      content:
-        "loremhnsankdasbdbsadk sbdasbduiqsd sabdkjasbd9q asbdbasiudbwqdqwdhwq8 bdqwbdqwd wbd9wqbd",
-    },
-  ];
   return (
     <div className="flex page-content flex-2">
       <div className="flex flex-column">

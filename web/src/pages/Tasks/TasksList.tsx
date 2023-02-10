@@ -11,7 +11,7 @@ import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
-import { Task } from "../../types";
+import { tasks } from "../../utils/data";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
@@ -19,47 +19,6 @@ export const TasksList: React.FC = () => {
   // get the project's id from the url and then fetch its tasks
 
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<void>>();
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: 1,
-      title: "Deploy Tefnout backend",
-      description: "",
-      isDone: false,
-      children: [
-        {
-          id: 1,
-          title: "Deploy Tefnout backend",
-          description: "",
-          isDone: true,
-        },
-        {
-          id: 2,
-          title: "Update Reamde with link",
-          description: "",
-          isDone: false,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Update Reamde with link",
-      description: "",
-      isDone: false,
-    },
-    {
-      id: 3,
-      title: "Rewrite my resume",
-      description: "",
-      isDone: false,
-    },
-    {
-      id: 4,
-      title: "Build the personal website",
-      description: "",
-      isDone: true,
-    },
-  ]);
-
   const addTask = useCallback(async () => {
     const deferred = new Deferred<void>();
 
