@@ -1,5 +1,8 @@
 .btn {
   color: $white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   &.b-primary {
     background-color: $primary;

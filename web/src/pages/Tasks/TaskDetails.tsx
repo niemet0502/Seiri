@@ -54,7 +54,7 @@ export const TaskDetails: React.FC = () => {
   };
 
   return (
-    <div className=" flex page-content flex-2">
+    <div className="flex page-content flex-2">
       <div className="task-details">
         <div className="task-content">
           <PageHeader>

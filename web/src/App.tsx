@@ -1,13 +1,14 @@
 import { createBrowserHistory } from "history";
 import { Route, Router, Switch } from "react-router";
 import "./App.css";
+import { NotFound } from "./components/NotFound";
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import { NoteDetails } from "./pages/Notes/NoteDetails";
 import { BaseList } from "./pages/Project/BaseList";
 import { TaskDetails } from "./pages/Tasks/TaskDetails";
 import { CurrentFeatureProvider } from "./provider/currentFeatureProvider";
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             />
 
             <Route exact path="/project/:projectId" component={BaseList} />
+            <Route exact path="/" component={NotFound} />
           </Switch>
         </Router>
       </div>

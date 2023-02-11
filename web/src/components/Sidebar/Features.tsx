@@ -7,19 +7,19 @@ import { FeatureEnum } from "../../types";
 import { IconButton } from "../Button";
 
 export const Features: React.FC = () => {
-  const { setFeature, feature } = useContext(currentFeatureContext);
+  const { updateCurrentFeature, feature } = useContext(currentFeatureContext);
   return (
     <div className="feature-sidebar">
       <div className="menu-icon">
         <IconButton
-          handler={() => setFeature(FeatureEnum.Task)}
+          handler={() => updateCurrentFeature(FeatureEnum.Task)}
           active={feature === FeatureEnum.Task ? "active" : null}
         >
           <BsListTask />
         </IconButton>
 
         <IconButton
-          handler={() => setFeature(FeatureEnum.Note)}
+          handler={() => updateCurrentFeature(FeatureEnum.Note)}
           active={feature === FeatureEnum.Note ? "active" : null}
         >
           <SlNote />

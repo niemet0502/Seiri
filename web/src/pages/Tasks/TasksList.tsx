@@ -5,8 +5,8 @@ import {
   AiOutlineEdit,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { IconButton } from "../../components/Button";
+import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
+import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
@@ -60,16 +60,35 @@ export const TasksList: React.FC = () => {
         </PageHeader>
 
         <div className="body flex mt-2">
-          {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} editable={true} />
-          ))}
+          {tasks && (
+            <>
+              {tasks.map((task) => (
+                <TaskItem key={task.id} task={task} editable={true} />
+              ))}
+              <div
+                className="icon-c align-self-center add-task align-items-center mt-2"
+                onClick={addTask}
+              >
+                <AiOutlinePlus /> Add task
+              </div>
+            </>
+          )}
 
-          <div
-            className="icon-c align-self-center add-task align-items-center mt-2"
-            onClick={addTask}
-          >
-            <AiOutlinePlus /> Add task
-          </div>
+          {tasks.length === 0 && (
+            <div
+              className="flex flex-column align-items-center justify-content-center gap-2"
+              style={{ marginTop: "180px" }}
+            >
+              <BiTaskX size={55} />
+              <h3>No Task found </h3>
+              <p>
+                Organize your life. Achieve more every day by creating a task
+              </p>
+              <Button handler={addTask}>
+                <AiOutlinePlus /> Create task
+              </Button>
+            </div>
+          )}
         </div>
 
         {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
