@@ -5,6 +5,92 @@
 .flex {
   display: flex;
 }
+
+.flex-2 {
+  flex: 2;
+}
 .text-center {
   text-align: center;
+}
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.border-debug {
+  border: 1px solid red;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.gap-1 {
+  gap: 5px;
+}
+.gap-2 {
+  gap: 10px;
+}
+
+.gap-3 {
+  gap: 20px;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.p-2 {
+  padding: 10px;
+}
+
+.p-l-0 {
+  padding-left: 0px;
+}
+
+.primary {
+  color: $primary;
+}
+
+.white {
+  color: $white;
+}
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.align-self-center {
+  align-self: center;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.mt-2 {
+  margin-top: 20px;
+}
+
+.p-1 {
+  padding: 10px;
+}
+
+.p-2 {
+  padding: 20px;
 }

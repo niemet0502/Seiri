@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: $sans-serif;
+  color: $white;
+}
+
+a {
+  text-decoration: none;
+}
+
+textarea:focus {
+  outline: none;
+  border: 1px solid $primary !important;
+  border-radius: 5px;
+}
