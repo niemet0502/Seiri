@@ -8,11 +8,16 @@ import { IconButton } from "./Button";
 import { Dropdown } from "./Dropdown";
 import { DropdownItem } from "./DropdownItem";
 
-export const ProjectItem: React.FC<{ project: Project }> = ({ project }) => {
+export const ProjectItem: React.FC<{ project: Project; active: boolean }> = ({
+  project,
+  active,
+}) => {
   return (
     <div
       key={project.id}
-      className="project-items flex justify-content-between align-items-center"
+      className={`project-items flex justify-content-between align-items-center ${
+        active ? "active" : undefined
+      }`}
     >
       <NavLink to={`/project/${project.id}`} className="flex-2">
         <div className="flex align-items-center project-title flex-2">

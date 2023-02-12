@@ -195,6 +195,11 @@
   cursor: pointer;
   border-radius: 5px;
 
+  &.active {
+    background-color: rgb(133, 134, 153);
+    transition: 0.2s;
+  }
+
   a {
     color: $white;
   }
