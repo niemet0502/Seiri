@@ -11,7 +11,7 @@ export const SignIn: React.FC = () => {
             <h3>Sign in to your account</h3>
             <span>
               Or{" "}
-              <NavLink to="/auth/login" className="primary">
+              <NavLink to="/" className="primary">
                 create a new account
               </NavLink>
             </span>

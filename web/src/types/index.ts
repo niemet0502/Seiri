@@ -28,3 +28,12 @@ export enum FeatureEnum {
   Task = 1,
   Note = 2,
 }
+
+export interface User {
+  id: number;
+  isConfirm: boolean;
+  lastname: string;
+  firstname: string;
+  email: string;
+  password: string;
+}
