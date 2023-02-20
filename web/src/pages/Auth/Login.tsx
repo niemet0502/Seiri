@@ -1,8 +1,18 @@
+import { useCallback, useContext } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
+import { ApiClientContext } from "../../provider/apiClientProvider";
+import { IAuthLogin } from "../../types";
 
 export const Login: React.FC = () => {
+  const { control, handleSubmit } = useForm<IAuthLogin>();
+  const { apiClient } = useContext(ApiClientContext);
+
+  const submit = useCallback(async (data: IAuthLogin) => {
+    await apiClient.AuthLogin(data);
+  }, []);
   return (
     <div className="login-wrapper-content flex flex-row ">
       <div className="login-wrapper-content-child flex justify-content-center ">
@@ -10,17 +20,38 @@ export const Login: React.FC = () => {
           <div className="form-header">
             <h3>Create a new account</h3>
             <span>
-              Or{" "}
               <NavLink to="/auth/signin" className="primary">
                 sign in to your account
               </NavLink>
             </span>
           </div>
 
-          <div className="form-body flex gap-3 flex-column">
-            <FormInput label="Email address" />
+          <form
+            className="form-body flex gap-3 flex-column"
+            onSubmit={handleSubmit(submit)}
+          >
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <FormInput label="Email address" {...field} {...fieldState} />
+              )}
+            />
 
-            <FormInput label="Password" type="password" />
+            <Controller
+              name="password"
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <FormInput
+                  label="Password"
+                  type="password"
+                  {...field}
+                  {...fieldState}
+                />
+              )}
+            />
 
             <div className="flex justify-content-between align-items-center ">
               <span className="flex gap-2">
@@ -34,7 +65,7 @@ export const Login: React.FC = () => {
             </div>
 
             <Button>Sign up</Button>
-          </div>
+          </form>
         </div>
       </div>
       <div className="login-wrapper-content-child flex  justify-content-center">
