@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ProjectService } from '../project/project.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -15,6 +16,7 @@ import { CreateTaskValidatorPipe } from './dto/validattion.pipe.dto';
 import { TaskService } from './task.service';
 
 @Controller('task')
+@ApiTags('Task')
 export class TaskController {
   constructor(
     private readonly taskService: TaskService,
