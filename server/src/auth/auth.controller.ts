@@ -6,6 +6,7 @@ import {
   HttpException,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserDecorator } from '../user/user.decorator';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -13,6 +14,7 @@ import { LoginDto } from './dto/login.dto';
 import { LoginValidatorPipe } from './dto/validation.pipe';
 
 @Controller('auth')
+@ApiTags('Auth')
 export class AuthController {
   constructor(
     private readonly userService: UserService,

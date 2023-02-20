@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ProjectService } from '../project/project.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -15,6 +16,7 @@ import { CreateNoteValidatorPipe } from './dto/validation.pipe';
 import { NoteService } from './note.service';
 
 @Controller('note')
+@ApiTags('Note')
 export class NoteController {
   constructor(
     private readonly noteService: NoteService,
