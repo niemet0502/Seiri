@@ -1,6 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { SECRET } from '../config';
 
 export const UserDecorator = createParamDecorator(
   (data: any, ctx: ExecutionContext) => {
@@ -23,7 +22,7 @@ export const UserDecorator = createParamDecorator(
     // in case a route is not protected, we still want to get the optional auth user from jwt
 
     if (token && token[1]) {
-      const decoded: any = jwt.verify(token[1], SECRET);
+      const decoded: any = jwt.verify(token[1], process.env.SECRET_KEY);
       return !!data ? decoded[data] : decoded.user;
     }
   },
