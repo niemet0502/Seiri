@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserService } from '../user/user.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -16,6 +17,7 @@ import { Project } from './entities/project.entity';
 import { ProjectService } from './project.service';
 
 @Controller('project')
+@ApiTags('Project')
 export class ProjectController {
   constructor(
     private readonly projectService: ProjectService,
