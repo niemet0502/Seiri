@@ -16,6 +16,6 @@ export class Client {
     const url = this.baseApiUrl + "auth/login";
 
     const r = await this.api.post(url, data);
-    return r.data.data;
+    return r.data;
   }
 }

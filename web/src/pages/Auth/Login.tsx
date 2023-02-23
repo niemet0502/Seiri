@@ -1,18 +1,32 @@
 import { useCallback, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { CurrentUserContext } from "../../provider/userProvider";
 import { IAuthLogin } from "../../types";
 
 export const Login: React.FC = () => {
   const { control, handleSubmit } = useForm<IAuthLogin>();
   const { apiClient } = useContext(ApiClientContext);
+  const { setCurrentUser } = useContext(CurrentUserContext);
+  const { push } = useHistory();
 
-  const submit = useCallback(async (data: IAuthLogin) => {
-    await apiClient.AuthLogin(data);
-  }, []);
+  const submit = useCallback(
+    async (data: IAuthLogin) => {
+      const result = await apiClient.AuthLogin(data);
+
+      console.log(result);
+
+      if (result.user) {
+        setCurrentUser(result.user);
+      }
+
+      push("/");
+    },
+    [apiClient, setCurrentUser]
+  );
   return (
     <div className="login-wrapper-content flex flex-row ">
       <div className="login-wrapper-content-child flex justify-content-center ">

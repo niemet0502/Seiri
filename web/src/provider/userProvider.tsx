@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { AuthRouting } from "../pages/Auth/AuthRouting";
 import { User } from "../types";
 
@@ -15,6 +15,10 @@ export const CurrentUserProvider: React.FC<{ children: any }> = ({
   children,
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
   return (
     <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
       {currentUser === null ? <AuthRouting /> : children}
