@@ -32,8 +32,8 @@ export enum FeatureEnum {
 export interface User {
   id: number;
   isConfirm: boolean;
-  lastname: string;
-  firstname: string;
+  lastname?: string;
+  firstname?: string;
   email: string;
   password: string;
 }

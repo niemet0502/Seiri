@@ -4,38 +4,41 @@ import { NavLink, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { CurrentUserContext } from "../../provider/userProvider";
+import { CurrentUserContext, TOKEN_LS_KEY } from "../../provider/userProvider";
 import { IAuthLogin } from "../../types";
 
 export const Login: React.FC = () => {
-  const { control, handleSubmit } = useForm<IAuthLogin>();
   const { apiClient } = useContext(ApiClientContext);
   const { setCurrentUser } = useContext(CurrentUserContext);
   const { push } = useHistory();
 
+  const { control, handleSubmit } = useForm<IAuthLogin>();
+
   const submit = useCallback(
     async (data: IAuthLogin) => {
-      const result = await apiClient.AuthLogin(data);
+      try {
+        const { user, token } = await apiClient.AuthLogin(data);
 
-      console.log(result);
+        setCurrentUser(user);
 
-      if (result.user) {
-        setCurrentUser(result.user);
+        localStorage.setItem(TOKEN_LS_KEY, token);
+      } catch (e) {
+        console.log(e);
       }
 
       push("/");
     },
-    [apiClient, setCurrentUser]
+    [apiClient, setCurrentUser, push]
   );
   return (
     <div className="login-wrapper-content flex flex-row ">
       <div className="login-wrapper-content-child flex justify-content-center ">
         <div className="form-container flex flex-column justify-content-center ">
           <div className="form-header">
-            <h3>Create a new account</h3>
+            <h3>Sign in to your account</h3>
             <span>
               <NavLink to="/auth/signin" className="primary">
-                sign in to your account
+                create a new account
               </NavLink>
             </span>
           </div>
@@ -78,7 +81,7 @@ export const Login: React.FC = () => {
               </NavLink>
             </div>
 
-            <Button>Sign up</Button>
+            <Button>Sign in</Button>
           </form>
         </div>
       </div>

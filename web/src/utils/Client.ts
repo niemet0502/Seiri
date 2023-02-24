@@ -18,4 +18,14 @@ export class Client {
     const r = await this.api.post(url, data);
     return r.data;
   }
+
+  public async SignIn(data: IAuthLogin) {
+    const url = this.baseApiUrl + "user";
+
+    const r = await this.api.post(url, {
+      ...data,
+      confirm_password: data.password,
+    });
+    return r.data;
+  }
 }
