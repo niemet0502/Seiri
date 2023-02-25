@@ -1,12 +1,40 @@
-export const FormInput: React.FC<{
+import React, { ForwardedRef } from "react";
+
+interface IFormInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value"> {
   label?: string;
-  type?: string;
+  value?: any;
   variant?: string;
-}> = ({ label, type, variant = "light" }) => {
-  return (
-    <div className={`flex flex-column gap-2 input-wrapper ${variant}`}>
-      <label htmlFor="">{label}</label>
-      <input type={type || "text"} />
-    </div>
-  );
-};
+  render?: (props: any) => JSX.Element;
+}
+
+export const FormInput = React.forwardRef(
+  (
+    {
+      label,
+      value,
+      onChange,
+      required,
+      name,
+      variant = "light",
+      type = "text",
+      ...props
+    }: IFormInputProps,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    return (
+      <div className={`flex flex-column gap-2 input-wrapper ${variant}`}>
+        <label htmlFor={name}>{label}</label>
+        <input
+          type={type}
+          name={name}
+          id={name}
+          required={required ? true : false}
+          {...props}
+          onChange={onChange}
+          ref={ref}
+        />
+      </div>
+    );
+  }
+);

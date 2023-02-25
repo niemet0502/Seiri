@@ -11,7 +11,7 @@ export const ResetPassword: React.FC = () => {
             <h3>Reset your password</h3>
             <span>
               Or{" "}
-              <NavLink to="/auth/login" className="primary">
+              <NavLink to="/" className="primary">
                 sign in to your account
               </NavLink>
             </span>
