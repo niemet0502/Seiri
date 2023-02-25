@@ -15,6 +15,7 @@ export const Sidebar: React.FC = () => {
     try {
       await deferred.promise;
     } catch (e) {
+    } finally {
       setNewProjectHandler(undefined);
     }
   }, []);

@@ -39,6 +39,8 @@
   &.dark {
     input,
     textarea {
+      color: $white;
+      font-size: 15px;
       background-color: rgb(29, 30, 43);
       border: 1px solid $border-color;
     }
@@ -46,6 +48,7 @@
     textarea {
       height: 120px;
       border-radius: 5px;
+      padding: 10px;
     }
   }
 }
