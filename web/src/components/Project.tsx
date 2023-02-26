@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
+import { useMutation } from "react-query";
 import { NavLink } from "react-router-dom";
+import { queryClient } from "../index";
+import { ApiClientContext } from "../provider/apiClientProvider";
 import { Project } from "../types";
 import { IconButton } from "./Button";
 import { Dropdown } from "./Dropdown";
@@ -12,6 +16,12 @@ export const ProjectItem: React.FC<{ project: Project; active: boolean }> = ({
   project,
   active,
 }) => {
+  // display confirm modal and then display a toast
+  const { apiClient } = useContext(ApiClientContext);
+  const { mutate } = useMutation((id: number) => apiClient.removeProject(id), {
+    onSuccess: () => queryClient.invalidateQueries(["projects"]),
+  });
+
   return (
     <div
       key={project.id}
@@ -38,7 +48,7 @@ export const ProjectItem: React.FC<{ project: Project; active: boolean }> = ({
             <AiOutlineEdit /> Edit
           </DropdownItem>
 
-          <DropdownItem>
+          <DropdownItem handler={() => mutate(project.id)}>
             <AiOutlineDelete /> Delete
           </DropdownItem>
 

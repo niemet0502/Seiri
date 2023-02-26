@@ -53,4 +53,10 @@ export class Client {
 
     return this.api.post(url, project).then((r) => r.data);
   }
+
+  public removeProject(projectId: number) {
+    const url = this.baseApiUrl + `project/${projectId}`;
+
+    return this.api.delete(url);
+  }
 }
