@@ -12,10 +12,11 @@ import { IconButton } from "./Button";
 import { Dropdown } from "./Dropdown";
 import { DropdownItem } from "./DropdownItem";
 
-export const ProjectItem: React.FC<{ project: Project; active: boolean }> = ({
-  project,
-  active,
-}) => {
+export const ProjectItem: React.FC<{
+  project: Project;
+  active: boolean;
+  setProjectToEdit: (project: Project) => void;
+}> = ({ project, active, setProjectToEdit }) => {
   // display confirm modal and then display a toast
   const { apiClient } = useContext(ApiClientContext);
   const { mutate } = useMutation((id: number) => apiClient.removeProject(id), {
@@ -44,7 +45,7 @@ export const ProjectItem: React.FC<{ project: Project; active: boolean }> = ({
             </IconButton>
           )}
         >
-          <DropdownItem>
+          <DropdownItem handler={() => setProjectToEdit(project)}>
             <AiOutlineEdit /> Edit
           </DropdownItem>
 

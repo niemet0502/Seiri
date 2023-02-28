@@ -7,14 +7,19 @@ import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { CreateProject } from "../../types";
+import { CreateProject, Project } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
-export const ProjectModal: React.FC<{ deferred: Deferred<void> }> = ({
-  deferred,
-}) => {
+export const ProjectModal: React.FC<{
+  deferred: Deferred<void>;
+  projectToEdit?: Project;
+}> = ({ deferred, projectToEdit }) => {
   const { apiClient } = useContext(ApiClientContext);
-  const { control, handleSubmit, reset } = useForm<CreateProject>();
+  const { control, handleSubmit, reset } = useForm<CreateProject>({
+    defaultValues: projectToEdit
+      ? { name: projectToEdit.name, description: projectToEdit.description }
+      : undefined,
+  });
 
   const { mutate: addUserMutation } = useMutation(
     (data: CreateProject) => apiClient.addProject(data),
@@ -57,8 +62,19 @@ export const ProjectModal: React.FC<{ deferred: Deferred<void> }> = ({
               />
             )}
           />
-
-          <TextArea label="Description" variant="dark"></TextArea>
+          <Controller
+            name="description"
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState }) => (
+              <TextArea
+                label="Description"
+                variant="dark"
+                {...field}
+                {...fieldState}
+              />
+            )}
+          />
         </div>
 
         <div className="flex gap-2 justify-content-end p-2 mt-2">
