@@ -1,6 +1,6 @@
 import React, { ForwardedRef } from "react";
 
-interface IFormInputProps
+export interface IFormInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value"> {
   label?: string;
   value?: any;
@@ -26,6 +26,7 @@ export const FormInput = React.forwardRef(
       <div className={`flex flex-column gap-2 input-wrapper ${variant}`}>
         <label htmlFor={name}>{label}</label>
         <input
+          value={value}
           type={type}
           name={name}
           id={name}
