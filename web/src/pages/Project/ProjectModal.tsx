@@ -7,7 +7,7 @@ import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { CreateProject, Project } from "../../types";
+import { CreateProject, EditProject, Project } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
 export const ProjectModal: React.FC<{
@@ -33,7 +33,7 @@ export const ProjectModal: React.FC<{
   );
 
   const { mutate: editProjectMutation } = useMutation(
-    (data: CreateProject) => apiClient.addProject(data),
+    (data: EditProject) => apiClient.editProject(data),
     {
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
@@ -46,9 +46,9 @@ export const ProjectModal: React.FC<{
   const submit = async (data: CreateProject) => {
     try {
       if (projectToEdit) {
-        addProjectMutation(data);
+        editProjectMutation({ ...data, id: projectToEdit.id });
       } else {
-        editProjectMutation(data);
+        addProjectMutation(data);
       }
 
       // display toast
