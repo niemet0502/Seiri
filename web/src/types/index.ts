@@ -47,3 +47,9 @@ export interface CreateProject {
   name: string;
   description?: string;
 }
+
+export interface EditProject {
+  id: number;
+  name: string;
+  description?: string;
+}
