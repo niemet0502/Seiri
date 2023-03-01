@@ -21,7 +21,18 @@ export const ProjectModal: React.FC<{
       : undefined,
   });
 
-  const { mutate: addUserMutation } = useMutation(
+  const { mutate: addProjectMutation } = useMutation(
+    (data: CreateProject) => apiClient.addProject(data),
+    {
+      onSuccess: (newProject) => {
+        deferred.resolve(newProject);
+        reset();
+        queryClient.invalidateQueries(["projects"]);
+      },
+    }
+  );
+
+  const { mutate: editProjectMutation } = useMutation(
     (data: CreateProject) => apiClient.addProject(data),
     {
       onSuccess: (newProject) => {
@@ -34,7 +45,11 @@ export const ProjectModal: React.FC<{
 
   const submit = async (data: CreateProject) => {
     try {
-      addUserMutation(data);
+      if (projectToEdit) {
+        addProjectMutation(data);
+      } else {
+        editProjectMutation(data);
+      }
 
       // display toast
     } catch (e: any) {
@@ -44,7 +59,9 @@ export const ProjectModal: React.FC<{
 
   return (
     <Dialog
-      title="New Project"
+      title={
+        projectToEdit ? `Edit Project "${projectToEdit.name}"` : "New Project"
+      }
       onClose={() => deferred.reject(DIALOG_CLOSED_REASON)}
     >
       <form onSubmit={handleSubmit(submit)}>
@@ -65,7 +82,6 @@ export const ProjectModal: React.FC<{
           <Controller
             name="description"
             control={control}
-            rules={{ required: true }}
             render={({ field, fieldState }) => (
               <TextArea
                 label="Description"
