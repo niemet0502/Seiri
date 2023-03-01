@@ -1,6 +1,6 @@
 import axios from "axios";
 import { TOKEN_LS_KEY } from "../provider/userProvider";
-import { CreateProject, IAuthLogin } from "../types";
+import { CreateProject, EditProject, IAuthLogin } from "../types";
 
 export class Client {
   baseApiUrl: string = "http://localhost:3000/";
@@ -58,5 +58,11 @@ export class Client {
     const url = this.baseApiUrl + `project/${projectId}`;
 
     return this.api.delete(url);
+  }
+
+  public editProject(data: EditProject) {
+    const url = this.baseApiUrl + `project/${data.id}`;
+
+    return this.api.patch(url, data).then((r) => r.data);
   }
 }
