@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class NewMigration1677171690352 implements MigrationInterface {
-    name = 'NewMigration1677171690352'
+export class NewerMigration1677859473635 implements MigrationInterface {
+    name = 'NewerMigration1677859473635'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`note\` (\`id\` int NOT NULL AUTO_INCREMENT, \`title\` text NOT NULL, \`content\` longtext NULL, \`projectId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`task\` (\`id\` int NOT NULL AUTO_INCREMENT, \`title\` text NOT NULL, \`isDone\` tinyint NOT NULL DEFAULT 0, \`description\` text NULL, \`isDeleted\` tinyint NOT NULL DEFAULT 0, \`projectId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`project\` (\`id\` int NOT NULL AUTO_INCREMENT, \`name\` text NOT NULL, \`description\` text NULL, \`isArchive\` tinyint NOT NULL DEFAULT 0, \`userId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`project\` (\`id\` int NOT NULL AUTO_INCREMENT, \`name\` text NOT NULL, \`description\` text NULL, \`isArchive\` tinyint NOT NULL DEFAULT 0, \`handledObejct\` int NOT NULL, \`userId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`user\` (\`id\` int NOT NULL AUTO_INCREMENT, \`isConfirm\` tinyint NOT NULL, \`lastname\` text NULL, \`firstname\` text NULL, \`email\` text NOT NULL, \`password\` text NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`session\` (\`id\` int NOT NULL AUTO_INCREMENT, \`token\` text NOT NULL, \`expirationDate\` date NOT NULL, \`userId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`ALTER TABLE \`note\` ADD CONSTRAINT \`FK_62eff03c08cd08ac0cde9bf4c0d\` FOREIGN KEY (\`projectId\`) REFERENCES \`project\`(\`id\`) ON DELETE CASCADE ON UPDATE NO ACTION`);
