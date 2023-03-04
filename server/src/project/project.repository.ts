@@ -17,10 +17,17 @@ export class ProjectRepository {
     return await this.projectsRepository.findOne({ where: { id: id } });
   }
 
-  async findAllByUser(id: number): Promise<Project[] | undefined> {
+  async findAllByUser(
+    id: number,
+    handledObject: number,
+  ): Promise<Project[] | undefined> {
     return await this.projectsRepository.find({
       order: { id: 'DESC' },
-      where: { user: { id: id }, isArchive: false },
+      where: {
+        user: { id: id },
+        isArchive: false,
+        handledObject: handledObject,
+      },
     });
   }
 

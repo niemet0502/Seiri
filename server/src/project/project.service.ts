@@ -37,8 +37,11 @@ export class ProjectService {
     return this.projectRepository.findById(id);
   }
 
-  async findAllByUser(id: number): Promise<Project[] | undefined> {
-    return await this.projectRepository.findAllByUser(id);
+  async findAllByUser(
+    id: number,
+    handledObject: number,
+  ): Promise<Project[] | undefined> {
+    return await this.projectRepository.findAllByUser(id, handledObject);
   }
 
   async findArchivedProjectByUser(id: number): Promise<Project[] | undefined> {

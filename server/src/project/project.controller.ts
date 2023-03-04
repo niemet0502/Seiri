@@ -39,9 +39,12 @@ export class ProjectController {
     return this.projectService.create(createProjectDto, user);
   }
 
-  @Get()
-  async findAll(@UserDecorator() user: User): Promise<Project[] | undefined> {
-    return await this.projectService.findAllByUser(+user.id);
+  @Get(':handledObject')
+  async findAll(
+    @Param('handledObject') handledObject: number,
+    @UserDecorator() user: User,
+  ): Promise<Project[] | undefined> {
+    return await this.projectService.findAllByUser(+user.id, handledObject);
   }
 
   @Get('/archived/:id')
