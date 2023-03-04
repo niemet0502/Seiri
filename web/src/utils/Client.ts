@@ -1,5 +1,6 @@
 import axios from "axios";
-import { IAuthLogin } from "../types";
+import { TOKEN_LS_KEY } from "../provider/userProvider";
+import { CreateProject, EditProject, FeatureEnum, IAuthLogin } from "../types";
 
 export class Client {
   baseApiUrl: string = "http://localhost:3000/";
@@ -8,9 +9,21 @@ export class Client {
     baseURL: this.baseApiUrl,
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer secreat",
+      Authorization: this.getAuthToken()
+        ? `Bearer ${this.getAuthToken()}`
+        : undefined,
     },
   });
+
+  protected getAuthToken() {
+    try {
+      const token = localStorage.getItem(TOKEN_LS_KEY);
+
+      return token;
+    } catch (e) {
+      console.log("Error with the token");
+    }
+  }
 
   public async AuthLogin(data: IAuthLogin) {
     const url = this.baseApiUrl + "auth/login";
@@ -27,5 +40,29 @@ export class Client {
       confirm_password: data.password,
     });
     return r.data;
+  }
+
+  public getProjects(feature: FeatureEnum) {
+    const url = this.baseApiUrl + `project/${feature}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
+
+  public addProject(project: CreateProject) {
+    const url = this.baseApiUrl + "project";
+
+    return this.api.post(url, project).then((r) => r.data);
+  }
+
+  public removeProject(projectId: number) {
+    const url = this.baseApiUrl + `project/${projectId}`;
+
+    return this.api.delete(url);
+  }
+
+  public editProject(data: EditProject) {
+    const url = this.baseApiUrl + `project/${data.id}`;
+
+    return this.api.patch(url, data).then((r) => r.data);
   }
 }

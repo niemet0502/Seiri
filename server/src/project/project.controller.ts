@@ -9,6 +9,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from 'src/user/entities/user.entity';
+import { UserDecorator } from 'src/user/user.decorator';
 import { UserService } from '../user/user.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -26,10 +28,9 @@ export class ProjectController {
 
   @Post()
   async create(
+    @UserDecorator() user: User,
     @Body(new CreateProjectValidatorPipe()) createProjectDto: CreateProjectDto,
   ) {
-    const user = await this.userService.findById(createProjectDto.userId); // replace by req.user
-
     if (!user) {
       const errors = { user: 'user not found' };
       return new HttpException({ errors }, 401);
@@ -38,11 +39,12 @@ export class ProjectController {
     return this.projectService.create(createProjectDto, user);
   }
 
-  @Get(':id')
-  async findAll(@Param('id') id: number): Promise<Project[] | undefined> {
-    // replace by req.user after the auth setup
-
-    return await this.projectService.findAllByUser(+id);
+  @Get(':handledObject')
+  async findAll(
+    @Param('handledObject') handledObject: number,
+    @UserDecorator() user: User,
+  ): Promise<Project[] | undefined> {
+    return await this.projectService.findAllByUser(+user.id, handledObject);
   }
 
   @Get('/archived/:id')

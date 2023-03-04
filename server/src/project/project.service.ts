@@ -10,12 +10,13 @@ export class ProjectService {
   constructor(private readonly projectRepository: ProjectRepository) {}
 
   async create(createProjectDto: CreateProjectDto, user: User) {
-    const { name, description } = createProjectDto;
+    const { name, description, handledObject } = createProjectDto;
 
     const project = new Project();
     project.name = name;
     project.description = description;
     project.user = user;
+    project.handledObject = handledObject;
 
     return this.save(project);
   }
@@ -36,8 +37,11 @@ export class ProjectService {
     return this.projectRepository.findById(id);
   }
 
-  async findAllByUser(id: number): Promise<Project[] | undefined> {
-    return await this.projectRepository.findAllByUser(id);
+  async findAllByUser(
+    id: number,
+    handledObject: number,
+  ): Promise<Project[] | undefined> {
+    return await this.projectRepository.findAllByUser(id, handledObject);
   }
 
   async findArchivedProjectByUser(id: number): Promise<Project[] | undefined> {

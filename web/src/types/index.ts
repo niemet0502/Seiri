@@ -1,3 +1,11 @@
+export interface User {
+  id: number;
+  isConfirm: boolean;
+  lastname?: string;
+  firstname?: string;
+  email: string;
+  password: string;
+}
 export interface Note {
   id: number;
   title: string;
@@ -21,6 +29,7 @@ export interface Project {
   tasks: Task[];
   notes: Note[];
   isArchive: boolean;
+  user?: User;
 }
 
 export enum FeatureEnum {
@@ -29,16 +38,19 @@ export enum FeatureEnum {
   Note = 2,
 }
 
-export interface User {
-  id: number;
-  isConfirm: boolean;
-  lastname?: string;
-  firstname?: string;
+export interface IAuthLogin {
   email: string;
   password: string;
 }
 
-export interface IAuthLogin {
-  email: string;
-  password: string;
+export interface CreateProject {
+  name: string;
+  description?: string;
+  handledObject: FeatureEnum;
+}
+
+export interface EditProject {
+  id: number;
+  name: string;
+  description?: string;
 }

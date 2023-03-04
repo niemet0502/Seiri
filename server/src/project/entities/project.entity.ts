@@ -28,4 +28,7 @@ export class Project {
 
   @Column('boolean', { default: false })
   isArchive: boolean;
+
+  @Column('int')
+  handledObject: number;
 }

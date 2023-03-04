@@ -22,7 +22,7 @@ export const UserDecorator = createParamDecorator(
     // in case a route is not protected, we still want to get the optional auth user from jwt
 
     if (token && token[1]) {
-      const decoded: any = jwt.verify(token[1], process.env.SECRET_KEY);
+      const decoded: any = jwt.verify(token[1], process.env.TOKEN_SECRET);
       return !!data ? decoded[data] : decoded.user;
     }
   },
