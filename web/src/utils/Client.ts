@@ -1,6 +1,6 @@
 import axios from "axios";
 import { TOKEN_LS_KEY } from "../provider/userProvider";
-import { CreateProject, EditProject, IAuthLogin } from "../types";
+import { CreateProject, EditProject, FeatureEnum, IAuthLogin } from "../types";
 
 export class Client {
   baseApiUrl: string = "http://localhost:3000/";
@@ -42,8 +42,8 @@ export class Client {
     return r.data;
   }
 
-  public getProjects() {
-    const url = this.baseApiUrl + "project";
+  public getProjects(feature: FeatureEnum) {
+    const url = this.baseApiUrl + `project/${feature}`;
 
     return this.api.get(url).then((r) => r.data);
   }

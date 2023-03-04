@@ -1,8 +1,9 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { currentFeatureContext } from "../../provider/currentFeatureProvider";
 import { Project } from "../../types";
 import { IconButton } from "../Button";
 import { PageHeader } from "../PageHeader";
@@ -12,15 +13,15 @@ export const Projects: React.FC<{
   newProjecthandler: () => void;
   setProjectToEdit: (project: Project) => void;
 }> = ({ newProjecthandler, setProjectToEdit }) => {
-  // get the current feature
-  // if it's note, fetch project that handle notes
-  // or fetch project that handle tasks
   const querykey = ["projects"];
 
+  const { feature } = useContext(currentFeatureContext);
   const { apiClient } = useContext(ApiClientContext);
   const { pathname } = useLocation();
 
-  const { isLoading, data } = useQuery(querykey, () => apiClient.getProjects());
+  const { isLoading, data, refetch } = useQuery([querykey, feature], () =>
+    apiClient.getProjects(feature)
+  );
 
   const projects = data || [];
 
@@ -31,6 +32,11 @@ export const Projects: React.FC<{
     },
     [pathname]
   );
+
+  useEffect(() => {
+    if (!feature) return;
+    refetch();
+  }, [feature]);
 
   return (
     <div className="project-sidebar">
