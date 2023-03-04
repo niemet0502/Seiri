@@ -46,6 +46,7 @@ export interface IAuthLogin {
 export interface CreateProject {
   name: string;
   description?: string;
+  handledObject: FeatureEnum;
 }
 
 export interface EditProject {

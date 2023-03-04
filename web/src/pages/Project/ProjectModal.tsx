@@ -7,6 +7,7 @@ import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { currentFeatureContext } from "../../provider/currentFeatureProvider";
 import { CreateProject, EditProject, Project } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
@@ -14,11 +15,16 @@ export const ProjectModal: React.FC<{
   deferred: Deferred<void>;
   projectToEdit?: Project;
 }> = ({ deferred, projectToEdit }) => {
+  const { feature: handledObject } = useContext(currentFeatureContext);
   const { apiClient } = useContext(ApiClientContext);
   const { control, handleSubmit, reset } = useForm<CreateProject>({
     defaultValues: projectToEdit
-      ? { name: projectToEdit.name, description: projectToEdit.description }
-      : undefined,
+      ? {
+          name: projectToEdit.name,
+          description: projectToEdit.description,
+          handledObject,
+        }
+      : { handledObject },
   });
 
   const { mutate: addProjectMutation } = useMutation(
@@ -27,7 +33,7 @@ export const ProjectModal: React.FC<{
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
         reset();
-        queryClient.invalidateQueries(["projects"]);
+        queryClient.invalidateQueries([["projects"], handledObject]);
       },
     }
   );
@@ -38,12 +44,13 @@ export const ProjectModal: React.FC<{
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
         reset();
-        queryClient.invalidateQueries(["projects"]);
+        queryClient.invalidateQueries([["projects"], handledObject]);
       },
     }
   );
 
   const submit = async (data: CreateProject) => {
+    console.log(data);
     try {
       if (projectToEdit) {
         editProjectMutation({ ...data, id: projectToEdit.id });
