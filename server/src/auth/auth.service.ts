@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import jwt from 'jsonwebtoken';
 import { Repository } from 'typeorm';
-import { SECRET } from '../config';
 import { User } from '../user/entities/user.entity';
 import { Session } from './entities/session.entity';
 
@@ -24,7 +23,7 @@ export class AuthService {
         lastname: user.lastname,
         firstname: user.firstname,
       },
-      SECRET,
+      process.env.TOKEN_SECRET,
     );
 
     session.token = token;
