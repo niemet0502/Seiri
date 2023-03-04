@@ -50,7 +50,6 @@ export const ProjectModal: React.FC<{
   );
 
   const submit = async (data: CreateProject) => {
-    console.log(data);
     try {
       if (projectToEdit) {
         editProjectMutation({ ...data, id: projectToEdit.id });
