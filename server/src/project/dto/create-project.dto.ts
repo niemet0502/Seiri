@@ -8,4 +8,9 @@ export class CreateProjectDto {
     description: "The project's  description",
   })
   public description?: string;
+  @ApiProperty({
+    example: 1,
+    description: 'The Object handled by the project ',
+  })
+  public handledObject: number;
 }
