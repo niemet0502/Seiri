@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   AiOutlineCheckCircle,
   AiOutlineDelete,
@@ -6,21 +6,34 @@ import {
   AiOutlinePlus,
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
-import { tasks } from "../../utils/data";
+import { ApiClientContext } from "../../provider/apiClientProvider";
+import { Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
 export const TasksList: React.FC = () => {
-  // get the project's id from the url and then fetch its tasks
+  const querykey = ["tasks"];
 
-  const [newTaskHandler, setNewTaskHandler] = useState<Deferred<void>>();
+  const { projectId } = useParams<{ projectId: string }>();
+  const { apiClient } = useContext(ApiClientContext);
+
+  const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
+
+  const { isLoading, data } = useQuery([querykey, projectId], () =>
+    apiClient.getTasksByProject(projectId)
+  );
+
+  const tasks = data || [];
+
   const addTask = useCallback(async () => {
-    const deferred = new Deferred<void>();
+    const deferred = new Deferred<Task>();
 
     setNewTaskHandler(deferred);
 
@@ -62,14 +75,18 @@ export const TasksList: React.FC = () => {
         <div className="body flex mt-2">
           {tasks && (
             <>
-              {tasks.map((task) => (
+              {tasks.map((task: Task) => (
                 <TaskItem key={task.id} task={task} editable={true} />
               ))}
               <div
-                className="icon-c align-self-center add-task align-items-center mt-2"
+                className="align-self-center add-task align-items-center mt-2"
                 onClick={addTask}
               >
-                <AiOutlinePlus /> Add task
+                {tasks.length > 0 && (
+                  <Button>
+                    <AiOutlinePlus /> Add task
+                  </Button>
+                )}
               </div>
             </>
           )}
