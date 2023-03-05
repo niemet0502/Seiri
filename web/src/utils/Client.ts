@@ -65,4 +65,16 @@ export class Client {
 
     return this.api.patch(url, data).then((r) => r.data);
   }
+
+  public getTasksByProject(projectId: string) {
+    const url = this.baseApiUrl + `task/project/${projectId}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
+
+  public getTask(taskId: string) {
+    const url = this.baseApiUrl + `task/${taskId}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
 }
