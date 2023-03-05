@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   AiOutlineCheck,
   AiOutlineDelete,
@@ -7,21 +7,32 @@ import {
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
+import { ApiClientContext } from "../../provider/apiClientProvider";
+import { Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
 export const TaskDetails: React.FC = () => {
   // get task id from the url and fetch from database
+  const { taskId } = useParams<{ taskId: string }>();
+  const { apiClient } = useContext(ApiClientContext);
+
   const [editing, setEditing] = useState<boolean>(false);
-  const [newTaskHandler, setNewTaskHandler] = useState<Deferred<void>>();
+  const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
+
+  const { data: task } = useQuery(["tasks", taskId], () =>
+    apiClient.getTask(taskId)
+  );
 
   const addTask = useCallback(async () => {
-    const deferred = new Deferred<void>();
+    const deferred = new Deferred<Task>();
 
     setNewTaskHandler(deferred);
 
@@ -32,33 +43,18 @@ export const TaskDetails: React.FC = () => {
     }
   }, []);
 
-  const task = {
-    id: 1,
-    title: "Deploy Tefnout backend",
-    description: null,
-    isDone: false,
-    children: [
-      {
-        id: 1,
-        title: "Deploy Tefnout backend",
-        description: "",
-        isDone: true,
-      },
-      {
-        id: 2,
-        title: "Update Reamde with link",
-        description: "",
-        isDone: false,
-      },
-    ],
-  };
-
   return (
     <div className="flex page-content flex-2">
       <div className="task-details">
         <div className="task-content">
           <PageHeader>
-            <h4>2023 Roadmap &gt; Deploy Tefnout backend</h4>
+            <h4>
+              {task && (
+                <>
+                  {task.project.name} &gt; <span>{task.title}</span>{" "}
+                </>
+              )}
+            </h4>
             <Dropdown
               left="-120px"
               trigger={(toggle) => (
@@ -80,60 +76,62 @@ export const TaskDetails: React.FC = () => {
               </DropdownItem>
             </Dropdown>
           </PageHeader>
-          <div className="body">
-            {!editing && (
-              <div className="plain-content flex flex-column gap-3">
-                <div className="flex align-items-center">
-                  <div className={`statut isdone-${task.isDone}`}>
-                    <AiOutlineCheck />
+          {task && (
+            <div className="body">
+              {!editing && (
+                <div className="plain-content flex flex-column gap-3">
+                  <div className="flex align-items-center">
+                    <div className={`statut isdone-${task.isDone}`}>
+                      <AiOutlineCheck />
+                    </div>
+                    <span style={{ fontSize: "22px", marginLeft: "9px" }}>
+                      {task.title}
+                    </span>
                   </div>
-                  <span style={{ fontSize: "22px", marginLeft: "9px" }}>
-                    Deploy Tefnout backend
-                  </span>
-                </div>
 
-                <p className="desc">Add description</p>
+                  <p className="desc" placeholder="Add description"></p>
+                </div>
+              )}
+
+              {editing && (
+                <form action="">
+                  <div className="flex flex-column form p-1">
+                    <textarea className="task-title" autoFocus>
+                      {task.title}
+                    </textarea>
+
+                    <textarea
+                      className="task-description"
+                      name=""
+                      id=""
+                      value={task.description || "Add description"}
+                    ></textarea>
+                  </div>
+                  <div className="flex gap-2 justify-content-end mt-2">
+                    <Button
+                      variant="secondary"
+                      handler={() => setEditing((prev) => !prev)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button>Save</Button>
+                  </div>
+                </form>
+              )}
+
+              <div className="flex align-items-center justify-content-between">
+                <h6>Sub-tasks</h6>
+                <IconButton handler={addTask}>
+                  <AiOutlinePlus />
+                </IconButton>
               </div>
-            )}
-
-            {editing && (
-              <form action="">
-                <div className="flex flex-column form p-1">
-                  <textarea className="task-title" autoFocus>
-                    Deploy Tefnout backend
-                  </textarea>
-
-                  <textarea
-                    className="task-description"
-                    name=""
-                    id=""
-                    value={task.description || "Add description"}
-                  ></textarea>
-                </div>
-                <div className="flex gap-2 justify-content-end mt-2">
-                  <Button
-                    variant="secondary"
-                    handler={() => setEditing((prev) => !prev)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button>Save</Button>
-                </div>
-              </form>
-            )}
-
-            <div className="flex align-items-center justify-content-between">
-              <h6>Sub-tasks</h6>
-              <IconButton handler={addTask}>
-                <AiOutlinePlus />
-              </IconButton>
+              <div className="">
+                {task.children.map((task: Task) => (
+                  <TaskItem key={task.id} task={task} editable={false} />
+                ))}
+              </div>
             </div>
-            <div className="">
-              {task.children.map((task) => (
-                <TaskItem key={task.id} task={task} editable={false} />
-              ))}
-            </div>
-          </div>
+          )}
         </div>
         <div className="task-attributes">
           <div className="task-detail-header">
