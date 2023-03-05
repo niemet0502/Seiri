@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Project } from '../../project/entities/project.entity';
 
 @Entity()
@@ -22,4 +28,10 @@ export class Task {
   isDeleted: boolean;
 
   //  dueDate, parent_id[nullable,ForeignKey],isDeleted TODO
+
+  @ManyToOne(() => Task, (task) => task.children, { nullable: true })
+  parent: Task;
+
+  @OneToMany(() => Task, (task) => task.parent, { nullable: true })
+  children: Task[];
 }
