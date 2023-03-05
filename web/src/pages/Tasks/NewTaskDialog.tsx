@@ -6,7 +6,7 @@ import { Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
 export const NewTaskDialog: React.FC<{
-  deferred: Deferred<void>;
+  deferred: Deferred<Task>;
   parentTask?: Task;
   taskToEdit?: Task;
 }> = ({ deferred, parentTask, taskToEdit }) => {

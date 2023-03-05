@@ -28,7 +28,11 @@ export const Projects: React.FC<{
   const isActive = useCallback(
     (id: number) => {
       const filteredPath = pathname.split("/");
-      return id.toString() === filteredPath[filteredPath.length - 1];
+
+      return (
+        id.toString() ===
+        filteredPath[filteredPath.length === 3 ? filteredPath.length - 1 : 2]
+      );
     },
     [pathname]
   );

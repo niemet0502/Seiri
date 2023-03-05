@@ -19,6 +19,7 @@ export interface Task {
   isDone: boolean;
   description: string;
   children?: Task[];
+  project?: Project;
 }
 
 export interface Project {
