@@ -20,8 +20,10 @@ import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
 export const TaskDetails: React.FC = () => {
-  // get task id from the url and fetch from database
-  const { taskId } = useParams<{ taskId: string }>();
+  const { taskId, projectId } = useParams<{
+    taskId: string;
+    projectId: string;
+  }>();
   const { apiClient } = useContext(ApiClientContext);
 
   const [editing, setEditing] = useState<boolean>(false);
@@ -38,7 +40,9 @@ export const TaskDetails: React.FC = () => {
 
     try {
       await deferred.promise;
+      // add toast
     } catch (e) {
+    } finally {
       setNewTaskHandler(undefined);
     }
   }, []);
@@ -144,16 +148,18 @@ export const TaskDetails: React.FC = () => {
             </div>
             <div className=" flex mt-2  attributes">
               <div className="label">Project</div>
-              <div>2023 Roadmap</div>
-            </div>
-            <div className=" flex mt-2  attributes">
-              <div className="label">Archive</div>
-              <div>False</div>
+              <div>{/* {task.project.name} */}</div>
             </div>
           </div>
         </div>
 
-        {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
+        {newTaskHandler && projectId && (
+          <NewTaskDialog
+            deferred={newTaskHandler}
+            projectId={projectId}
+            parentId={taskId}
+          />
+        )}
       </div>
     </div>
   );

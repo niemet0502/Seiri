@@ -39,6 +39,7 @@ export const TasksList: React.FC = () => {
 
     try {
       await deferred.promise;
+      // add toast
     } catch (e) {
     } finally {
       setNewTaskHandler(undefined);

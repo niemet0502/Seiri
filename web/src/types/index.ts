@@ -60,4 +60,5 @@ export interface CreateTaskApi {
   title: string;
   description?: string;
   projectId: string;
+  parentId?: string;
 }
