@@ -20,13 +20,23 @@ export class TaskRepository {
   }
 
   async findAllByProject(project: Project): Promise<Task[]> {
-    return await this.tasksRepository.find({
-      where: { project: project, isDone: false },
-    });
+    const projectId = project.id;
+
+    const tasks = await this.tasksRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.children', 'child')
+      .where('task.parentId IS NULL')
+      .andWhere('task.projectId = :projectId', { projectId })
+      .getMany();
+
+    return tasks;
   }
 
   async findById(id: number): Promise<Task | undefined> {
-    return await this.tasksRepository.findOne({ where: { id: id } });
+    return await this.tasksRepository.findOne({
+      where: { id: id, parent: undefined },
+      relations: ['children', 'project'],
+    });
   }
 
   async remove(task: Task) {
