@@ -8,7 +8,8 @@ export const TaskItem: React.FC<{
   editable?: boolean;
   completeTask: (data: EditTaskApi) => void;
   deleteTask: (taskId: number) => void;
-}> = ({ task, editable, completeTask, deleteTask }) => {
+  editTask?: (task: Task) => void;
+}> = ({ task, editable, completeTask, deleteTask, editTask }) => {
   const { projectId } = useParams<{ projectId: string }>();
   return (
     <>
@@ -27,8 +28,8 @@ export const TaskItem: React.FC<{
           </NavLink>
         </div>
         <div className="flex gap-2">
-          {editable && (
-            <IconButton>
+          {editable && editTask && (
+            <IconButton handler={() => editTask(task)}>
               <AiOutlineEdit />
             </IconButton>
           )}
@@ -45,6 +46,7 @@ export const TaskItem: React.FC<{
               task={child}
               completeTask={completeTask}
               deleteTask={deleteTask}
+              editTask={editTask}
             />
           ))}
         </div>

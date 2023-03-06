@@ -7,7 +7,7 @@ import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { CreateTaskApi, Task } from "../../types";
+import { CreateTaskApi, EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
 export const NewTaskDialog: React.FC<{
@@ -19,7 +19,9 @@ export const NewTaskDialog: React.FC<{
   const { apiClient } = useContext(ApiClientContext);
 
   const { handleSubmit, control, reset } = useForm<CreateTaskApi>({
-    defaultValues: { projectId, parentId: parentId || undefined },
+    defaultValues: taskToEdit
+      ? taskToEdit
+      : { projectId, parentId: parentId || undefined },
   });
 
   const { mutate: createTask } = useMutation(
@@ -37,9 +39,24 @@ export const NewTaskDialog: React.FC<{
     }
   );
 
+  const { mutate: editTask } = useMutation(
+    (data: EditTaskApi) => apiClient.editTask(data),
+    {
+      onSuccess: () => {
+        //add toast
+        deferred.resolve(taskToEdit as Task);
+        queryClient.invalidateQueries([["tasks"], projectId]);
+      },
+    }
+  );
+
   const submit = (data: CreateTaskApi) => {
     try {
-      createTask(data);
+      if (taskToEdit) {
+        editTask({ ...data, id: taskToEdit.id } as EditTaskApi);
+      } else {
+        createTask(data);
+      }
     } catch (e) {
       console.log(e);
     }

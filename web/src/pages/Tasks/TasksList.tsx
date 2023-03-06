@@ -27,6 +27,7 @@ export const TasksList: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
 
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
+  const [taskToEdit, setTaskToEdit] = useState<Task>();
 
   const { isLoading, data } = useQuery([querykey, projectId], () =>
     apiClient.getTasksByProject(projectId)
@@ -68,6 +69,22 @@ export const TasksList: React.FC = () => {
     }
   }, []);
 
+  const editTask = async (task: Task) => {
+    const deferred = new Deferred<Task>();
+
+    setNewTaskHandler(deferred);
+    setTaskToEdit(task);
+
+    try {
+      await deferred.promise;
+      // add toast
+    } catch (e) {
+    } finally {
+      setNewTaskHandler(undefined);
+      setTaskToEdit(undefined);
+    }
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
@@ -108,6 +125,7 @@ export const TasksList: React.FC = () => {
                       editable={true}
                       completeTask={(data: EditTaskApi) => completeTask(data)}
                       deleteTask={(taskId: number) => deleteTask(taskId)}
+                      editTask={(task: Task) => editTask(task)}
                     />
                   ))}
                   <div
@@ -146,7 +164,11 @@ export const TasksList: React.FC = () => {
         </div>
 
         {newTaskHandler && projectId && (
-          <NewTaskDialog deferred={newTaskHandler} projectId={projectId} />
+          <NewTaskDialog
+            deferred={newTaskHandler}
+            projectId={projectId}
+            taskToEdit={taskToEdit}
+          />
         )}
       </div>
     </div>
