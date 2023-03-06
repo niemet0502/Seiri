@@ -6,15 +6,16 @@ import {
   AiOutlinePlus,
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { Task } from "../../types";
+import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
@@ -28,6 +29,16 @@ export const TasksList: React.FC = () => {
 
   const { isLoading, data } = useQuery([querykey, projectId], () =>
     apiClient.getTasksByProject(projectId)
+  );
+
+  const { mutate: completeTask } = useMutation(
+    (data: EditTaskApi) => apiClient.editTask(data),
+    {
+      onSuccess: () => {
+        //add toast
+        queryClient.invalidateQueries([querykey, projectId]);
+      },
+    }
   );
 
   const tasks = data || [];
@@ -78,7 +89,12 @@ export const TasksList: React.FC = () => {
           {tasks && (
             <>
               {tasks.map((task: Task) => (
-                <TaskItem key={task.id} task={task} editable={true} />
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  editable={true}
+                  completeTask={(data: EditTaskApi) => completeTask(data)}
+                />
               ))}
               <div
                 className="align-self-center add-task align-items-center mt-2"

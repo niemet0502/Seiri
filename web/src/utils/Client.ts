@@ -4,6 +4,7 @@ import {
   CreateProject,
   CreateTaskApi,
   EditProject,
+  EditTaskApi,
   FeatureEnum,
   IAuthLogin,
 } from "../types";
@@ -88,5 +89,11 @@ export class Client {
     const url = this.baseApiUrl + "task";
 
     return this.api.post(url, data).then((r) => r.data);
+  }
+
+  public editTask(data: EditTaskApi) {
+    const url = this.baseApiUrl + `task/${data.id}`;
+
+    return this.api.patch(url, data);
   }
 }
