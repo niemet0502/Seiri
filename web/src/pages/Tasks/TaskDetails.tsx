@@ -8,7 +8,7 @@ import {
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
@@ -27,6 +27,7 @@ export const TaskDetails: React.FC = () => {
     projectId: string;
   }>();
   const { apiClient } = useContext(ApiClientContext);
+  const { goBack } = useHistory();
 
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
@@ -37,6 +38,16 @@ export const TaskDetails: React.FC = () => {
 
   const { mutate: completeTask } = useMutation(
     (data: EditTaskApi) => apiClient.editTask(data),
+    {
+      onSuccess: () => {
+        //add toast
+        queryClient.invalidateQueries(["tasks", taskId]);
+      },
+    }
+  );
+
+  const { mutate: deleteTask } = useMutation(
+    (taskId: number) => apiClient.deleteTask(taskId),
     {
       onSuccess: () => {
         //add toast
@@ -83,7 +94,12 @@ export const TaskDetails: React.FC = () => {
                 <AiOutlineEdit /> Edit
               </DropdownItem>
 
-              <DropdownItem>
+              <DropdownItem
+                handler={() => {
+                  deleteTask(task.id);
+                  goBack();
+                }}
+              >
                 <AiOutlineDelete /> Delete
               </DropdownItem>
 
@@ -156,6 +172,7 @@ export const TaskDetails: React.FC = () => {
                     task={task}
                     editable={false}
                     completeTask={completeTask}
+                    deleteTask={(taskId: number) => deleteTask(taskId)}
                   />
                 ))}
               </div>

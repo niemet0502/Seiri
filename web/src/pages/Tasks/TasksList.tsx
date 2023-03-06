@@ -42,6 +42,16 @@ export const TasksList: React.FC = () => {
     }
   );
 
+  const { mutate: deleteTask } = useMutation(
+    (taskId: number) => apiClient.deleteTask(taskId),
+    {
+      onSuccess: () => {
+        //add toast
+        queryClient.invalidateQueries([querykey, projectId]);
+      },
+    }
+  );
+
   const tasks = data || [];
 
   const addTask = useCallback(async () => {
@@ -97,6 +107,7 @@ export const TasksList: React.FC = () => {
                       task={task}
                       editable={true}
                       completeTask={(data: EditTaskApi) => completeTask(data)}
+                      deleteTask={(taskId: number) => deleteTask(taskId)}
                     />
                   ))}
                   <div

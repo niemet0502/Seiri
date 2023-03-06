@@ -32,6 +32,9 @@ export class Task {
   @ManyToOne(() => Task, (task) => task.children, { nullable: true })
   parent: Task;
 
-  @OneToMany(() => Task, (task) => task.parent, { nullable: true })
+  @OneToMany(() => Task, (task) => task.parent, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   children: Task[];
 }

@@ -96,4 +96,10 @@ export class Client {
 
     return this.api.patch(url, data);
   }
+
+  public deleteTask(taskId: number) {
+    const url = this.baseApiUrl + `task/${taskId}`;
+
+    return this.api.delete(url).then((r) => r.data);
+  }
 }

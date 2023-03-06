@@ -7,7 +7,8 @@ export const TaskItem: React.FC<{
   task: Task;
   editable?: boolean;
   completeTask: (data: EditTaskApi) => void;
-}> = ({ task, editable, completeTask }) => {
+  deleteTask: (taskId: number) => void;
+}> = ({ task, editable, completeTask, deleteTask }) => {
   const { projectId } = useParams<{ projectId: string }>();
   return (
     <>
@@ -31,7 +32,7 @@ export const TaskItem: React.FC<{
               <AiOutlineEdit />
             </IconButton>
           )}
-          <IconButton>
+          <IconButton handler={() => deleteTask(task.id)}>
             <AiOutlineDelete />
           </IconButton>
         </div>
@@ -39,7 +40,12 @@ export const TaskItem: React.FC<{
       {task.children && (
         <div style={{ marginLeft: "25px" }}>
           {task.children.map((child) => (
-            <TaskItem key={child.id} task={child} completeTask={completeTask} />
+            <TaskItem
+              key={child.id}
+              task={child}
+              completeTask={completeTask}
+              deleteTask={deleteTask}
+            />
           ))}
         </div>
       )}
