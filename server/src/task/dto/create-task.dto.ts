@@ -10,7 +10,7 @@ export class CreateTaskDto {
     example: 'create a new website ',
     description: "The task's  description",
   })
-  public description: string;
+  public description?: string;
   @ApiProperty({ example: '1', description: "The task's  projectId" })
   public projectId: number;
 }
