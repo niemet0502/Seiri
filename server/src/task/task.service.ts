@@ -9,7 +9,7 @@ import { TaskRepository } from './task.repository';
 export class TaskService {
   constructor(private readonly taskRepository: TaskRepository) {}
   async create(createTaskDto: CreateTaskDto, project: Project) {
-    const { title, description } = createTaskDto;
+    const { title, description, parentId } = createTaskDto;
 
     const task = new Task();
     task.title = title;
@@ -17,6 +17,11 @@ export class TaskService {
     task.isDeleted = false;
 
     task.project = project;
+
+    if (parentId) {
+      const parentTask = await this.taskRepository.findById(+parentId);
+      task.parent = parentTask;
+    }
 
     return this.taskRepository.save(task);
   }
