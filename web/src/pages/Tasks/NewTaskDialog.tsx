@@ -62,6 +62,7 @@ export const NewTaskDialog: React.FC<{
                 variant="dark"
                 {...field}
                 {...fieldState}
+                autoFocus
               />
             )}
           />

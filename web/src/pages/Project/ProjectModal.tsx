@@ -82,6 +82,7 @@ export const ProjectModal: React.FC<{
                 variant="dark"
                 {...field}
                 {...fieldState}
+                autoFocus={true}
               />
             )}
           />

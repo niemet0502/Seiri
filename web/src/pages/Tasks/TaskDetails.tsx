@@ -1,4 +1,5 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   AiOutlineCheck,
   AiOutlineDelete,
@@ -13,9 +14,11 @@ import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
+import { FormInput } from "../../components/Input";
 import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
+import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
@@ -35,6 +38,8 @@ export const TaskDetails: React.FC = () => {
   const { data: task, isLoading } = useQuery(["tasks", taskId], () =>
     apiClient.getTask(taskId)
   );
+
+  const { handleSubmit, control, reset } = useForm<EditTaskApi>();
 
   const { mutate: completeTask } = useMutation(
     (data: EditTaskApi) => apiClient.editTask(data),
@@ -69,6 +74,21 @@ export const TaskDetails: React.FC = () => {
       setNewTaskHandler(undefined);
     }
   }, []);
+
+  const edit = (data: EditTaskApi) => {
+    try {
+      completeTask(data);
+      reset();
+    } catch (e) {
+    } finally {
+      setEditing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!task) return;
+    reset(task);
+  }, [task, reset]);
 
   return (
     <div className="flex page-content flex-2">
@@ -129,23 +149,46 @@ export const TaskDetails: React.FC = () => {
                     </span>
                   </div>
 
-                  <p className="desc" placeholder="Add description"></p>
+                  <p
+                    className="desc"
+                    placeholder="Add description"
+                    style={{ fontSize: "20px" }}
+                  >
+                    {task.description}
+                  </p>
                 </div>
               )}
 
               {editing && (
-                <form action="">
+                <form onSubmit={handleSubmit(edit)}>
                   <div className="flex flex-column form p-1">
-                    <textarea className="task-title" autoFocus>
-                      {task.title}
-                    </textarea>
+                    <Controller
+                      name="title"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field, fieldState }) => (
+                        <FormInput
+                          label="Title"
+                          variant="dark"
+                          {...field}
+                          {...fieldState}
+                          autoFocus
+                        />
+                      )}
+                    />
 
-                    <textarea
-                      className="task-description"
-                      name=""
-                      id=""
-                      value={task.description || "Add description"}
-                    ></textarea>
+                    <Controller
+                      name="description"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <TextArea
+                          label="Description"
+                          variant="dark"
+                          {...field}
+                          {...fieldState}
+                        />
+                      )}
+                    />
                   </div>
                   <div className="flex gap-2 justify-content-end mt-2">
                     <Button
@@ -154,7 +197,7 @@ export const TaskDetails: React.FC = () => {
                     >
                       Cancel
                     </Button>
-                    <Button>Save</Button>
+                    <Button type="submit">Save</Button>
                   </div>
                 </form>
               )}
