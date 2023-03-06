@@ -12,6 +12,7 @@ import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
+import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
@@ -86,44 +87,51 @@ export const TasksList: React.FC = () => {
         </PageHeader>
 
         <div className="body flex mt-2">
-          {tasks && (
+          {!isLoading && (
             <>
-              {tasks.map((task: Task) => (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  editable={true}
-                  completeTask={(data: EditTaskApi) => completeTask(data)}
-                />
-              ))}
-              <div
-                className="align-self-center add-task align-items-center mt-2"
-                onClick={addTask}
-              >
-                {tasks.length > 0 && (
-                  <Button>
-                    <AiOutlinePlus /> Add task
+              {tasks && (
+                <>
+                  {tasks.map((task: Task) => (
+                    <TaskItem
+                      key={task.id}
+                      task={task}
+                      editable={true}
+                      completeTask={(data: EditTaskApi) => completeTask(data)}
+                    />
+                  ))}
+                  <div
+                    className="align-self-center add-task align-items-center mt-2"
+                    onClick={addTask}
+                  >
+                    {tasks.length > 0 && (
+                      <Button>
+                        <AiOutlinePlus /> Add task
+                      </Button>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {tasks.length === 0 && (
+                <div
+                  className="flex flex-column align-items-center justify-content-center gap-2"
+                  style={{ marginTop: "180px" }}
+                >
+                  <BiTaskX size={55} />
+                  <h3>No Task found </h3>
+                  <p>
+                    Organize your life. Achieve more every day by creating a
+                    task
+                  </p>
+                  <Button handler={addTask}>
+                    <AiOutlinePlus /> Create task
                   </Button>
-                )}
-              </div>
+                </div>
+              )}
             </>
           )}
 
-          {tasks.length === 0 && (
-            <div
-              className="flex flex-column align-items-center justify-content-center gap-2"
-              style={{ marginTop: "180px" }}
-            >
-              <BiTaskX size={55} />
-              <h3>No Task found </h3>
-              <p>
-                Organize your life. Achieve more every day by creating a task
-              </p>
-              <Button handler={addTask}>
-                <AiOutlinePlus /> Create task
-              </Button>
-            </div>
-          )}
+          {isLoading && <Loader />}
         </div>
 
         {newTaskHandler && projectId && (

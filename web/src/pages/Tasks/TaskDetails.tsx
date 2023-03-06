@@ -13,6 +13,7 @@ import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
+import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
@@ -30,7 +31,7 @@ export const TaskDetails: React.FC = () => {
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
 
-  const { data: task } = useQuery(["tasks", taskId], () =>
+  const { data: task, isLoading } = useQuery(["tasks", taskId], () =>
     apiClient.getTask(taskId)
   );
 
@@ -161,20 +162,24 @@ export const TaskDetails: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="task-attributes">
+        <div className="task-attributes flex flex-column">
           <div className="task-detail-header">
             <PageHeader>Details</PageHeader>
           </div>
-          <div className="row task-detail ">
-            <div className=" flex mt-2  attributes">
-              <div className="label">Statut</div>
-              <div>To do</div>
+          {isLoading && <Loader />}
+
+          {!isLoading && task && (
+            <div className="row task-detail ">
+              <div className=" flex mt-2  attributes">
+                <div className="label">Statut</div>
+                <div>{task.isDone ? "Done" : "To do"}</div>
+              </div>
+              <div className=" flex mt-2  attributes">
+                <div className="label">Project</div>
+                <div>{task.project.name}</div>
+              </div>
             </div>
-            <div className=" flex mt-2  attributes">
-              <div className="label">Project</div>
-              <div>{/* {task.project.name} */}</div>
-            </div>
-          </div>
+          )}
         </div>
 
         {newTaskHandler && projectId && (
