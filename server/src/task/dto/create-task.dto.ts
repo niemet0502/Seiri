@@ -13,4 +13,7 @@ export class CreateTaskDto {
   public description?: string;
   @ApiProperty({ example: '1', description: "The task's  projectId" })
   public projectId: number;
+
+  @ApiProperty({ example: '1', description: "The parent's ID" })
+  public parentId: number;
 }
