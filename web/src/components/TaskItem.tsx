@@ -1,18 +1,24 @@
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { NavLink, useParams } from "react-router-dom";
-import { Task } from "../types";
+import { EditTaskApi, Task } from "../types";
 import { IconButton } from "./Button";
 
-export const TaskItem: React.FC<{ task: Task; editable?: boolean }> = ({
-  task,
-  editable,
-}) => {
+export const TaskItem: React.FC<{
+  task: Task;
+  editable?: boolean;
+  completeTask: (data: EditTaskApi) => void;
+}> = ({ task, editable, completeTask }) => {
   const { projectId } = useParams<{ projectId: string }>();
   return (
     <>
       <div className="task" key={task.id}>
         <div className={`infos flex gap-2 isdone-${task.isDone}`}>
-          <div className={`statut isdone-${task.isDone}`}>
+          <div
+            className={`statut isdone-${task.isDone}`}
+            onClick={() =>
+              completeTask({ id: task.id, isDone: !task.isDone } as EditTaskApi)
+            }
+          >
             <AiOutlineCheck />
           </div>
           <NavLink to={`/project/${projectId}/task/${task.id}`}>
@@ -33,7 +39,7 @@ export const TaskItem: React.FC<{ task: Task; editable?: boolean }> = ({
       {task.children && (
         <div style={{ marginLeft: "25px" }}>
           {task.children.map((child) => (
-            <TaskItem key={child.id} task={child} />
+            <TaskItem key={child.id} task={child} completeTask={completeTask} />
           ))}
         </div>
       )}

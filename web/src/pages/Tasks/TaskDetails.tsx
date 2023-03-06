@@ -7,15 +7,16 @@ import {
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { Task } from "../../types";
+import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
@@ -31,6 +32,16 @@ export const TaskDetails: React.FC = () => {
 
   const { data: task } = useQuery(["tasks", taskId], () =>
     apiClient.getTask(taskId)
+  );
+
+  const { mutate: completeTask } = useMutation(
+    (data: EditTaskApi) => apiClient.editTask(data),
+    {
+      onSuccess: () => {
+        //add toast
+        queryClient.invalidateQueries(["tasks", taskId]);
+      },
+    }
   );
 
   const addTask = useCallback(async () => {
@@ -85,7 +96,15 @@ export const TaskDetails: React.FC = () => {
               {!editing && (
                 <div className="plain-content flex flex-column gap-3">
                   <div className="flex align-items-center">
-                    <div className={`statut isdone-${task.isDone}`}>
+                    <div
+                      className={`statut isdone-${task.isDone}`}
+                      onClick={() =>
+                        completeTask({
+                          id: task.id,
+                          isDone: !task.isDone,
+                        } as EditTaskApi)
+                      }
+                    >
                       <AiOutlineCheck />
                     </div>
                     <span style={{ fontSize: "22px", marginLeft: "9px" }}>
@@ -131,7 +150,12 @@ export const TaskDetails: React.FC = () => {
               </div>
               <div className="">
                 {task.children.map((task: Task) => (
-                  <TaskItem key={task.id} task={task} editable={false} />
+                  <TaskItem
+                    key={task.id}
+                    task={task}
+                    editable={false}
+                    completeTask={completeTask}
+                  />
                 ))}
               </div>
             </div>
