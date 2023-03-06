@@ -1,6 +1,12 @@
 import axios from "axios";
 import { TOKEN_LS_KEY } from "../provider/userProvider";
-import { CreateProject, EditProject, FeatureEnum, IAuthLogin } from "../types";
+import {
+  CreateProject,
+  CreateTaskApi,
+  EditProject,
+  FeatureEnum,
+  IAuthLogin,
+} from "../types";
 
 export class Client {
   baseApiUrl: string = "http://localhost:3000/";
@@ -76,5 +82,11 @@ export class Client {
     const url = this.baseApiUrl + `task/${taskId}`;
 
     return this.api.get(url).then((r) => r.data);
+  }
+
+  public createTask(data: CreateTaskApi) {
+    const url = this.baseApiUrl + "task";
+
+    return this.api.post(url, data).then((r) => r.data);
   }
 }

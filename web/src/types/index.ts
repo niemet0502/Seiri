@@ -55,3 +55,9 @@ export interface EditProject {
   name: string;
   description?: string;
 }
+
+export interface CreateTaskApi {
+  title: string;
+  description?: string;
+  projectId: string;
+}

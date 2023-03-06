@@ -40,6 +40,7 @@ export const TasksList: React.FC = () => {
     try {
       await deferred.promise;
     } catch (e) {
+    } finally {
       setNewTaskHandler(undefined);
     }
   }, []);
@@ -108,7 +109,9 @@ export const TasksList: React.FC = () => {
           )}
         </div>
 
-        {newTaskHandler && <NewTaskDialog deferred={newTaskHandler} />}
+        {newTaskHandler && projectId && (
+          <NewTaskDialog deferred={newTaskHandler} projectId={projectId} />
+        )}
       </div>
     </div>
   );
