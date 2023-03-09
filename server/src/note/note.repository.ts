@@ -15,7 +15,10 @@ export class NoteRepository {
   }
 
   async findAllByProject(project: Project) {
-    return await this.notesRepository.find({ where: { project: project } });
+    return await this.notesRepository.find({
+      where: { project: project },
+      relations: ['project'],
+    });
   }
 
   async findById(id: number): Promise<Note | undefined> {
