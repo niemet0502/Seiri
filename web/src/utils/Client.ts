@@ -102,4 +102,10 @@ export class Client {
 
     return this.api.delete(url).then((r) => r.data);
   }
+
+  public getNotesByProject(projectId: string) {
+    const url = this.baseApiUrl + `note/project/${projectId}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
 }
