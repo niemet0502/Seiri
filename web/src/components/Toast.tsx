@@ -1,4 +1,4 @@
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { IconButton } from "./Button";
 
 export const Toast: React.FC<{
@@ -10,12 +10,19 @@ export const Toast: React.FC<{
   return (
     <div className="toast-message">
       <div className="flex justify-content-between align-items-center">
-        <h5>{title}</h5>
+        <h5 className="flex align-items-center gap-1">
+          <span>
+            <AiOutlineCheck />
+          </span>
+          {title}
+        </h5>
         <IconButton handler={onClose && id ? () => onClose(id) : undefined}>
           <AiOutlineClose />
         </IconButton>
       </div>
-      <div>{message}</div>
+      <div className="mt-1" style={{ fontSize: "12px", paddingLeft: "20px" }}>
+        {message}
+      </div>
     </div>
   );
 };

@@ -94,7 +94,7 @@ export class Client {
   public editTask(data: EditTaskApi) {
     const url = this.baseApiUrl + `task/${data.id}`;
 
-    return this.api.patch(url, data);
+    return this.api.patch(url, data).then((r) => r.data);
   }
 
   public deleteTask(taskId: number) {
