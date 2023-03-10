@@ -7,7 +7,8 @@ import { useMutation } from "react-query";
 import { NavLink } from "react-router-dom";
 import { queryClient } from "../index";
 import { ApiClientContext } from "../provider/apiClientProvider";
-import { Project } from "../types";
+import { useToasts } from "../provider/toastProvider";
+import { FeatureEnum, Project } from "../types";
 import { IconButton } from "./Button";
 import { Dropdown } from "./Dropdown";
 import { DropdownItem } from "./DropdownItem";
@@ -16,11 +17,20 @@ export const ProjectItem: React.FC<{
   project: Project;
   active: boolean;
   setProjectToEdit: (project: Project) => void;
-}> = ({ project, active, setProjectToEdit }) => {
-  // display confirm modal and then display a toast
+  feature: FeatureEnum;
+}> = ({ project, active, setProjectToEdit, feature }) => {
+  // display confirm modal
   const { apiClient } = useContext(ApiClientContext);
+  const { pushToast } = useToasts();
+
   const { mutate } = useMutation((id: number) => apiClient.removeProject(id), {
-    onSuccess: () => queryClient.invalidateQueries(["projects"]),
+    onSuccess: () => {
+      pushToast({
+        title: "Task deleted",
+        message: "",
+      });
+      queryClient.invalidateQueries([["projects"], feature]);
+    },
   });
 
   return (
