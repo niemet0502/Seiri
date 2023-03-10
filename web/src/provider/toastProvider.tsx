@@ -9,10 +9,6 @@ import {
 } from "react";
 import { Toast } from "../components/Toast";
 
-interface ToastProps {
-  message: string;
-}
-
 type Params = ComponentProps<typeof Toast>;
 export type ToastItem = ComponentProps<typeof Toast> & { id: number };
 
