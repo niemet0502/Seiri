@@ -2,23 +2,39 @@ import { useContext } from "react";
 import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
 import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { NoteCard } from "../../components/NoteCard";
 import { PageHeader } from "../../components/PageHeader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
-import { Note } from "../../types";
+import { useToasts } from "../../provider/toastProvider";
+import { CreateNoteApi, Note } from "../../types";
 
 export const NotesList: React.FC = () => {
-  // get the project id from the url and fetch its notes
+  const { pushToast } = useToasts();
   const { projectId } = useParams<{ projectId: string }>();
+  const { push } = useHistory();
   const { apiClient } = useContext(ApiClientContext);
 
   const { data } = useQuery(["notes", projectId], () =>
     apiClient.getNotesByProject(projectId)
+  );
+
+  const { mutate: createNote } = useMutation(
+    (data: CreateNoteApi) => apiClient.createNote(data),
+    {
+      onSuccess: (newNote) => {
+        pushToast({
+          title: "Note created",
+          message: newNote.title,
+        });
+
+        push(`/project/${projectId}/note/${newNote.id}`);
+      },
+    }
   );
 
   const notes = data || [];
@@ -31,7 +47,9 @@ export const NotesList: React.FC = () => {
             <h4>2023 Roadmap</h4>
 
             <div className="flex">
-              <IconButton>
+              <IconButton
+                handler={() => createNote({ projectId, title: "Untitled" })}
+              >
                 <AiOutlinePlus />
               </IconButton>
               <Dropdown

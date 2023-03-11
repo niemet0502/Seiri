@@ -1,6 +1,7 @@
 import axios from "axios";
 import { TOKEN_LS_KEY } from "../provider/userProvider";
 import {
+  CreateNoteApi,
   CreateProject,
   CreateTaskApi,
   EditProject,
@@ -105,6 +106,18 @@ export class Client {
 
   public getNotesByProject(projectId: string) {
     const url = this.baseApiUrl + `note/project/${projectId}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
+
+  public createNote(data: CreateNoteApi) {
+    const url = this.baseApiUrl + "note";
+
+    return this.api.post(url, data).then((r) => r.data);
+  }
+
+  public getNote(id: string) {
+    const url = this.baseApiUrl + `note/${id}`;
 
     return this.api.get(url).then((r) => r.data);
   }
