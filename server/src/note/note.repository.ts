@@ -22,7 +22,10 @@ export class NoteRepository {
   }
 
   async findById(id: number): Promise<Note | undefined> {
-    return await this.notesRepository.findOne({ where: { id: id } });
+    return await this.notesRepository.findOne({
+      where: { id: id },
+      relations: ['project'],
+    });
   }
 
   async remove(note: Note) {
