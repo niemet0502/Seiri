@@ -14,4 +14,10 @@ export class Note {
 
   @ManyToOne(() => Project, (project) => project.notes, { onDelete: 'CASCADE' })
   project: Project;
+
+  @Column('date', { nullable: true })
+  createdAt: Date;
+
+  @Column('date', { nullable: true })
+  updatedAt: Date;
 }
