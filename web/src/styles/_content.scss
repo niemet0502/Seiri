@@ -53,6 +53,8 @@
   }
 
   .notes-list {
+    width: 80%;
+    align-self: center;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -97,6 +99,9 @@
           border: 1px solid rgb(57, 58, 75);
           transition-duration: var(--speed-highlightFadeIn);
         }
+      }
+      a {
+        color: $white;
       }
 
       h3 {

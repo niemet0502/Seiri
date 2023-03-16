@@ -19,7 +19,7 @@ export const NotesList: React.FC = () => {
   const { push } = useHistory();
   const { apiClient } = useContext(ApiClientContext);
 
-  const { data } = useQuery(["notes", projectId], () =>
+  const { data, isLoading } = useQuery(["notes", projectId], () =>
     apiClient.getNotesByProject(projectId)
   );
 
@@ -80,7 +80,7 @@ export const NotesList: React.FC = () => {
             notes.map((note: Note) => <NoteCard key={note.id} note={note} />)}
         </div>
 
-        {notes.length === 0 && (
+        {notes.length === 0 && !isLoading && (
           <div
             className="flex flex-column align-items-center justify-content-center gap-2 align-self-center"
             style={{ marginTop: "180px" }}
