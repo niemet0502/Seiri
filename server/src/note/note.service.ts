@@ -36,6 +36,8 @@ export class NoteService {
 
     const updated = Object.assign(toUpdated, updateNoteDto);
 
+    updated.updatedAt = new Date();
+
     return await this.noteRepository.save({
       ...updated,
       updatedAt: new Date(),

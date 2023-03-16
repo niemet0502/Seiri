@@ -4,6 +4,7 @@ import {
   CreateNoteApi,
   CreateProject,
   CreateTaskApi,
+  EditNoteApi,
   EditProject,
   EditTaskApi,
   FeatureEnum,
@@ -120,5 +121,11 @@ export class Client {
     const url = this.baseApiUrl + `note/${id}`;
 
     return this.api.get(url).then((r) => r.data);
+  }
+
+  public editNote(data: EditNoteApi) {
+    const url = this.baseApiUrl + `note/${data.id}`;
+
+    return this.api.patch(url, data).then((r) => r.data);
   }
 }

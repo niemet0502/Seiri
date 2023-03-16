@@ -23,6 +23,8 @@ export const NotesList: React.FC = () => {
     apiClient.getNotesByProject(projectId)
   );
 
+  const notes = data || [];
+
   const { mutate: createNote } = useMutation(
     (data: CreateNoteApi) => apiClient.createNote(data),
     {
@@ -36,8 +38,6 @@ export const NotesList: React.FC = () => {
       },
     }
   );
-
-  const notes = data || [];
 
   return (
     <div className="flex page-content flex-2">
@@ -76,9 +76,8 @@ export const NotesList: React.FC = () => {
           </PageHeader>
         </div>
         <div className="flex notes-list">
-          {notes.map((note: Note) => (
-            <NoteCard key={note.id} note={note} />
-          ))}
+          {notes.length > 0 &&
+            notes.map((note: Note) => <NoteCard key={note.id} note={note} />)}
         </div>
 
         {notes.length === 0 && (

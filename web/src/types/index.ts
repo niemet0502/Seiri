@@ -12,6 +12,8 @@ export interface Note {
   content: string;
   description: string;
   project: Project;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Task {
@@ -75,4 +77,10 @@ export interface CreateNoteApi {
   title: string;
   content?: string;
   projectId: string;
+}
+
+export interface EditNoteApi {
+  id: string;
+  title: string;
+  content?: string;
 }

@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsBook, BsCodeSlash, BsDot } from "react-icons/bs";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
@@ -17,31 +17,16 @@ import CodeMirror from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-
-const code = `
-
-[Docker Tutorial: Create a CI/CD Pipeline](https://www.taniarascia.com/continuous-integration-pipeline-docker/)  
-
-[Learn what's is a reverse proxy](https://twitter.com/Franc0Fernand0/status/1624425248937443332)  
-
-[Crafting container images without Dockerfiles](https://ochagavia.nl/blog/crafting-container-images-without-dockerfiles/)  
-
-[what is CI/CD](https://www.redhat.com/en/topics/devops/what-is-ci-cd)  
-
-[A Beginner’s Introduction to DevOps](https://deborahemeni.medium.com/a-beginners-introduction-to-devops-9f552826113f)  
-
-[what's Redis](https://learningdaily.dev/what-is-redis-get-started-with-data-types-commands-and-more-98b30266740c)  
-
-[How API Gateway works](https://medium.com/buildpiper/how-do-api-gateways-work-3b989fdcd751)  
-
-[Learn docker](https://www.linkedin.com/posts/jamesspurin_kubernetes-docker-cloudnative-activity-7040997294573244416-zval?utm_source=share&utm_medium=member_desktop)
-`;
+import { queryClient } from "../..";
+import { EditNoteApi } from "../../types";
+import { getIntervalStringFromDate, transformDate } from "../../utils/Date";
 
 const myTheme = createTheme({
   theme: "dark",
   settings: {
     background: "#191a23",
     caret: "white",
+    fontFamily: "Segoe UI",
   },
   styles: [],
 });
@@ -51,12 +36,64 @@ export const NoteDetails: React.FC = () => {
   const { noteId } = useParams<{ noteId: string }>();
 
   const [readingView, setReadingView] = useState(true);
+  const [note, setNote] = useState<any>(undefined);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const { data, isLoading } = useQuery(["notes", noteId], () =>
     apiClient.getNote(noteId)
   );
 
-  const [note, setNote] = useState(code);
+  const handleNoteUpdaing = (key: string, value: string) => {
+    const updatedNote = { ...note, [key]: value, id: data.id };
+
+    setNote(updatedNote);
+  };
+
+  const { mutate: updateNote, isLoading: isUpdating } = useMutation(
+    (data: EditNoteApi) => apiClient.editNote(data),
+    {
+      onSuccess: (editedNote) => {
+        setNote(editedNote);
+        queryClient.invalidateQueries(["notes", noteId]);
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (!data) return;
+    setNote(data);
+  }, [data]);
+
+  useEffect(() => {
+    function handleClickOutsideEditor(event: MouseEvent) {
+      if (
+        editorRef.current &&
+        !editorRef.current.contains(event.target as Node) &&
+        readingView === false
+      ) {
+        updateNote(note);
+        setReadingView(true);
+      }
+    }
+
+    function handleClickOutsideInput(event: MouseEvent) {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node) &&
+        data.title !== note?.title
+      ) {
+        updateNote(note);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutsideEditor);
+    document.addEventListener("mousedown", handleClickOutsideInput);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideEditor);
+      document.removeEventListener("mousedown", handleClickOutsideInput);
+    };
+  }, [editorRef, inputRef, data, note, readingView, updateNote]);
 
   return (
     <div className="flex page-content flex-2">
@@ -96,36 +133,45 @@ export const NoteDetails: React.FC = () => {
           </div>
         )}
 
-        {!isLoading && data && (
+        {!isLoading && note && data && (
           <>
-            <div
-              className="note-header"
-              style={{ position: "relative", zIndex: "-1" }}
-            >
-              <textarea>{data.title}</textarea>
+            <div className="note-header">
+              <textarea
+                ref={inputRef}
+                defaultValue={data.title}
+                onChange={({ target }) =>
+                  handleNoteUpdaing("title", target.value)
+                }
+              ></textarea>
               <div className="br"></div>
               <div className="flex mt-1 align-items-center">
                 <span>
-                  Created on <span className="markee">{data.createdAt}</span>
+                  Created on
+                  <span className="markee">
+                    {transformDate(note.createdAt)}
+                  </span>
                   <BsDot />
                 </span>
                 <span>
-                  Last Edited <span className="markee">29 mins</span>
+                  Last Edited
+                  <span className="markee">
+                    {isUpdating && <Loader />}
+                    {!isUpdating && getIntervalStringFromDate(note.updatedAt)}
+                    {/* {transformDate(note.updatedAt)} */}
+                  </span>
                   <BsDot />
                 </span>
                 <span>
-                  Project : <span className="markee bold"></span>
+                  Project :
+                  {/* <span className="markee bold"> {note.project.name} </span> */}
                 </span>
               </div>
             </div>
-            <div
-              className="note-body flex flex-1"
-              style={{ position: "relative", zIndex: "-1" }}
-            >
+            <div className="note-body flex flex-1" ref={editorRef}>
               {readingView && (
                 <MarkdownPreview
                   style={{ width: "100%", background: "transparent" }}
-                  source={note}
+                  source={note.content}
                 />
               )}
 
@@ -135,9 +181,10 @@ export const NoteDetails: React.FC = () => {
                   minWidth="100%"
                   maxWidth="100%"
                   style={{ overflow: "hidden", whiteSpace: "pre-wrap" }}
-                  value={note}
+                  value={note.content || ""}
                   theme={myTheme}
-                  className="cursor-color"
+                  className="codemirror-editor"
+                  autoFocus
                   extensions={[
                     markdown({
                       base: markdownLanguage,
@@ -145,7 +192,7 @@ export const NoteDetails: React.FC = () => {
                     }),
                   ]}
                   onChange={(value, viewUpdate) => {
-                    setNote(value);
+                    handleNoteUpdaing("content", value);
                   }}
                 />
               )}
