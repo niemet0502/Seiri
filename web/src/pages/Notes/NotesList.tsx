@@ -44,6 +44,10 @@ export const NotesList: React.FC = () => {
     (id: number) => apiClient.deleteNote(id),
     {
       onSuccess: () => {
+        pushToast({
+          title: "Note deleted",
+          message: "",
+        });
         queryClient.invalidateQueries(["notes", projectId]);
       },
     }

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { BsBook, BsCodeSlash, BsDot } from "react-icons/bs";
+import { BsCodeSlash, BsDot } from "react-icons/bs";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
@@ -18,6 +18,7 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { queryClient } from "../..";
+import { useToasts } from "../../provider/toastProvider";
 import { EditNoteApi } from "../../types";
 import { getIntervalStringFromDate, transformDate } from "../../utils/Date";
 
@@ -33,7 +34,12 @@ const myTheme = createTheme({
 
 export const NoteDetails: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
-  const { noteId } = useParams<{ noteId: string }>();
+  const { noteId, projectId } = useParams<{
+    noteId: string;
+    projectId: string;
+  }>();
+  const { push } = useHistory();
+  const { pushToast } = useToasts();
 
   const [readingView, setReadingView] = useState(true);
   const [note, setNote] = useState<any>(undefined);
@@ -56,6 +62,20 @@ export const NoteDetails: React.FC = () => {
       onSuccess: (editedNote) => {
         setNote(editedNote);
         queryClient.invalidateQueries(["notes", noteId]);
+      },
+    }
+  );
+
+  const { mutate: deleteNote } = useMutation(
+    (id: number) => apiClient.deleteNote(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["notes", projectId]);
+        pushToast({
+          title: "Note deleted",
+          message: "",
+        });
+        push(`/project/${projectId}`);
       },
     }
   );
@@ -101,8 +121,8 @@ export const NoteDetails: React.FC = () => {
         <PageHeader>
           <h4>2023 Roadmap &gt; Thot v0</h4>
           <Dropdown
-            left="-150px"
-            width="150px"
+            left="-100px"
+            width="100px"
             trigger={(toggle) => (
               <IconButton handler={toggle}>
                 <BiDotsHorizontalRounded />
@@ -110,18 +130,10 @@ export const NoteDetails: React.FC = () => {
             )}
           >
             <DropdownItem handler={() => setReadingView((prev) => !prev)}>
-              <BsBook /> Reading view
+              <BsCodeSlash /> Edit
             </DropdownItem>
 
-            <DropdownItem>
-              <BsCodeSlash /> Source code
-            </DropdownItem>
-
-            <DropdownItem>
-              <AiOutlineEye /> Instant preview
-            </DropdownItem>
-
-            <DropdownItem>
+            <DropdownItem handler={() => deleteNote(note.id)}>
               <AiOutlineDelete /> Delete
             </DropdownItem>
           </Dropdown>
