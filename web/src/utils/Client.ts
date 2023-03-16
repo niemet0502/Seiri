@@ -128,4 +128,10 @@ export class Client {
 
     return this.api.patch(url, data).then((r) => r.data);
   }
+
+  public deleteNote(id: number) {
+    const url = this.baseApiUrl + `note/${id}`;
+
+    return this.api.delete(url);
+  }
 }

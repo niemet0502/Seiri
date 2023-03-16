@@ -4,6 +4,7 @@ import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
+import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
@@ -35,6 +36,15 @@ export const NotesList: React.FC = () => {
         });
 
         push(`/project/${projectId}/note/${newNote.id}`);
+      },
+    }
+  );
+
+  const { mutate: deleteNote } = useMutation(
+    (id: number) => apiClient.deleteNote(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["notes", projectId]);
       },
     }
   );
@@ -77,7 +87,9 @@ export const NotesList: React.FC = () => {
         </div>
         <div className="flex notes-list">
           {notes.length > 0 &&
-            notes.map((note: Note) => <NoteCard key={note.id} note={note} />)}
+            notes.map((note: Note) => (
+              <NoteCard key={note.id} note={note} onDelete={deleteNote} />
+            ))}
         </div>
 
         {notes.length === 0 && !isLoading && (

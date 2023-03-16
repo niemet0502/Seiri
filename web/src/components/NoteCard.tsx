@@ -4,7 +4,10 @@ import { BsArchive } from "react-icons/bs";
 import { NavLink, useParams } from "react-router-dom";
 import { Note } from "../types";
 // will receive a note as arguments
-export const NoteCard: React.FC<{ note: Note }> = ({ note }) => {
+export const NoteCard: React.FC<{
+  note: Note;
+  onDelete: (id: number) => void;
+}> = ({ note, onDelete }) => {
   const { projectId } = useParams<{ projectId: string }>();
 
   const contentPreview = useMemo(() => {
@@ -33,7 +36,7 @@ export const NoteCard: React.FC<{ note: Note }> = ({ note }) => {
         </NavLink>
 
         <div className="icons flex gap-2">
-          <div className="border-debug">
+          <div className="border-debug" onClick={() => onDelete(note.id)}>
             <AiOutlineDelete />
           </div>
 
