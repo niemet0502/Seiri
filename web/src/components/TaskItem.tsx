@@ -43,9 +43,12 @@ export const TaskItem: React.FC<{
             >
               <AiOutlineCheck />
             </div>
-            <NavLink to={`/project/${projectId}/task/${task.id}`}>
-              {task.title}
-            </NavLink>
+            <div>
+              <NavLink to={`/project/${projectId}/task/${task.id}`}>
+                {task.title}
+              </NavLink>
+              <p>{task.description || ""}</p>
+            </div>
           </div>
           <div className="flex gap-2">
             {editable && editTask && (
