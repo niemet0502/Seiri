@@ -2,7 +2,6 @@ import { useCallback, useContext, useState } from "react";
 import {
   AiOutlineCheckCircle,
   AiOutlineDelete,
-  AiOutlineEdit,
   AiOutlinePlus,
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
@@ -109,7 +108,7 @@ export const TasksList: React.FC = () => {
         <PageHeader>
           <h3>2023 Roadmap</h3>
           <Dropdown
-            left="-120px"
+            left="-150px"
             width="150px"
             trigger={(toggle) => (
               <IconButton handler={toggle}>
@@ -118,15 +117,11 @@ export const TasksList: React.FC = () => {
             )}
           >
             <DropdownItem>
-              <AiOutlineEdit /> Edit
-            </DropdownItem>
-
-            <DropdownItem>
-              <AiOutlineDelete /> Delete
-            </DropdownItem>
-
-            <DropdownItem>
               <AiOutlineCheckCircle /> Hide completed
+            </DropdownItem>
+
+            <DropdownItem>
+              <AiOutlineDelete /> Delete completed
             </DropdownItem>
           </Dropdown>
         </PageHeader>

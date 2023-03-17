@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { MdArrowForwardIos } from "react-icons/md";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { NavLink, useParams } from "react-router-dom";
 import { EditTaskApi, Task } from "../types";
 import { IconButton } from "./Button";
@@ -27,7 +27,8 @@ export const TaskItem: React.FC<{
           }}
         >
           <IconButton handler={() => setIsChildrenVisible((prev) => !prev)}>
-            <MdArrowForwardIos />
+            {!isChildrenVisible && <IoIosArrowForward />}
+            {isChildrenVisible && <IoIosArrowDown />}
           </IconButton>
         </div>
         <div className="task  flex-1" key={task.id}>
