@@ -104,7 +104,9 @@ export const NotesList: React.FC = () => {
             <BiTaskX size={55} />
             <h3>No Note found </h3>
             <p>Organize your life. Achieve more every day by creating a note</p>
-            <Button>
+            <Button
+              handler={() => createNote({ projectId, title: "Untitled" })}
+            >
               <AiOutlinePlus /> Create Note
             </Button>
           </div>
