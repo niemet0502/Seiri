@@ -16,6 +16,7 @@ import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
@@ -25,6 +26,7 @@ export const TasksList: React.FC = () => {
 
   const { projectId } = useParams<{ projectId: string }>();
   const { apiClient } = useContext(ApiClientContext);
+  const { pushToast } = useToasts();
 
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
   const [taskToEdit, setTaskToEdit] = useState<Task>();
@@ -36,8 +38,12 @@ export const TasksList: React.FC = () => {
   const { mutate: completeTask } = useMutation(
     (data: EditTaskApi) => apiClient.editTask(data),
     {
-      onSuccess: () => {
-        //add toast
+      onSuccess: (editedTask) => {
+        pushToast({
+          title: "Task completed",
+          message: editedTask.title,
+        });
+
         queryClient.invalidateQueries([querykey, projectId]);
       },
     }
@@ -46,8 +52,12 @@ export const TasksList: React.FC = () => {
   const { mutate: deleteTask } = useMutation(
     (taskId: number) => apiClient.deleteTask(taskId),
     {
-      onSuccess: () => {
-        //add toast
+      onSuccess: ({ data }) => {
+        pushToast({
+          title: "Task deleted",
+          message: data.title,
+        });
+
         queryClient.invalidateQueries([querykey, projectId]);
       },
     }
@@ -61,13 +71,17 @@ export const TasksList: React.FC = () => {
     setNewTaskHandler(deferred);
 
     try {
-      await deferred.promise;
-      // add toast
+      const result = await deferred.promise;
+
+      pushToast({
+        title: "Task created",
+        message: result.title,
+      });
     } catch (e) {
     } finally {
       setNewTaskHandler(undefined);
     }
-  }, []);
+  }, [pushToast]);
 
   const editTask = async (task: Task) => {
     const deferred = new Deferred<Task>();
@@ -76,8 +90,12 @@ export const TasksList: React.FC = () => {
     setTaskToEdit(task);
 
     try {
-      await deferred.promise;
-      // add toast
+      const result = await deferred.promise;
+
+      pushToast({
+        title: "Task edited",
+        message: result.title,
+      });
     } catch (e) {
     } finally {
       setNewTaskHandler(undefined);

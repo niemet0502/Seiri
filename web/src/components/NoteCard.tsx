@@ -2,21 +2,35 @@ import { AiOutlineDelete, AiOutlineStar } from "react-icons/ai";
 import { BsArchive } from "react-icons/bs";
 import { NavLink, useParams } from "react-router-dom";
 import { Note } from "../types";
-
+import { textEllipsis } from "../utils/Helpers";
 // will receive a note as arguments
-export const NoteCard: React.FC<{ note: Note }> = ({ note }) => {
+export const NoteCard: React.FC<{
+  note: Note;
+  onDelete: (id: number) => void;
+}> = ({ note, onDelete }) => {
   const { projectId } = useParams<{ projectId: string }>();
-  return (
-    <NavLink to={`/project/${projectId}/note/${note.id}`}>
-      <div className="note-card flex">
-        <div>
-          <h3>{note.title}</h3>
 
-          <p>{note.content}</p>
-        </div>
+  return (
+    <div>
+      <div className="note-card flex">
+        <NavLink
+          to={`/project/${projectId}/note/${note.id}`}
+          className="flex-1"
+        >
+          <h3>{textEllipsis(note.title, 33)}</h3>
+
+          <p>
+            {note.content
+              ? textEllipsis(
+                  note.content.replace(/[^a-zA-Z\s.,!?;:()'"-]/g, ""),
+                  200
+                )
+              : ""}
+          </p>
+        </NavLink>
 
         <div className="icons flex gap-2">
-          <div className="border-debug">
+          <div className="border-debug" onClick={() => onDelete(note.id)}>
             <AiOutlineDelete />
           </div>
 
@@ -29,6 +43,6 @@ export const NoteCard: React.FC<{ note: Note }> = ({ note }) => {
           </div>
         </div>
       </div>
-    </NavLink>
+    </div>
   );
 };

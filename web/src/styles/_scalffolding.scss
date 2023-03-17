@@ -10,8 +10,32 @@ a {
   text-decoration: none;
 }
 
-textarea:focus {
+textarea:focus,
+input:focus {
   outline: none;
   border: 1px solid $primary !important;
   border-radius: 5px;
+}
+
+.ͼ3 .cm-gutters {
+  display: none !important;
+}
+
+.cm-theme {
+  width: 100%;
+}
+
+.markdown-preview {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.cm-content,
+.cm-scroller {
+  overflow-x: hidden !important;
+  white-space: pre-wrap !important;
+}
+
+.ͼ1 .cm-scroller {
+  display: block !important;
 }

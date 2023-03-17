@@ -1,8 +1,10 @@
 import axios from "axios";
 import { TOKEN_LS_KEY } from "../provider/userProvider";
 import {
+  CreateNoteApi,
   CreateProject,
   CreateTaskApi,
+  EditNoteApi,
   EditProject,
   EditTaskApi,
   FeatureEnum,
@@ -94,12 +96,42 @@ export class Client {
   public editTask(data: EditTaskApi) {
     const url = this.baseApiUrl + `task/${data.id}`;
 
-    return this.api.patch(url, data);
+    return this.api.patch(url, data).then((r) => r.data);
   }
 
   public deleteTask(taskId: number) {
     const url = this.baseApiUrl + `task/${taskId}`;
 
     return this.api.delete(url).then((r) => r.data);
+  }
+
+  public getNotesByProject(projectId: string) {
+    const url = this.baseApiUrl + `note/project/${projectId}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
+
+  public createNote(data: CreateNoteApi) {
+    const url = this.baseApiUrl + "note";
+
+    return this.api.post(url, data).then((r) => r.data);
+  }
+
+  public getNote(id: string) {
+    const url = this.baseApiUrl + `note/${id}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
+
+  public editNote(data: EditNoteApi) {
+    const url = this.baseApiUrl + `note/${data.id}`;
+
+    return this.api.patch(url, data).then((r) => r.data);
+  }
+
+  public deleteNote(id: number) {
+    const url = this.baseApiUrl + `note/${id}`;
+
+    return this.api.delete(url);
   }
 }

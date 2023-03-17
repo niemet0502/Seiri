@@ -6,6 +6,7 @@ import { ApiClientContext } from "../../provider/apiClientProvider";
 import { currentFeatureContext } from "../../provider/currentFeatureProvider";
 import { Project } from "../../types";
 import { IconButton } from "../Button";
+import { Loader } from "../Loader";
 import { PageHeader } from "../PageHeader";
 import { ProjectItem } from "../Project";
 
@@ -40,7 +41,7 @@ export const Projects: React.FC<{
   useEffect(() => {
     if (!feature) return;
     refetch();
-  }, [feature]);
+  }, [feature, refetch]);
 
   return (
     <div className="project-sidebar">
@@ -51,7 +52,11 @@ export const Projects: React.FC<{
         </IconButton>
       </PageHeader>
 
-      {isLoading && <p>isLoading</p>}
+      {isLoading && (
+        <div className="flex justify-content-center mt-2">
+          <Loader />
+        </div>
+      )}
       <div className="project-list">
         {projects.map((project: Project) => (
           <ProjectItem
@@ -59,6 +64,7 @@ export const Projects: React.FC<{
             project={project}
             active={isActive(project.id)}
             setProjectToEdit={setProjectToEdit}
+            feature={feature}
           />
         ))}
       </div>
