@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { MdArrowForwardIos } from "react-icons/md";
 import { NavLink, useParams } from "react-router-dom";
 import { EditTaskApi, Task } from "../types";
 import { IconButton } from "./Button";
@@ -11,34 +13,53 @@ export const TaskItem: React.FC<{
   editTask?: (task: Task) => void;
 }> = ({ task, editable, completeTask, deleteTask, editTask }) => {
   const { projectId } = useParams<{ projectId: string }>();
+
+  const [isChildrenVisible, setIsChildrenVisible] = useState(false);
+
   return (
     <>
-      <div className="task" key={task.id}>
-        <div className={`infos flex gap-2 isdone-${task.isDone}`}>
-          <div
-            className={`statut isdone-${task.isDone}`}
-            onClick={() =>
-              completeTask({ id: task.id, isDone: !task.isDone } as EditTaskApi)
-            }
-          >
-            <AiOutlineCheck />
-          </div>
-          <NavLink to={`/project/${projectId}/task/${task.id}`}>
-            {task.title}
-          </NavLink>
-        </div>
-        <div className="flex gap-2">
-          {editable && editTask && (
-            <IconButton handler={() => editTask(task)}>
-              <AiOutlineEdit />
-            </IconButton>
-          )}
-          <IconButton handler={() => deleteTask(task.id)}>
-            <AiOutlineDelete />
+      <div className="flex">
+        <div
+          className="flex align-items-center justify-content-center"
+          style={{
+            visibility:
+              task.children && task.children?.length > 0 ? "visible" : "hidden",
+          }}
+        >
+          <IconButton handler={() => setIsChildrenVisible((prev) => !prev)}>
+            <MdArrowForwardIos />
           </IconButton>
         </div>
+        <div className="task  flex-1" key={task.id}>
+          <div className={`infos flex gap-2 isdone-${task.isDone}`}>
+            <div
+              className={`statut isdone-${task.isDone}`}
+              onClick={() =>
+                completeTask({
+                  id: task.id,
+                  isDone: !task.isDone,
+                } as EditTaskApi)
+              }
+            >
+              <AiOutlineCheck />
+            </div>
+            <NavLink to={`/project/${projectId}/task/${task.id}`}>
+              {task.title}
+            </NavLink>
+          </div>
+          <div className="flex gap-2">
+            {editable && editTask && (
+              <IconButton handler={() => editTask(task)}>
+                <AiOutlineEdit />
+              </IconButton>
+            )}
+            <IconButton handler={() => deleteTask(task.id)}>
+              <AiOutlineDelete />
+            </IconButton>
+          </div>
+        </div>
       </div>
-      {task.children && (
+      {task.children && isChildrenVisible && (
         <div style={{ marginLeft: "25px" }}>
           {task.children.map((child) => (
             <TaskItem

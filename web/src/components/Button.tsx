@@ -21,9 +21,9 @@ export const IconButton: React.FC<{
   children: React.ReactNode;
   handler?: MouseEventHandler;
   active?: string | null;
-}> = ({ children, handler, active }) => {
+}> = ({ children, handler, active, ...props }) => {
   return (
-    <button className={`icon-c ${active}`} onClick={handler}>
+    <button className={`icon-c ${active}`} onClick={handler} {...props}>
       {children}
     </button>
   );
