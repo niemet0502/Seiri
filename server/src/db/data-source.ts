@@ -6,7 +6,7 @@ export const dataSourceOptions: DataSourceOptions = {
   port: parseInt(process.env.DB_PORT, 10),
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD,
-  database: 'thotprod',
+  database: 'thot',
   entities: ['dist/**/*entity.js'],
   migrations: ['dist/db/migrations/*js'],
   synchronize: false,
