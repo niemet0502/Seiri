@@ -56,6 +56,11 @@ export class ProjectController {
     return await this.projectService.findArchivedProjectByUser(+id);
   }
 
+  @Get('/get/:id')
+  async findOne(@Param('id') id: string): Promise<Project | undefined> {
+    return await this.projectService.findById(+id);
+  }
+
   @Patch(':id')
   async update(
     @Param('id') id: string,

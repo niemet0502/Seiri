@@ -134,4 +134,10 @@ export class Client {
 
     return this.api.delete(url);
   }
+
+  public getProject(projectId: string) {
+    const url = this.baseApiUrl + `project/get/${projectId}`;
+
+    return this.api.get(url).then((r) => r.data);
+  }
 }

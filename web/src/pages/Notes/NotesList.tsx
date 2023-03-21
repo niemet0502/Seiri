@@ -10,6 +10,7 @@ import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { NoteCard } from "../../components/NoteCard";
 import { PageHeader } from "../../components/PageHeader";
+import { PageHeader2 } from "../../components/PageHeader2";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { CreateNoteApi, Note } from "../../types";
@@ -57,6 +58,7 @@ export const NotesList: React.FC = () => {
     <div className="flex page-content flex-2">
       <div className="flex flex-column w-100">
         <div className="notes-list-header">
+          <PageHeader2 />
           <PageHeader>
             <h4>2023 Roadmap</h4>
 
