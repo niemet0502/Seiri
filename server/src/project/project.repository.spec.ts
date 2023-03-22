@@ -62,6 +62,7 @@ describe('ProjectRepository', () => {
         user: null,
         tasks: null,
         notes: null,
+        handledObject: 2,
       };
 
       jest.spyOn(mockRepository, 'save').mockReturnValue(project);
@@ -74,13 +75,20 @@ describe('ProjectRepository', () => {
   describe('ProjectRepository.__findAllByUser', () => {
     it('should return an array of project of a given user', async () => {
       const id = 1;
+      const handledObject = 1;
 
       jest.spyOn(mockRepository, 'find').mockReturnValue(projects);
 
-      expect(await projectsRepository.findAllByUser(id)).toEqual(projects);
+      expect(await projectsRepository.findAllByUser(id, handledObject)).toEqual(
+        projects,
+      );
       expect(mockRepository.find).toBeCalledWith({
         order: { id: 'DESC' },
-        where: { user: { id: id }, isArchive: false },
+        where: {
+          user: { id: id },
+          isArchive: false,
+          handledObject: handledObject,
+        },
       });
     });
   });
