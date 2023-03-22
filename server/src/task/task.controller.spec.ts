@@ -65,6 +65,7 @@ describe('TaskController', () => {
         title: 'first task',
         description: 'first task description',
         projectId: 2,
+        parentId: null,
       };
       jest.spyOn(mockProjectService, 'findById').mockReturnValue(null);
 
@@ -81,6 +82,7 @@ describe('TaskController', () => {
         title: 'first task',
         description: 'first task description',
         projectId: 2,
+        parentId: null,
       };
       jest.spyOn(mockProjectService, 'findById').mockReturnValue(project);
       jest.spyOn(mockTaskService, 'create').mockReturnValue(task);
