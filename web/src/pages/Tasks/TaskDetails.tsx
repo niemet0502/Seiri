@@ -8,6 +8,7 @@ import {
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
@@ -36,6 +37,7 @@ export const TaskDetails: React.FC = () => {
 
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
+  const [isChildrenVisible, setIsChildrenVisible] = useState(true);
 
   const { data: task, isLoading } = useQuery(["tasks", taskId], () =>
     apiClient.getTask(taskId)
@@ -208,22 +210,32 @@ export const TaskDetails: React.FC = () => {
               )}
 
               <div className="flex align-items-center justify-content-between">
-                <h6>Sub-tasks</h6>
+                <div className="flex align-items-center gap-2">
+                  <IconButton
+                    handler={() => setIsChildrenVisible((prev) => !prev)}
+                  >
+                    {!isChildrenVisible && <IoIosArrowForward />}
+                    {isChildrenVisible && <IoIosArrowDown />}
+                  </IconButton>
+                  <h6>Sub-tasks</h6>
+                </div>
                 <IconButton handler={addTask}>
                   <AiOutlinePlus />
                 </IconButton>
               </div>
-              <div className="">
-                {task.children.map((task: Task) => (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    editable={false}
-                    completeTask={completeTask}
-                    deleteTask={(taskId: number) => deleteTask(taskId)}
-                  />
-                ))}
-              </div>
+              {isChildrenVisible && (
+                <div className="">
+                  {task.children.map((task: Task) => (
+                    <TaskItem
+                      key={task.id}
+                      task={task}
+                      editable={false}
+                      completeTask={completeTask}
+                      deleteTask={(taskId: number) => deleteTask(taskId)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

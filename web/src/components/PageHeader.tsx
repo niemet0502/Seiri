@@ -19,8 +19,12 @@ export const PageHeader: React.FC<{
     taskId: string;
   }>();
 
-  const { data, refetch } = useQuery(["projects", projectId], () =>
-    apiClient.getProject(projectId)
+  const { data, refetch } = useQuery(
+    ["projects", projectId],
+    () => apiClient.getProject(projectId),
+    {
+      enabled: projectId ? true : false,
+    }
   );
 
   useEffect(() => {
