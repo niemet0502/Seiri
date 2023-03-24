@@ -1,16 +1,12 @@
 import { useContext } from "react";
-import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
-import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
-import { BsArchive } from "react-icons/bs";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiTaskX } from "react-icons/bi";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
-import { Dropdown } from "../../components/Dropdown";
-import { DropdownItem } from "../../components/DropdownItem";
 import { NoteCard } from "../../components/NoteCard";
 import { PageHeader } from "../../components/PageHeader";
-import { PageHeader2 } from "../../components/PageHeader2";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { CreateNoteApi, Note } from "../../types";
@@ -58,36 +54,13 @@ export const NotesList: React.FC = () => {
     <div className="flex page-content flex-2">
       <div className="flex flex-column w-100">
         <div className="notes-list-header">
-          <PageHeader2 />
           <PageHeader>
-            <h4>2023 Roadmap</h4>
-
             <div className="flex">
               <IconButton
                 handler={() => createNote({ projectId, title: "Untitled" })}
               >
                 <AiOutlinePlus />
               </IconButton>
-              <Dropdown
-                left="-120px"
-                trigger={(toggle) => (
-                  <IconButton handler={toggle}>
-                    <BiDotsHorizontalRounded />
-                  </IconButton>
-                )}
-              >
-                <DropdownItem>
-                  <AiOutlineEdit /> Edit
-                </DropdownItem>
-
-                <DropdownItem>
-                  <AiOutlineDelete /> Delete
-                </DropdownItem>
-
-                <DropdownItem>
-                  <BsArchive /> Archive
-                </DropdownItem>
-              </Dropdown>
             </div>
           </PageHeader>
         </div>

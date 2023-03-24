@@ -106,7 +106,6 @@ export const TasksList: React.FC = () => {
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
         <PageHeader>
-          <h3>2023 Roadmap</h3>
           <Dropdown
             left="-150px"
             width="150px"

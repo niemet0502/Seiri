@@ -106,14 +106,7 @@ export const TaskDetails: React.FC = () => {
     <div className="flex page-content flex-2">
       <div className="task-details">
         <div className="task-content">
-          <PageHeader>
-            <h4>
-              {task && (
-                <>
-                  {task.project.name} &gt; <span>{task.title}</span>{" "}
-                </>
-              )}
-            </h4>
+          <PageHeader task={task}>
             <Dropdown
               left="-120px"
               trigger={(toggle) => (
@@ -236,7 +229,7 @@ export const TaskDetails: React.FC = () => {
         </div>
         <div className="task-attributes flex flex-column">
           <div className="task-detail-header">
-            <PageHeader>Details</PageHeader>
+            <PageHeader title="Details" />
           </div>
           {isLoading && <Loader />}
 
