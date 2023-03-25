@@ -1,11 +1,14 @@
 import { useCallback, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NavLink, useHistory } from "react-router-dom";
-import { Button } from "../../components/Button";
-import { FormInput } from "../../components/Input";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { CurrentUserContext, TOKEN_LS_KEY } from "../../provider/userProvider";
-import { IAuthLogin } from "../../types";
+import { Button } from "../../../components/Button";
+import { FormInput } from "../../../components/Input";
+import { ApiClientContext } from "../../../provider/apiClientProvider";
+import {
+  CurrentUserContext,
+  TOKEN_LS_KEY,
+} from "../../../provider/userProvider";
+import { IAuthLogin } from "../../../types";
 
 export const Login: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
