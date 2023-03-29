@@ -13,7 +13,7 @@ import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
-import { TaskItem } from "../../components/TaskItem";
+import { TaskItem } from "../../components/TaskItem/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";

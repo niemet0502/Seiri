@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { NavLink, useParams } from "react-router-dom";
-import { EditTaskApi, Task } from "../types";
-import { IconButton } from "./Button";
+import { EditTaskApi, Task } from "../../types";
+import { IconButton } from "../Button";
 
 export const TaskItem: React.FC<{
   task: Task;
@@ -17,7 +17,7 @@ export const TaskItem: React.FC<{
   const [isChildrenVisible, setIsChildrenVisible] = useState(false);
 
   return (
-    <>
+    <React.Fragment>
       <div className="flex">
         <div
           className="flex align-items-center justify-content-center"
@@ -76,6 +76,6 @@ export const TaskItem: React.FC<{
           ))}
         </div>
       )}
-    </>
+    </React.Fragment>
   );
 };

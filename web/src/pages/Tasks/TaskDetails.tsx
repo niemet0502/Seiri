@@ -17,7 +17,7 @@ import { DropdownItem } from "../../components/DropdownItem";
 import { FormInput } from "../../components/Input";
 import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
-import { TaskItem } from "../../components/TaskItem";
+import { TaskItem } from "../../components/TaskItem/TaskItem";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { useToasts } from "../../provider/toastProvider";

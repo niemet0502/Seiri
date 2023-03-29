@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react";
 import { ApiClientProvider } from "../../../provider/apiClientProvider";
 import { CurrentUserContext } from "../../../provider/userProvider";
-import { Client } from "../../../utils/Client";
 import { Login } from "./Login";
 
 jest.mock("react-hook-form", () => ({
@@ -40,7 +39,7 @@ const mockCurrentUserContext = {
 };
 
 const mockApiClientContext = {
-  apiClient: new Client(),
+  apiClient: jest.fn(),
 };
 
 const mockUseHistory = {

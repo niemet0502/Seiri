@@ -1,6 +1,6 @@
 import { Route, Router, Switch } from "react-router-dom";
 import { history } from "../../App";
-import { Login } from "./Login";
+import { Login } from "./Login/Login";
 import { ResetPassword } from "./ResetPassword";
 import { SignIn } from "./SignIn";
 
