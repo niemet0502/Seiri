@@ -231,7 +231,7 @@ export const TaskDetails: React.FC = () => {
                     {!isChildrenVisible && <IoIosArrowForward />}
                     {isChildrenVisible && <IoIosArrowDown />}
                   </IconButton>
-                  <h6>Sub-tasks</h6>
+                  <h4>Sub-tasks</h4>
                 </div>
                 <IconButton handler={addTask}>
                   <AiOutlinePlus />
@@ -263,7 +263,20 @@ export const TaskDetails: React.FC = () => {
             <div className="row task-detail ">
               <div className=" flex mt-2  attributes">
                 <div className="label">Statut</div>
-                <div>{task.isDone ? "Done" : "To do"}</div>
+                <div className="flex align-items-center gap-1">
+                  <div
+                    style={{
+                      width: "17px",
+                      height: "17px",
+                      flex: "none",
+                      borderColor: task.isDone ? "transparent" : "#2c2d3c",
+                    }}
+                    className={`statut isdone-${task.isDone}`}
+                  >
+                    <AiOutlineCheck />
+                  </div>
+                  {task.isDone ? "Completed" : "To do"}
+                </div>
               </div>
               <div className=" flex mt-2  attributes">
                 <div className="label">Project</div>

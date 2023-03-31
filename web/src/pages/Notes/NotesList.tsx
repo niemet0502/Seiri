@@ -65,7 +65,10 @@ export const NotesList: React.FC = () => {
 
   return (
     <div className="flex page-content flex-2">
-      <div className="flex flex-column w-100">
+      <div
+        className="flex flex-column "
+        style={{ width: "calc(100% - 120px)", maxWidth: "860px" }}
+      >
         <div className="notes-list-header">
           <PageHeader>
             <div className="flex">
