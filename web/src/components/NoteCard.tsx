@@ -2,7 +2,7 @@ import { AiOutlineDelete, AiOutlineStar } from "react-icons/ai";
 import { NavLink, useParams } from "react-router-dom";
 import { Note } from "../types";
 import { textEllipsis } from "../utils/Helpers";
-// will receive a note as arguments
+
 export const NoteCard: React.FC<{
   note: Note;
   onDelete: (id: number) => void;

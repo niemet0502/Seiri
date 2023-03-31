@@ -15,6 +15,7 @@ import { Loader } from "../../components/Loader";
 import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
@@ -26,6 +27,7 @@ export const TasksList: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
   const [taskToEdit, setTaskToEdit] = useState<Task>();
@@ -102,6 +104,17 @@ export const TasksList: React.FC = () => {
     }
   };
 
+  const onDelete = async (taskId: number) => {
+    if (
+      await confirm({
+        title: "Delete Task ?",
+        message: "Are you sure you want to delete this task ?",
+      })
+    ) {
+      deleteTask(taskId);
+    }
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
@@ -136,7 +149,7 @@ export const TasksList: React.FC = () => {
                       task={task}
                       editable={true}
                       completeTask={(data: EditTaskApi) => completeTask(data)}
-                      deleteTask={(taskId: number) => deleteTask(taskId)}
+                      deleteTask={(taskId: number) => onDelete(taskId)}
                       editTask={(task: Task) => editTask(task)}
                     />
                   ))}

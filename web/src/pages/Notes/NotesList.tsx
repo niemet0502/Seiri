@@ -8,6 +8,7 @@ import { Button, IconButton } from "../../components/Button";
 import { NoteCard } from "../../components/NoteCard";
 import { PageHeader } from "../../components/PageHeader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { CreateNoteApi, Note } from "../../types";
 
@@ -16,6 +17,7 @@ export const NotesList: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { push } = useHistory();
   const { apiClient } = useContext(ApiClientContext);
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const { data, isLoading } = useQuery(["notes", projectId], () =>
     apiClient.getNotesByProject(projectId)
@@ -50,6 +52,17 @@ export const NotesList: React.FC = () => {
     }
   );
 
+  const onDelete = async (noteId: number) => {
+    if (
+      await confirm({
+        title: "Delete Note ?",
+        message: "Are you sure you want to delete this note ?",
+      })
+    ) {
+      deleteNote(noteId);
+    }
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="flex flex-column w-100">
@@ -67,7 +80,11 @@ export const NotesList: React.FC = () => {
         <div className="flex notes-list">
           {notes.length > 0 &&
             notes.map((note: Note) => (
-              <NoteCard key={note.id} note={note} onDelete={deleteNote} />
+              <NoteCard
+                key={note.id}
+                note={note}
+                onDelete={(noteId: number) => onDelete(noteId)}
+              />
             ))}
         </div>
 

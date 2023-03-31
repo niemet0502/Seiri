@@ -21,6 +21,7 @@ import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
@@ -34,6 +35,7 @@ export const TaskDetails: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
   const { goBack } = useHistory();
   const { pushToast } = useToasts();
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
@@ -104,6 +106,19 @@ export const TaskDetails: React.FC = () => {
     reset(task);
   }, [task, reset]);
 
+  const onDelete = async (taskId: number, redirect?: boolean) => {
+    if (
+      await confirm({
+        title: "Delete Task ?",
+        message: "Are you sure you want to delete this task ?",
+      })
+    ) {
+      deleteTask(taskId);
+    }
+
+    if (redirect) goBack();
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="task-details">
@@ -123,8 +138,7 @@ export const TaskDetails: React.FC = () => {
 
               <DropdownItem
                 handler={() => {
-                  deleteTask(task.id);
-                  goBack();
+                  onDelete(task.id, true);
                 }}
               >
                 <AiOutlineDelete /> Delete
@@ -231,7 +245,7 @@ export const TaskDetails: React.FC = () => {
                       task={task}
                       editable={false}
                       completeTask={completeTask}
-                      deleteTask={(taskId: number) => deleteTask(taskId)}
+                      deleteTask={(taskId: number) => onDelete(taskId)}
                     />
                   ))}
                 </div>
