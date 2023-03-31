@@ -174,7 +174,10 @@ export const NoteDetails: React.FC = () => {
                 </span>
                 <span>
                   Project :
-                  {/* <span className="markee bold"> {note.project.name} </span> */}
+                  <span className="markee bold">
+                    {" "}
+                    {note.project && note.project.name}
+                  </span>
                 </span>
               </div>
             </div>

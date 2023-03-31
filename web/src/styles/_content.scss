@@ -16,15 +16,18 @@
 
       textarea {
         font-size: 36px;
-        width: 90%;
+        width: 100%;
         resize: none;
         background-color: $background-color;
         border: 1px solid $background-color;
         color: $white;
-        height: 50px;
+        height: 45px;
         resize: none;
-        height: auto;
-        overflow: hidden;
+
+        &:focus {
+          outline: none;
+          border-color: transparent !important;
+        }
       }
 
       .br {
@@ -47,13 +50,13 @@
 
   .notes-list-header {
     padding-top: 30px;
-    width: 80%;
+    width: 100%;
     align-self: center;
     margin-bottom: 30px;
   }
 
   .notes-list {
-    width: 80%;
+    width: 100%;
     align-self: center;
     padding: 0;
     margin: 0;
