@@ -17,7 +17,7 @@ import { TaskItem } from "../../components/TaskItem";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
-import { EditTaskApi, Task } from "../../types";
+import { DeleteMultipleTasksApi, EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
@@ -56,7 +56,21 @@ export const TasksList: React.FC = () => {
       onSuccess: ({ data }) => {
         pushToast({
           title: "Task deleted",
-          message: data.title,
+          message: "",
+        });
+
+        queryClient.invalidateQueries([querykey, projectId]);
+      },
+    }
+  );
+
+  const { mutate: deleteMultipleTask } = useMutation(
+    (data: DeleteMultipleTasksApi) => apiClient.deleteMultipleTasks(data),
+    {
+      onSuccess: ({ data }) => {
+        pushToast({
+          title: "Task deleted",
+          message: "",
         });
 
         queryClient.invalidateQueries([querykey, projectId]);
@@ -115,6 +129,17 @@ export const TasksList: React.FC = () => {
     }
   };
 
+  const onMultipleDelete = async (projectId: string) => {
+    if (
+      await confirm({
+        title: "Delete Tasks ?",
+        message: "Are you sure you want to delete all completed tasks ?",
+      })
+    ) {
+      deleteMultipleTask({ projectId, completed: true });
+    }
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
@@ -132,7 +157,7 @@ export const TasksList: React.FC = () => {
               <AiOutlineCheckCircle /> Hide completed
             </DropdownItem>
 
-            <DropdownItem>
+            <DropdownItem handler={() => onMultipleDelete(projectId)}>
               <AiOutlineDelete /> Delete completed
             </DropdownItem>
           </Dropdown>
