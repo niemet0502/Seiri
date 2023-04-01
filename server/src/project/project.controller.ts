@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/user/entities/user.entity';
@@ -72,5 +73,13 @@ export class ProjectController {
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.projectService.delete(+id);
+  }
+
+  @Delete(':id/tasks')
+  async deleteTasks(
+    @Param('id') id: string,
+    @Query('completed') completed: boolean,
+  ) {
+    return await this.projectService.deleteTask(+id, completed);
   }
 }
