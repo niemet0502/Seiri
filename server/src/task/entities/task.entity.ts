@@ -29,12 +29,15 @@ export class Task {
 
   //  dueDate, parent_id[nullable,ForeignKey],isDeleted TODO
 
-  @ManyToOne(() => Task, (task) => task.children, { nullable: true })
+  @ManyToOne(() => Task, (task) => task.children, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   parent: Task;
 
   @OneToMany(() => Task, (task) => task.parent, {
     nullable: true,
-    onDelete: 'CASCADE',
+    cascade: true,
   })
   children: Task[];
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Project } from '../project/entities/project.entity';
 import { Task } from './entities/task.entity';
 
@@ -44,10 +44,13 @@ export class TaskRepository {
   }
 
   async removeTasks(project: Project, isDone: boolean) {
-    return await this.tasksRepository.delete({
-      project,
-      isDone: true,
-      parent: IsNull(),
-    });
+    return await this.tasksRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.children', 'child')
+      .where('task.projectId = :projectId', { projectId: project.id })
+      .andWhere('task.parentId IS NULL')
+      .andWhere('task.isDone = true')
+      .delete()
+      .execute();
   }
 }
