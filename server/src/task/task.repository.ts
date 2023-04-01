@@ -42,4 +42,14 @@ export class TaskRepository {
   async remove(task: Task) {
     return await this.tasksRepository.remove(task);
   }
+
+  async removeTasks(projectId: number, isDone: boolean) {
+    return await this.tasksRepository
+      .createQueryBuilder()
+      .delete()
+      .from('task')
+      .where('projectId = :projectId', { projectId })
+      .andWhere('isDone = :isDone', { isDone: true })
+      .execute();
+  }
 }
