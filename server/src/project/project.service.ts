@@ -74,6 +74,6 @@ export class ProjectService {
       throw new BadRequestException({ errors });
     }
 
-    await this.taskRepository.removeTasks(id, completed);
+    await this.taskRepository.removeTasks(project, completed);
   }
 }
