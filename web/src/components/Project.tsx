@@ -4,7 +4,7 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import { useMutation } from "react-query";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { queryClient } from "../index";
 import { ApiClientContext } from "../provider/apiClientProvider";
 import { ConfirmDialogContext } from "../provider/confirmDialogProvider";
@@ -23,6 +23,7 @@ export const ProjectItem: React.FC<{
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
   const { confirm } = useContext(ConfirmDialogContext);
+  const { push } = useHistory();
 
   const { mutate } = useMutation((id: number) => apiClient.removeProject(id), {
     onSuccess: () => {
@@ -31,6 +32,7 @@ export const ProjectItem: React.FC<{
         message: "",
       });
       queryClient.invalidateQueries([["projects"], feature]);
+      push("/");
     },
   });
 

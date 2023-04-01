@@ -166,9 +166,9 @@ export const NoteDetails: React.FC = () => {
                 <span>
                   Last Edited
                   <span className="markee">
-                    {isUpdating && <Loader />}
+                    {isUpdating && <Loader width="12px" height="12px" />}
+
                     {!isUpdating && getIntervalStringFromDate(note.updatedAt)}
-                    {/* {transformDate(note.updatedAt)} */}
                   </span>
                   <BsDot />
                 </span>
