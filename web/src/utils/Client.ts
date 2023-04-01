@@ -4,6 +4,7 @@ import {
   CreateNoteApi,
   CreateProject,
   CreateTaskApi,
+  DeleteMultipleTasksApi,
   EditNoteApi,
   EditProject,
   EditTaskApi,
@@ -117,6 +118,16 @@ export class Client {
 
   public deleteTask(taskId: number) {
     const url = this.baseApiUrl + `task/${taskId}`;
+
+    return this.tranformOptions()
+      .delete(url)
+      .then((r) => r.data);
+  }
+
+  public deleteMultipleTasks(data: DeleteMultipleTasksApi) {
+    const url =
+      this.baseApiUrl +
+      `project/${data.projectId}/tasks?completed=${data.completed}`;
 
     return this.tranformOptions()
       .delete(url)
