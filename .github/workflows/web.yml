@@ -1,4 +1,4 @@
-name: server ci/cd
+name: web
 
 on:
   push:
