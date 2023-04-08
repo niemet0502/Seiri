@@ -20,9 +20,8 @@ jobs:
           cache: "npm"
           cache-dependency-path: "server/npm-shrinkwrap.json"
 
-      - name: Build Docker image
+      - name: Build Docker image and Run Test
         working-directory: ./server
         run: |
-        docker build . -t server
-        docker run --rm server npm run test
-
+          docker build . -t server
+          docker run --rm server npm run test
