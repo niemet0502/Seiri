@@ -23,6 +23,6 @@ jobs:
       - name: Build Docker image
         working-directory: ./server
         run: |
-        docker build . -t server
-        docker run --rm server npm run test
+          docker build . -t server
+          docker run --rm server npm run test
 
