@@ -15,6 +15,8 @@ export class NoteService {
     const note = new Note();
     note.content = content;
     note.title = title;
+    note.createdAt = new Date();
+    note.updatedAt = new Date();
 
     note.project = project;
 
@@ -34,7 +36,12 @@ export class NoteService {
 
     const updated = Object.assign(toUpdated, updateNoteDto);
 
-    return await this.noteRepository.save(updated);
+    updated.updatedAt = new Date();
+
+    return await this.noteRepository.save({
+      ...updated,
+      updatedAt: new Date(),
+    });
   }
 
   async remove(note: Note) {

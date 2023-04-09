@@ -57,6 +57,7 @@ describe('TaskService', () => {
         user: null,
         tasks: null,
         notes: null,
+        handledObject: 1,
       };
       jest.spyOn(mockRepository, 'findAllByProject').mockReturnValue(tasks);
 
@@ -107,6 +108,8 @@ describe('TaskService', () => {
         description: 'task description',
         project: null,
         isDeleted: false,
+        parent: null,
+        children: null,
       };
       jest.spyOn(mockRepository, 'findById').mockReturnValue(task);
       jest.spyOn(mockRepository, 'remove').mockReturnValue(task);

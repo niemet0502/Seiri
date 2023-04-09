@@ -1,41 +1,60 @@
 import { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { ProjectModal } from "../../pages/Project/ProjectModal";
+import { useToasts } from "../../provider/toastProvider";
 import { Project } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { Features } from "./Features";
 import { Projects } from "./Project";
 
 export const Sidebar: React.FC = () => {
-  const [newProjectHandler, setNewProjectHandler] = useState<Deferred<void>>();
+  const [newProjectHandler, setNewProjectHandler] =
+    useState<Deferred<Project>>();
   const [projectToEdit, setProjectToEdit] = useState<Project>();
 
+  const { pushToast } = useToasts();
+  const { push } = useHistory();
+
   const addNewProject = useCallback(async () => {
-    const deferred = new Deferred<void>();
+    const deferred = new Deferred<Project>();
 
     setNewProjectHandler(deferred);
 
     try {
-      await deferred.promise;
+      const result = await deferred.promise;
+
+      pushToast({
+        title: "Project created",
+        message: result.name,
+      });
+      push(`/project/${result.id}`);
     } catch (e) {
     } finally {
       setNewProjectHandler(undefined);
     }
-  }, []);
+  }, [push, pushToast]);
 
-  const editProject = useCallback(async (project: Project) => {
-    const deferred = new Deferred<void>();
+  const editProject = useCallback(
+    async (project: Project) => {
+      const deferred = new Deferred<Project>();
 
-    setProjectToEdit(project);
-    setNewProjectHandler(deferred);
+      setProjectToEdit(project);
+      setNewProjectHandler(deferred);
 
-    try {
-      await deferred.promise;
-    } catch (e) {
-    } finally {
-      setNewProjectHandler(undefined);
-      setProjectToEdit(undefined);
-    }
-  }, []);
+      try {
+        const result = await deferred.promise;
+        pushToast({
+          title: "Project edited",
+          message: result.name,
+        });
+      } catch (e) {
+      } finally {
+        setNewProjectHandler(undefined);
+        setProjectToEdit(undefined);
+      }
+    },
+    [pushToast]
+  );
 
   return (
     <>

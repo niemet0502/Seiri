@@ -13,7 +13,7 @@ import { CreateProject, EditProject, Project } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
 export const ProjectModal: React.FC<{
-  deferred: Deferred<void>;
+  deferred: Deferred<Project>;
   projectToEdit?: Project;
 }> = ({ deferred, projectToEdit }) => {
   const { feature: handledObject } = useContext(currentFeatureContext);

@@ -42,9 +42,8 @@ export const NewTaskDialog: React.FC<{
   const { mutate: editTask } = useMutation(
     (data: EditTaskApi) => apiClient.editTask(data),
     {
-      onSuccess: () => {
-        //add toast
-        deferred.resolve(taskToEdit as Task);
+      onSuccess: (editedTask) => {
+        deferred.resolve(editedTask);
         queryClient.invalidateQueries([["tasks"], projectId]);
       },
     }

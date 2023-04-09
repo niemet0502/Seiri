@@ -20,6 +20,7 @@ import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
@@ -31,6 +32,7 @@ export const TaskDetails: React.FC = () => {
   }>();
   const { apiClient } = useContext(ApiClientContext);
   const { goBack } = useHistory();
+  const { pushToast } = useToasts();
 
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
@@ -44,8 +46,11 @@ export const TaskDetails: React.FC = () => {
   const { mutate: completeTask } = useMutation(
     (data: EditTaskApi) => apiClient.editTask(data),
     {
-      onSuccess: () => {
-        //add toast
+      onSuccess: (editedTask) => {
+        pushToast({
+          title: "Task edited",
+          message: editedTask.title,
+        });
         queryClient.invalidateQueries(["tasks", taskId]);
       },
     }
@@ -54,8 +59,11 @@ export const TaskDetails: React.FC = () => {
   const { mutate: deleteTask } = useMutation(
     (taskId: number) => apiClient.deleteTask(taskId),
     {
-      onSuccess: () => {
-        //add toast
+      onSuccess: (deletedTask) => {
+        pushToast({
+          title: "Task deleted",
+          message: deletedTask.title,
+        });
         queryClient.invalidateQueries(["tasks", taskId]);
       },
     }
@@ -67,13 +75,17 @@ export const TaskDetails: React.FC = () => {
     setNewTaskHandler(deferred);
 
     try {
-      await deferred.promise;
-      // add toast
+      const result = await deferred.promise;
+
+      pushToast({
+        title: "Task created",
+        message: result.title,
+      });
     } catch (e) {
     } finally {
       setNewTaskHandler(undefined);
     }
-  }, []);
+  }, [pushToast]);
 
   const edit = (data: EditTaskApi) => {
     try {

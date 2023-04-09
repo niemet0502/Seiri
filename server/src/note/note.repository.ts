@@ -15,11 +15,17 @@ export class NoteRepository {
   }
 
   async findAllByProject(project: Project) {
-    return await this.notesRepository.find({ where: { project: project } });
+    return await this.notesRepository.find({
+      where: { project: project },
+      relations: ['project'],
+    });
   }
 
   async findById(id: number): Promise<Note | undefined> {
-    return await this.notesRepository.findOne({ where: { id: id } });
+    return await this.notesRepository.findOne({
+      where: { id: id },
+      relations: ['project'],
+    });
   }
 
   async remove(note: Note) {

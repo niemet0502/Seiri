@@ -39,7 +39,7 @@ export class NoteController {
     return this.noteService.create(createNoteDto, project);
   }
 
-  @Get()
+  @Get('/project/:id')
   async findAllByProject(@Param('id') id: number) {
     const project = await this.projectService.findById(+id);
 

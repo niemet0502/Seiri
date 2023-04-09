@@ -67,6 +67,7 @@ describe('NoteRepository', () => {
         notes: null,
         isArchive: false,
         tasks: null,
+        handledObject: 1,
       };
       jest.spyOn(mockRepository, 'find').mockReturnValue(notes);
 
@@ -77,6 +78,7 @@ describe('NoteRepository', () => {
       expect(result).toEqual(notes);
       expect(mockRepository.find).toBeCalledWith({
         where: { project: project },
+        relations: ['project'],
       });
       expect(mockRepository.find).toBeCalledTimes(1);
     });
@@ -92,7 +94,10 @@ describe('NoteRepository', () => {
       const result = await repository.findById(id);
       //assert
       expect(result).toEqual(note);
-      expect(mockRepository.findOne).toBeCalledWith({ where: { id: id } });
+      expect(mockRepository.findOne).toBeCalledWith({
+        where: { id: id },
+        relations: ['project'],
+      });
       expect(mockRepository.findOne).toBeCalledTimes(1);
     });
   });
