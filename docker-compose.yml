@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  server:
+    build: ./server
+    image: seiri-server
+    container_name: seiri-server
+    depends_on:
+      - db
+    ports:
+      - "3004:3000"
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3307 
+      DB_USERNAME: marius
+      DB_PASSWORD: root
+
+  web:
+    build: ./web
+    image: seiri-web
+    container_name: seiri-web
+    ports:
+      - "3005:3000"
+    restart: always
+
+  db:
+    image: mysql:5.7.41
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: marius
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306" 
