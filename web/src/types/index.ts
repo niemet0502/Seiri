@@ -84,3 +84,8 @@ export interface EditNoteApi {
   title: string;
   content?: string;
 }
+
+export interface DeleteMultipleTasksApi {
+  projectId: string;
+  completed: boolean;
+}

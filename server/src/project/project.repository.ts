@@ -14,7 +14,9 @@ export class ProjectRepository {
     return await this.projectsRepository.save(project);
   }
   async findById(id: number): Promise<Project | undefined> {
-    return await this.projectsRepository.findOne({ where: { id: id } });
+    return await this.projectsRepository.findOne({
+      where: { id: id },
+    });
   }
 
   async findAllByUser(

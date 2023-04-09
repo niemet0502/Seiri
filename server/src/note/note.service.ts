@@ -15,8 +15,8 @@ export class NoteService {
     const note = new Note();
     note.content = content;
     note.title = title;
-    note.createdAt = new Date();
-    note.updatedAt = new Date();
+    note.createdAt = new Date().toString();
+    note.updatedAt = new Date().toString();
 
     note.project = project;
 
@@ -36,11 +36,11 @@ export class NoteService {
 
     const updated = Object.assign(toUpdated, updateNoteDto);
 
-    updated.updatedAt = new Date();
+    updated.updatedAt = new Date().toString();
 
     return await this.noteRepository.save({
       ...updated,
-      updatedAt: new Date(),
+      updatedAt: new Date().toString(),
     });
   }
 

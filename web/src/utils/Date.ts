@@ -34,10 +34,10 @@ export const getIntervalStringFromDate = (dateStr?: Date) => {
 
   const interval = getIntervalFromDate(dateStr);
 
-  if (interval < MINUTE) return `since ${Math.round(interval)}`;
-  if (interval < HOUR) return `since ${Math.round(interval / MINUTE)} minutes`;
-  if (interval < DAY) return `since ${Math.round(interval / HOUR)} hours`;
-  if (interval < MONTH) return `since ${Math.round(interval / DAY)} days`;
+  if (interval < MINUTE) return `now`;
+  if (interval < HOUR) return `${Math.round(interval / MINUTE)} minutes ago`;
+  if (interval < DAY) return `${Math.round(interval / HOUR)} hours ago`;
+  if (interval < MONTH) return `${Math.round(interval / DAY)} days ago`;
 
   return `since ${Math.round(interval / MONTH)} months`;
 };

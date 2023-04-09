@@ -31,9 +31,9 @@ export const Dropdown: React.FC<{
     };
 
     // If the dropdown is open then listen for clicks
-    // if (isActive) {
-    //   window.addEventListener("click", pageClickEvent);
-    // }
+    if (isActive) {
+      window.addEventListener("click", pageClickEvent);
+    }
 
     return () => {
       window.removeEventListener("click", pageClickEvent);
@@ -41,11 +41,10 @@ export const Dropdown: React.FC<{
   }, [isActive]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} ref={dropdownRef}>
       {trigger(onClick, isActive)}
       <div
         className="dropdown flex flex-column"
-        ref={dropdownRef}
         style={{
           opacity: isActive ? 1 : 0,
           visibility: isActive ? "visible" : "hidden",

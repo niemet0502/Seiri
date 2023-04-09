@@ -8,9 +8,10 @@ export const AuthRouting: React.FC = () => {
   return (
     <Router history={history}>
       <Switch>
+        <Route path="/" exact component={Login} />
         <Route path="/auth/signin" exact component={SignIn} />
         <Route path="/auth/forgot-password" exact component={ResetPassword} />
-        <Route path="/" exact component={Login} />
+        {/* <Redirect to="/" /> */}
       </Switch>
     </Router>
   );

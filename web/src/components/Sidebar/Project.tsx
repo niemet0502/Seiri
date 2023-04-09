@@ -46,7 +46,7 @@ export const Projects: React.FC<{
   return (
     <div className="project-sidebar">
       <PageHeader>
-        <span>Projects</span>
+        <h4>Projects</h4>
         <IconButton handler={newProjecthandler}>
           <AiOutlinePlus />
         </IconButton>
