@@ -14,7 +14,8 @@ export const Dialog: React.FC<{
   width?: string;
   title: string;
   onClose: () => void;
-}> = ({ children, width = "600px", title, onClose }) => {
+  minheight?: string;
+}> = ({ children, width = "600px", title, onClose, minheight = "350px" }) => {
   const backdropRef = useRef<any>();
   const [mouseDownEvent, setMouseDownEvent] = useState<MouseEvent | null>(null);
 
@@ -36,7 +37,11 @@ export const Dialog: React.FC<{
     >
       <div
         className="content"
-        style={{ width: width, transform: "translateY(0)" }}
+        style={{
+          width: width,
+          transform: "translateY(0)",
+          minHeight: minheight,
+        }}
       >
         <div className="header flex justify-content-between">
           {title}

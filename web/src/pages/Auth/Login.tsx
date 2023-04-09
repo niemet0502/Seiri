@@ -19,14 +19,14 @@ export const Login: React.FC = () => {
       try {
         const { user, token } = await apiClient.AuthLogin(data);
 
+        localStorage.setItem(TOKEN_LS_KEY, token);
         setCurrentUser(user);
 
-        localStorage.setItem(TOKEN_LS_KEY, token);
+        push("/");
       } catch (e) {
         console.log(e);
+      } finally {
       }
-
-      push("/");
     },
     [apiClient, setCurrentUser, push]
   );

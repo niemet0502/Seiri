@@ -8,6 +8,7 @@ import {
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
@@ -20,6 +21,7 @@ import { PageHeader } from "../../components/PageHeader";
 import { TaskItem } from "../../components/TaskItem";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
@@ -33,9 +35,11 @@ export const TaskDetails: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
   const { goBack } = useHistory();
   const { pushToast } = useToasts();
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
+  const [isChildrenVisible, setIsChildrenVisible] = useState(true);
 
   const { data: task, isLoading } = useQuery(["tasks", taskId], () =>
     apiClient.getTask(taskId)
@@ -102,18 +106,24 @@ export const TaskDetails: React.FC = () => {
     reset(task);
   }, [task, reset]);
 
+  const onDelete = async (taskId: number, redirect?: boolean) => {
+    if (
+      await confirm({
+        title: "Delete Task ?",
+        message: "Are you sure you want to delete this task ?",
+      })
+    ) {
+      deleteTask(taskId);
+    }
+
+    if (redirect) goBack();
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="task-details">
         <div className="task-content">
-          <PageHeader>
-            <h4>
-              {task && (
-                <>
-                  {task.project.name} &gt; <span>{task.title}</span>{" "}
-                </>
-              )}
-            </h4>
+          <PageHeader task={task}>
             <Dropdown
               left="-120px"
               trigger={(toggle) => (
@@ -128,8 +138,7 @@ export const TaskDetails: React.FC = () => {
 
               <DropdownItem
                 handler={() => {
-                  deleteTask(task.id);
-                  goBack();
+                  onDelete(task.id, true);
                 }}
               >
                 <AiOutlineDelete /> Delete
@@ -215,28 +224,38 @@ export const TaskDetails: React.FC = () => {
               )}
 
               <div className="flex align-items-center justify-content-between">
-                <h6>Sub-tasks</h6>
+                <div className="flex align-items-center gap-2">
+                  <IconButton
+                    handler={() => setIsChildrenVisible((prev) => !prev)}
+                  >
+                    {!isChildrenVisible && <IoIosArrowForward />}
+                    {isChildrenVisible && <IoIosArrowDown />}
+                  </IconButton>
+                  <h4>Sub-tasks</h4>
+                </div>
                 <IconButton handler={addTask}>
                   <AiOutlinePlus />
                 </IconButton>
               </div>
-              <div className="">
-                {task.children.map((task: Task) => (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    editable={false}
-                    completeTask={completeTask}
-                    deleteTask={(taskId: number) => deleteTask(taskId)}
-                  />
-                ))}
-              </div>
+              {isChildrenVisible && (
+                <div className="">
+                  {task.children.map((task: Task) => (
+                    <TaskItem
+                      key={task.id}
+                      task={task}
+                      editable={false}
+                      completeTask={completeTask}
+                      deleteTask={(taskId: number) => onDelete(taskId)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
         <div className="task-attributes flex flex-column">
           <div className="task-detail-header">
-            <PageHeader>Details</PageHeader>
+            <PageHeader title="Details" />
           </div>
           {isLoading && <Loader />}
 
@@ -244,7 +263,20 @@ export const TaskDetails: React.FC = () => {
             <div className="row task-detail ">
               <div className=" flex mt-2  attributes">
                 <div className="label">Statut</div>
-                <div>{task.isDone ? "Done" : "To do"}</div>
+                <div className="flex align-items-center gap-1">
+                  <div
+                    style={{
+                      width: "17px",
+                      height: "17px",
+                      flex: "none",
+                      borderColor: task.isDone ? "transparent" : "#2c2d3c",
+                    }}
+                    className={`statut isdone-${task.isDone}`}
+                  >
+                    <AiOutlineCheck />
+                  </div>
+                  {task.isDone ? "Completed" : "To do"}
+                </div>
               </div>
               <div className=" flex mt-2  attributes">
                 <div className="label">Project</div>

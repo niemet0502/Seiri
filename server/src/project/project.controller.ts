@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from '../user/entities/user.entity';
@@ -56,6 +57,11 @@ export class ProjectController {
     return await this.projectService.findArchivedProjectByUser(+id);
   }
 
+  @Get('/get/:id')
+  async findOne(@Param('id') id: string): Promise<Project | undefined> {
+    return await this.projectService.findById(+id);
+  }
+
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -67,5 +73,13 @@ export class ProjectController {
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.projectService.delete(+id);
+  }
+
+  @Delete(':id/tasks')
+  async deleteTasks(
+    @Param('id') id: string,
+    @Query('completed') completed: boolean,
+  ) {
+    return await this.projectService.deleteTask(+id, completed);
   }
 }

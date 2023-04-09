@@ -1,16 +1,14 @@
 import { useContext } from "react";
-import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
-import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
-import { BsArchive } from "react-icons/bs";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiTaskX } from "react-icons/bi";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
-import { Dropdown } from "../../components/Dropdown";
-import { DropdownItem } from "../../components/DropdownItem";
 import { NoteCard } from "../../components/NoteCard";
 import { PageHeader } from "../../components/PageHeader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { CreateNoteApi, Note } from "../../types";
 
@@ -19,6 +17,7 @@ export const NotesList: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { push } = useHistory();
   const { apiClient } = useContext(ApiClientContext);
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const { data, isLoading } = useQuery(["notes", projectId], () =>
     apiClient.getNotesByProject(projectId)
@@ -53,46 +52,42 @@ export const NotesList: React.FC = () => {
     }
   );
 
+  const onDelete = async (noteId: number) => {
+    if (
+      await confirm({
+        title: "Delete Note ?",
+        message: "Are you sure you want to delete this note ?",
+      })
+    ) {
+      deleteNote(noteId);
+    }
+  };
+
   return (
     <div className="flex page-content flex-2">
-      <div className="flex flex-column w-100">
+      <div
+        className="flex flex-column "
+        style={{ width: "calc(100% - 120px)", maxWidth: "860px" }}
+      >
         <div className="notes-list-header">
           <PageHeader>
-            <h4>2023 Roadmap</h4>
-
             <div className="flex">
               <IconButton
                 handler={() => createNote({ projectId, title: "Untitled" })}
               >
                 <AiOutlinePlus />
               </IconButton>
-              <Dropdown
-                left="-120px"
-                trigger={(toggle) => (
-                  <IconButton handler={toggle}>
-                    <BiDotsHorizontalRounded />
-                  </IconButton>
-                )}
-              >
-                <DropdownItem>
-                  <AiOutlineEdit /> Edit
-                </DropdownItem>
-
-                <DropdownItem>
-                  <AiOutlineDelete /> Delete
-                </DropdownItem>
-
-                <DropdownItem>
-                  <BsArchive /> Archive
-                </DropdownItem>
-              </Dropdown>
             </div>
           </PageHeader>
         </div>
         <div className="flex notes-list">
           {notes.length > 0 &&
             notes.map((note: Note) => (
-              <NoteCard key={note.id} note={note} onDelete={deleteNote} />
+              <NoteCard
+                key={note.id}
+                note={note}
+                onDelete={(noteId: number) => onDelete(noteId)}
+              />
             ))}
         </div>
 

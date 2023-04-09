@@ -4,9 +4,10 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import { useMutation } from "react-query";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { queryClient } from "../index";
 import { ApiClientContext } from "../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../provider/confirmDialogProvider";
 import { useToasts } from "../provider/toastProvider";
 import { FeatureEnum, Project } from "../types";
 import { IconButton } from "./Button";
@@ -19,9 +20,10 @@ export const ProjectItem: React.FC<{
   setProjectToEdit: (project: Project) => void;
   feature: FeatureEnum;
 }> = ({ project, active, setProjectToEdit, feature }) => {
-  // display confirm modal
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
+  const { confirm } = useContext(ConfirmDialogContext);
+  const { push } = useHistory();
 
   const { mutate } = useMutation((id: number) => apiClient.removeProject(id), {
     onSuccess: () => {
@@ -30,8 +32,20 @@ export const ProjectItem: React.FC<{
         message: "",
       });
       queryClient.invalidateQueries([["projects"], feature]);
+      push("/");
     },
   });
+
+  const onDelete = async (projectId: number) => {
+    if (
+      await confirm({
+        title: "Delete Project ? ",
+        message: `Are you sure you want to delete ${project.name} ?`,
+      })
+    ) {
+      mutate(projectId);
+    }
+  };
 
   return (
     <div
@@ -59,7 +73,7 @@ export const ProjectItem: React.FC<{
             <AiOutlineEdit /> Edit
           </DropdownItem>
 
-          <DropdownItem handler={() => mutate(project.id)}>
+          <DropdownItem handler={() => onDelete(project.id)}>
             <AiOutlineDelete /> Delete
           </DropdownItem>
 

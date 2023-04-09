@@ -7,6 +7,7 @@ import { NoteDetails } from "./pages/Notes/NoteDetails";
 import { BaseList } from "./pages/Project/BaseList";
 import { TaskDetails } from "./pages/Tasks/TaskDetails";
 import { ApiClientProvider } from "./provider/apiClientProvider";
+import { ConfirmDialogProvider } from "./provider/confirmDialogProvider";
 import { CurrentFeatureProvider } from "./provider/currentFeatureProvider";
 import { ToastContextProvider } from "./provider/toastProvider";
 import { CurrentUserProvider } from "./provider/userProvider";
@@ -17,35 +18,37 @@ function App() {
   return (
     <ApiClientProvider>
       <ToastContextProvider>
-        <CurrentFeatureProvider>
-          <CurrentUserProvider>
-            <div className="content-wrapper flex">
-              <Router history={history}>
-                <Sidebar />
-                <Switch>
-                  <Route
-                    exact
-                    path="/project/:projectId/task/:taskId"
-                    component={TaskDetails}
-                  />
+        <ConfirmDialogProvider>
+          <CurrentFeatureProvider>
+            <CurrentUserProvider>
+              <div className="content-wrapper flex">
+                <Router history={history}>
+                  <Sidebar />
+                  <Switch>
+                    <Route
+                      exact
+                      path="/project/:projectId/task/:taskId"
+                      component={TaskDetails}
+                    />
 
-                  <Route
-                    exact
-                    path="/project/:projectId/note/:noteId"
-                    component={NoteDetails}
-                  />
+                    <Route
+                      exact
+                      path="/project/:projectId/note/:noteId"
+                      component={NoteDetails}
+                    />
 
-                  <Route
-                    exact
-                    path="/project/:projectId"
-                    component={BaseList}
-                  />
-                  <Route exact path="/" component={NotFound} />
-                </Switch>
-              </Router>
-            </div>
-          </CurrentUserProvider>
-        </CurrentFeatureProvider>
+                    <Route
+                      exact
+                      path="/project/:projectId"
+                      component={BaseList}
+                    />
+                    <Route exact path="/" component={NotFound} />
+                  </Switch>
+                </Router>
+              </div>
+            </CurrentUserProvider>
+          </CurrentFeatureProvider>
+        </ConfirmDialogProvider>
       </ToastContextProvider>
     </ApiClientProvider>
   );

@@ -8,7 +8,6 @@ import { IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { Loader } from "../../components/Loader";
-import { PageHeader } from "../../components/PageHeader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 
 import { createTheme } from "@uiw/codemirror-themes";
@@ -18,6 +17,7 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { queryClient } from "../..";
+import { PageHeader } from "../../components/PageHeader";
 import { useToasts } from "../../provider/toastProvider";
 import { EditNoteApi } from "../../types";
 import { getIntervalStringFromDate, transformDate } from "../../utils/Date";
@@ -118,8 +118,7 @@ export const NoteDetails: React.FC = () => {
   return (
     <div className="flex page-content flex-2">
       <div className="note flex flex-column" style={{ zIndex: "5" }}>
-        <PageHeader>
-          <h4>2023 Roadmap &gt; Thot v0</h4>
+        <PageHeader note={data}>
           <Dropdown
             left="-100px"
             width="100px"
@@ -167,15 +166,18 @@ export const NoteDetails: React.FC = () => {
                 <span>
                   Last Edited
                   <span className="markee">
-                    {isUpdating && <Loader />}
+                    {isUpdating && <Loader width="12px" height="12px" />}
+
                     {!isUpdating && getIntervalStringFromDate(note.updatedAt)}
-                    {/* {transformDate(note.updatedAt)} */}
                   </span>
                   <BsDot />
                 </span>
                 <span>
                   Project :
-                  {/* <span className="markee bold"> {note.project.name} </span> */}
+                  <span className="markee bold">
+                    {" "}
+                    {note.project && note.project.name}
+                  </span>
                 </span>
               </div>
             </div>

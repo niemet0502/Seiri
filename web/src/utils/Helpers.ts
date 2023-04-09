@@ -1,4 +1,5 @@
 export const textEllipsis = (str: string, length: number) => {
+  if (!str) return "";
   if (str.length > length) {
     str = str.slice(0, length) + "...";
   }

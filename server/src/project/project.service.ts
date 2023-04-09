@@ -1,4 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common/decorators';
+import { forwardRef } from '@nestjs/common/utils';
+import { TaskRepository } from 'src/task/task.repository';
 import { User } from 'src/user/entities/user.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -7,7 +10,11 @@ import { ProjectRepository } from './project.repository';
 
 @Injectable()
 export class ProjectService {
-  constructor(private readonly projectRepository: ProjectRepository) {}
+  constructor(
+    @Inject(forwardRef(() => TaskRepository))
+    private readonly taskRepository: TaskRepository,
+    private readonly projectRepository: ProjectRepository,
+  ) {}
 
   async create(createProjectDto: CreateProjectDto, user: User) {
     const { name, description, handledObject } = createProjectDto;
@@ -57,5 +64,16 @@ export class ProjectService {
     }
 
     return await this.projectRepository.remove(project);
+  }
+
+  async deleteTask(id: number, completed: boolean) {
+    const project = await this.projectRepository.findById(id);
+
+    if (!project) {
+      const errors = { project: 'project not found' };
+      throw new BadRequestException({ errors });
+    }
+
+    await this.taskRepository.removeTasks(project, completed);
   }
 }
