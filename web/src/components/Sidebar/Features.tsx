@@ -1,10 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BsListTask } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { SlNote } from "react-icons/sl";
+import { SettingsModal } from "../../pages/Settings/SettingsModal";
 import { currentFeatureContext } from "../../provider/currentFeatureProvider";
 import { CurrentUserContext } from "../../provider/userProvider";
 import { FeatureEnum } from "../../types";
+import { Deferred } from "../../utils/Deferred";
 import { IconButton } from "../Button";
 import { Dropdown } from "../Dropdown";
 import { DropdownItem } from "../DropdownItem";
@@ -12,6 +14,18 @@ import { DropdownItem } from "../DropdownItem";
 export const Features: React.FC = () => {
   const { updateCurrentFeature, feature } = useContext(currentFeatureContext);
   const { logout } = useContext(CurrentUserContext);
+
+  const [editSettingsHandler, setEditSettingsHandler] =
+    useState<Deferred<void>>();
+
+  const editSettings = () => {
+    console.log("catch");
+
+    const deferred = new Deferred<void>();
+
+    setEditSettingsHandler(deferred);
+  };
+
   return (
     <div className="feature-sidebar">
       <div>
@@ -41,10 +55,12 @@ export const Features: React.FC = () => {
             </IconButton>
           )}
         >
-          <DropdownItem>Settings</DropdownItem>
+          <DropdownItem handler={editSettings}>Settings</DropdownItem>
           <DropdownItem handler={logout}>Sign out</DropdownItem>
         </Dropdown>
       </div>
+
+      {editSettingsHandler && <SettingsModal deferred={editSettingsHandler} />}
     </div>
   );
 };
