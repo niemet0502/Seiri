@@ -47,7 +47,7 @@ export class UserService {
     return null;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     let toUpdate = await this.userRepository.findById(id);
     delete toUpdate.password;
 
@@ -61,5 +61,9 @@ export class UserService {
 
   async save(user: User) {
     return await this.userRepository.save(user);
+  }
+
+  async remove(user: User) {
+    return await this.userRepository.remove(user);
   }
 }

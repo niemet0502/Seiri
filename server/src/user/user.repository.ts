@@ -32,4 +32,8 @@ export class UserRepository {
       },
     });
   }
+
+  async remove(user: User) {
+    return await this.usersRepository.remove(user);
+  }
 }

@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   HttpException,
   Param,
   Patch,
@@ -11,6 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserValidatorPipe } from './dto/validation.pipe';
+import { User } from './entities/user.entity';
+import { UserDecorator } from './user.decorator';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -43,7 +47,22 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    return await this.userService.update(+id, updateUserDto);
   }
+
+  @Patch('/updatePassword')
+  async updatePassword() {}
+
+  @Delete()
+  @HttpCode(204)
+  async remove(@UserDecorator() user: User) {
+    return await this.userService.remove(user);
+  }
+
+  @Patch('/resetPassword')
+  async resetPassword() {}
 }
