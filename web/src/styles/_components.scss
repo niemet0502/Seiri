@@ -33,6 +33,12 @@
   &:hover {
     cursor: pointer;
   }
+
+  &:disabled {
+    /* styles for disabled button */
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .input-wrapper {
@@ -325,6 +331,14 @@
       padding: 10px;
 
       border-bottom: 1px solid $border-color;
+    }
+
+    hr {
+      color: 1px solid rgb(82, 82, 111);
+    }
+
+    .border-color-primary {
+      border-color: rgb(82, 82, 111);
     }
   }
 }

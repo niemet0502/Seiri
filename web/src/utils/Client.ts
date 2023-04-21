@@ -10,6 +10,7 @@ import {
   EditTaskApi,
   FeatureEnum,
   IAuthLogin,
+  UpdateUser,
 } from "../types";
 
 export class Client {
@@ -52,6 +53,14 @@ export class Client {
       confirm_password: data.password,
     });
     return r.data;
+  }
+
+  public updateUser(user: UpdateUser) {
+    const url = this.baseApiUrl + `user/${user.id}`;
+
+    return this.tranformOptions()
+      .patch(url, user)
+      .then((r) => r.data);
   }
 
   public getProjects(feature: FeatureEnum) {
