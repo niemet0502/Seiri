@@ -5,9 +5,11 @@ export const Button: React.FC<{
   children?: any;
   variant?: string;
   handler?: MouseEventHandler;
-}> = ({ type, children, variant, handler }) => {
+  isDisabled?: boolean;
+}> = ({ type, children, variant, handler, isDisabled = false }) => {
   return (
     <button
+      disabled={isDisabled}
       onClick={handler}
       className={`btn ${variant || "b-primary"}`}
       type={type}
