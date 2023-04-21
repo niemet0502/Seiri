@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
@@ -9,6 +9,7 @@ import { useToasts } from "../../provider/toastProvider";
 import { CurrentUserContext } from "../../provider/userProvider";
 import { UpdateUser, User, UserFormApi } from "../../types";
 import { Deferred } from "../../utils/Deferred";
+import { toBase64 } from "../../utils/Helpers";
 import { EmailStep } from "./EmailStep";
 import { PasswordStep } from "./PasswordStep";
 
@@ -26,6 +27,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
   const { pushToast } = useToasts();
 
   const [step, setStep] = useState<StepEnum>(StepEnum.Undefinied);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const defaultValues = useMemo(
     () => ({
@@ -44,8 +46,8 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
     {
       onSuccess: (updatedUser) => {
         pushToast({
-          title: "Name changed",
-          message: "",
+          title: "Saved",
+          message: "Your profile information has been updated",
         });
 
         setCurrentUser(updatedUser as User);
@@ -73,6 +75,21 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
     updatedUser({ ...formData, id: currentUser.id });
   };
 
+  const handleFileUpload = () => {
+    if (!fileInputRef.current) return;
+    fileInputRef.current.click();
+  };
+
+  const handleInputFileChange = async () => {
+    if (!(fileInputRef.current && fileInputRef.current.files && currentUser))
+      return;
+    const file = fileInputRef.current.files;
+
+    const convertedFile = await toBase64(file[0]);
+
+    updatedUser({ id: currentUser.id, avatar: convertedFile as string });
+  };
+
   return (
     <Dialog
       width="850px"
@@ -95,18 +112,68 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 <h4>Photo</h4>
 
                 <div className="flex align-items-center gap-2">
-                  <img
-                    width="105"
-                    src="https://avatars.doist.com?fullName=Marius%20Vincent%20NIEMET&amp;email=mariusniemet20%40gmail.com&amp;size=105&amp;bg=1D1E2B"
-                    alt="Marius Vincent NIEMET"
-                  ></img>
+                  {!currentUser?.avatar && (
+                    <>
+                      <img
+                        width="105"
+                        src="https://avatars.doist.com?fullName=Marius%20Vincent%20NIEMET&amp;email=mariusniemet20%40gmail.com&amp;size=105&amp;bg=1D1E2B"
+                        alt="Marius Vincent NIEMET"
+                      ></img>
+                      <div className="">
+                        <input
+                          type="file"
+                          accept=".jpg,.jpeg,.png"
+                          ref={fileInputRef}
+                          hidden
+                          onChange={handleInputFileChange}
+                        />
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          handler={() => handleFileUpload()}
+                        >
+                          Upload photo
+                        </Button>
+                        <p>
+                          Pick a photo up to 4MB. Your avatar photo will be
+                          public.
+                        </p>
+                      </div>
+                    </>
+                  )}
 
-                  <div className="">
-                    <Button variant="secondary">Upload photo</Button>
-                    <p>
-                      Pick a photo up to 4MB. Your avatar photo will be public.
-                    </p>
-                  </div>
+                  {currentUser?.avatar && (
+                    <>
+                      <img
+                        width="105"
+                        className="rounded"
+                        src={currentUser.avatar}
+                        alt={`${currentUser.firstname} profile`}
+                      ></img>
+                      <div className="">
+                        <div className="flex gap-2">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            handler={() => handleFileUpload()}
+                          >
+                            Change photo
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            handler={() => handleFileUpload()}
+                          >
+                            Remove photo
+                          </Button>
+                        </div>
+                        <p className="mt-1">
+                          Pick a photo up to 4MB. Your avatar photo will be
+                          public.
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
