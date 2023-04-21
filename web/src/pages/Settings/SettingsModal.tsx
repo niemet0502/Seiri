@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
@@ -73,14 +73,6 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
     updatedUser({ ...formData, id: currentUser.id });
   };
 
-  useEffect(() => {
-    console.log(defaultValues);
-
-    console.log(firstname);
-    console.log(lastname);
-    console.log(isEdited);
-  }, [defaultValues, firstname, lastname, isEdited]);
-
   return (
     <Dialog
       width="850px"
@@ -88,7 +80,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
       title="Settings"
     >
       <div
-        className="flex flex-column p-1 gap-3"
+        className="flex flex-column gap-3"
         style={{
           maxHeight: "400px",
           height: "400px",
@@ -99,7 +91,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
         <form onSubmit={handleSubmit(submit)}>
           {step === StepEnum.Undefinied && (
             <>
-              <div className="flex flex-column gap-2">
+              <div className="flex flex-column gap-2 p-1">
                 <h4>Photo</h4>
 
                 <div className="flex align-items-center gap-2">
@@ -118,7 +110,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 </div>
               </div>
 
-              <div className="flex flex-column gap-2">
+              <div className="flex flex-column gap-2 p-1">
                 <h4>Name</h4>
 
                 <div
@@ -144,7 +136,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 </div>
               </div>
 
-              <div className="flex flex-column gap-2">
+              <div className="flex flex-column gap-2 p-1">
                 <h4>Email</h4>
                 <p>vincentmarius8@gmail.com</p>
 
@@ -158,7 +150,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 </div>
               </div>
 
-              <div className="flex flex-column gap-2">
+              <div className="flex flex-column gap-2 p-1">
                 <h4>Password</h4>
 
                 <div>
@@ -172,11 +164,11 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
               </div>
 
               <div
-                className="border-color-primary"
+                className="border-color-primary p-1"
                 style={{ borderTop: "1px solid" }}
               ></div>
 
-              <div className="flex flex-column gap-2">
+              <div className="flex flex-column gap-2 p-1">
                 <h4>Delete account</h4>
                 <p>
                   This will immediately delete all of your data including tasks,
@@ -195,7 +187,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 borderTop: "1px solid ",
                 position: "sticky",
                 bottom: "0px",
-                background: "transparent",
+                background: "rgb(29, 30, 43)",
                 zIndex: 5,
                 paddingRight: "16px",
               }}
