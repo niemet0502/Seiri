@@ -54,8 +54,11 @@ export const EmailStep: React.FC<{
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <div>
+    <form
+      className="h-100  flex flex-column justify-content-between p-2"
+      onSubmit={handleSubmit(submit)}
+    >
+      <div className=" ">
         <p className="mb-2">
           Update the email you use for your Todoist account. Your email is
           currently <strong>{user.email}</strong>.
@@ -92,7 +95,7 @@ export const EmailStep: React.FC<{
         </div>
       </div>
 
-      <div className="flex gap-2 justify-content-end p-2 mt-2">
+      <div className="flex gap-2 justify-content-end ">
         <Button
           variant="secondary"
           handler={() => setStep((prev) => StepEnum.Undefinied)}
