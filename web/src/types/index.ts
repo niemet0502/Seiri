@@ -116,3 +116,7 @@ export interface PasswordUpdateApi {
   newPassword: string;
   confirmPassword: string;
 }
+
+export interface DeleteUserApi {
+  password: string;
+}

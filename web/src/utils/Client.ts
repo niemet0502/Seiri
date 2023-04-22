@@ -197,4 +197,12 @@ export class Client {
       .put(url, data)
       .then((r) => r.data);
   }
+
+  public deleteAccount() {
+    const url = this.baseApiUrl + "user";
+
+    return this.tranformOptions()
+      .delete(url)
+      .then((r) => r.data);
+  }
 }

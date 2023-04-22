@@ -23,7 +23,8 @@ export enum StepEnum {
 export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
   deferred,
 }) => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser, logout } =
+    useContext(CurrentUserContext);
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
   const { confirm } = useContext(ConfirmDialogContext);
@@ -42,6 +43,15 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
   const { control, watch, reset, handleSubmit } = useForm<UserFormApi>({
     defaultValues,
   });
+
+  const { mutate: deleteAccount } = useMutation(
+    () => apiClient.deleteAccount(),
+    {
+      onSuccess: () => {
+        logout();
+      },
+    }
+  );
 
   const { mutate: updatedUser } = useMutation(
     (data: UpdateUser) => apiClient.updateUser(data),
@@ -102,6 +112,18 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
       })
     ) {
       updatedUser({ id: currentUser.id, avatar: null });
+    }
+  };
+
+  const onDelete = async () => {
+    if (
+      await confirm({
+        title: "Delete account ? ",
+        message:
+          " Deleting your account is permanent. All your data will be wiped out immediately  and you won't be able to get it back.",
+      })
+    ) {
+      deleteAccount();
     }
   };
 
@@ -254,10 +276,12 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 <h4>Delete account</h4>
                 <p>
                   This will immediately delete all of your data including tasks,
-                  projects, comments, and more. This can’t be undone.
+                  notes, projects, and more. This can’t be undone.
                 </p>
                 <div>
-                  <Button variant="terciary">Delete account</Button>
+                  <Button variant="terciary" handler={onDelete}>
+                    Delete account
+                  </Button>
                 </div>
               </div>
             </>
