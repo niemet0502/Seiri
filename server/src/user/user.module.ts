@@ -19,6 +19,7 @@ export class UserModule {
       .forRoutes(
         { path: 'user/:id', method: RequestMethod.GET },
         { path: 'user/:id', method: RequestMethod.PATCH },
+        { path: 'user/updatepassword', method: RequestMethod.PUT },
       );
   }
 }

@@ -8,9 +8,13 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ValidatorPipe } from './dto/p-validation.pipe';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordSchema } from './dto/update-password.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserValidatorPipe } from './dto/validation.pipe';
 import { User } from './entities/user.entity';
@@ -54,8 +58,19 @@ export class UserController {
     return await this.userService.update(+id, updateUserDto);
   }
 
-  @Patch('/updatePassword')
-  async updatePassword() {}
+  @Put('/updatepassword')
+  async updatePassword(
+    @Body(new ValidatorPipe<UpdatePasswordDto>(UpdatePasswordSchema))
+    updatePassword: UpdatePasswordDto,
+    @UserDecorator() user: User,
+  ) {
+    if (!user) {
+      const errors = { user: 'user not found' };
+      return new HttpException({ errors }, 401);
+    }
+
+    return await this.userService.updatePassword(user, updatePassword);
+  }
 
   @Delete()
   @HttpCode(204)
@@ -63,6 +78,8 @@ export class UserController {
     return await this.userService.remove(user);
   }
 
-  @Patch('/resetPassword')
-  async resetPassword() {}
+  @Put('/resetpassword')
+  async resetPassword() {
+    return 'marius';
+  }
 }

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from '../auth/dto/login.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
@@ -65,5 +66,21 @@ export class UserService {
 
   async remove(user: User) {
     return await this.userRepository.remove(user);
+  }
+
+  async updatePassword(user: User, updatePassword: UpdatePasswordDto) {
+    const { email } = user;
+    const { oldPassword, newPassword } = updatePassword;
+
+    const currentPassword = await this.userRepository.findByEmail(email);
+
+    if (!(await bcrypt.compare(oldPassword, currentPassword.password))) {
+      const errors = { password: "old password doesn't match" };
+      throw new HttpException({ errors }, 401);
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+
+    return await this.userRepository.save(user);
   }
 }
