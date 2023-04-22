@@ -16,6 +16,7 @@ const user = {
   password: '',
   projects: [],
   sessions: null,
+  avatar: null,
 };
 
 const project = {

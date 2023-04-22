@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { forwardRef } from '@nestjs/common/utils';
-import { TaskRepository } from 'src/task/task.repository';
-import { User } from 'src/user/entities/user.entity';
+import { TaskRepository } from '../task/task.repository';
+import { User } from '../user/entities/user.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
