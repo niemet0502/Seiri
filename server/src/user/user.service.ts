@@ -81,6 +81,10 @@ export class UserService {
 
     user.password = await bcrypt.hash(newPassword, 10);
 
-    return await this.userRepository.save(user);
+    const updatedUser = await this.userRepository.save(user);
+
+    delete updatedUser.password;
+
+    return updatedUser;
   }
 }
