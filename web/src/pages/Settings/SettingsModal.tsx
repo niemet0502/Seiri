@@ -48,7 +48,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
     {
       onSuccess: (updatedUser) => {
         pushToast({
-          title: "Saved",
+          title: "Saved !",
           message: "Your profile information has been updated",
         });
 
@@ -220,7 +220,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
 
               <div className="flex flex-column gap-2 p-1">
                 <h4>Email</h4>
-                <p>vincentmarius8@gmail.com</p>
+                <p>{currentUser?.email}</p>
 
                 <div>
                   <Button

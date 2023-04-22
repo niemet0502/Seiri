@@ -10,6 +10,7 @@ import {
   EditTaskApi,
   FeatureEnum,
   IAuthLogin,
+  PasswordUpdateApi,
   UpdateUser,
 } from "../types";
 
@@ -186,6 +187,14 @@ export class Client {
 
     return this.tranformOptions()
       .get(url)
+      .then((r) => r.data);
+  }
+
+  public passwordUpdate(data: PasswordUpdateApi) {
+    const url = this.baseApiUrl + "user/updatepassword";
+
+    return this.tranformOptions()
+      .put(url, data)
       .then((r) => r.data);
   }
 }

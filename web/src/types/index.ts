@@ -110,3 +110,9 @@ export interface UpdateUser {
   lastname?: string;
   avatar?: string | null;
 }
+
+export interface PasswordUpdateApi {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

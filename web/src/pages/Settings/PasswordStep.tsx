@@ -1,15 +1,39 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
-import { User, UserFormApi } from "../../types";
+import { ApiClientContext } from "../../provider/apiClientProvider";
+import { useToasts } from "../../provider/toastProvider";
+import { PasswordUpdateApi, User } from "../../types";
 import { StepEnum } from "./SettingsModal";
 
 export const PasswordStep: React.FC<{
   setStep: React.Dispatch<React.SetStateAction<StepEnum>>;
   user: User;
 }> = ({ setStep, user }) => {
-  const { control, watch, handleSubmit } = useForm<UserFormApi>();
+  const { apiClient } = useContext(ApiClientContext);
+  const { pushToast } = useToasts();
+
+  const { control, watch, handleSubmit, reset } = useForm<PasswordUpdateApi>();
+
+  const { mutate: passwordUpdate } = useMutation(
+    (data: PasswordUpdateApi) => apiClient.passwordUpdate(data),
+    {
+      onSuccess: (updatedUser) => {
+        pushToast({
+          title: "Saved !",
+          message: "Your profile information has been updated",
+        });
+
+        reset({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      },
+    }
+  );
 
   const newPassword = watch("newPassword");
   const oldPassword = watch("oldPassword");
@@ -24,8 +48,8 @@ export const PasswordStep: React.FC<{
     [newPassword, oldPassword, confirmPassword]
   );
 
-  const submit = (formData: UserFormApi) => {
-    console.log(formData);
+  const submit = (formData: PasswordUpdateApi) => {
+    passwordUpdate(formData);
   };
 
   return (

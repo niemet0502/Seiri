@@ -25,8 +25,8 @@ export const EmailStep: React.FC<{
     {
       onSuccess: (updatedUser) => {
         pushToast({
-          title: "Email changed",
-          message: updatedUser.email,
+          title: "Saved !",
+          message: "Your profile information has been updated",
         });
 
         setCurrentUser(updatedUser as User);
