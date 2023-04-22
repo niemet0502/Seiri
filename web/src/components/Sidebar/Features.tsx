@@ -18,12 +18,17 @@ export const Features: React.FC = () => {
   const [editSettingsHandler, setEditSettingsHandler] =
     useState<Deferred<void>>();
 
-  const editSettings = () => {
-    console.log("catch");
-
+  const editSettings = async () => {
     const deferred = new Deferred<void>();
 
     setEditSettingsHandler(deferred);
+
+    try {
+      await deferred.promise;
+    } catch (e) {
+    } finally {
+      setEditSettingsHandler(undefined);
+    }
   };
 
   return (
