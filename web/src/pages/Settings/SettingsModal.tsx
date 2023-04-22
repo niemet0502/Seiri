@@ -5,6 +5,7 @@ import { Button } from "../../components/Button";
 import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { CurrentUserContext } from "../../provider/userProvider";
 import { UpdateUser, User, UserFormApi } from "../../types";
@@ -25,6 +26,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const [step, setStep] = useState<StepEnum>(StepEnum.Undefinied);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -90,6 +92,19 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
     updatedUser({ id: currentUser.id, avatar: convertedFile as string });
   };
 
+  const removeProfilePicture = async () => {
+    if (!currentUser) return;
+
+    if (
+      await confirm({
+        title: "Delete profile picture ? ",
+        message: `Are you sure you want to delete your current profile picture ? `,
+      })
+    ) {
+      updatedUser({ id: currentUser.id, avatar: null });
+    }
+  };
+
   return (
     <Dialog
       width="850px"
@@ -110,6 +125,13 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
             <>
               <div className="flex flex-column gap-2 p-1">
                 <h4>Photo</h4>
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png"
+                  ref={fileInputRef}
+                  hidden
+                  onChange={handleInputFileChange}
+                />
 
                 <div className="flex align-items-center gap-2">
                   {!currentUser?.avatar && (
@@ -120,17 +142,10 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                         alt="Marius Vincent NIEMET"
                       ></img>
                       <div className="">
-                        <input
-                          type="file"
-                          accept=".jpg,.jpeg,.png"
-                          ref={fileInputRef}
-                          hidden
-                          onChange={handleInputFileChange}
-                        />
                         <Button
                           type="button"
                           variant="secondary"
-                          handler={() => handleFileUpload()}
+                          handler={handleFileUpload}
                         >
                           Upload photo
                         </Button>
@@ -155,14 +170,14 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                           <Button
                             type="button"
                             variant="secondary"
-                            handler={() => handleFileUpload()}
+                            handler={handleFileUpload}
                           >
                             Change photo
                           </Button>
                           <Button
                             type="button"
-                            variant="secondary"
-                            handler={() => handleFileUpload()}
+                            variant="terciary"
+                            handler={removeProfilePicture}
                           >
                             Remove photo
                           </Button>
@@ -242,7 +257,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                   projects, comments, and more. This can’t be undone.
                 </p>
                 <div>
-                  <Button>Delete account</Button>
+                  <Button variant="terciary">Delete account</Button>
                 </div>
               </div>
             </>

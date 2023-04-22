@@ -5,6 +5,7 @@ export interface User {
   firstname?: string;
   email: string;
   password: string;
+  avatar?: string | null;
 }
 export interface Note {
   id: number;
@@ -107,4 +108,5 @@ export interface UpdateUser {
   password?: string;
   firstname?: string;
   lastname?: string;
+  avatar?: string | null;
 }
