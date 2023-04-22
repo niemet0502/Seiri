@@ -120,8 +120,8 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
           justifyContent: "space-between",
         }}
       >
-        <form onSubmit={handleSubmit(submit)}>
-          {step === StepEnum.Undefinied && (
+        {step === StepEnum.Undefinied && (
+          <form onSubmit={handleSubmit(submit)}>
             <>
               <div className="flex flex-column gap-2 p-1">
                 <h4>Photo</h4>
@@ -246,8 +246,8 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
               </div>
 
               <div
-                className="border-color-primary p-1"
-                style={{ borderTop: "1px solid" }}
+                className="border-color-primary m-2"
+                style={{ borderTop: "1px solid rgb(82, 82, 111)" }}
               ></div>
 
               <div className="flex flex-column gap-2 p-1">
@@ -261,30 +261,30 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
                 </div>
               </div>
             </>
-          )}
-          {isEdited && (
-            <div
-              className="flex gap-2 p-1 justify-content-end"
-              style={{
-                borderTop: "1px solid ",
-                position: "sticky",
-                bottom: "0px",
-                background: "rgb(29, 30, 43)",
-                zIndex: 5,
-                paddingRight: "16px",
-              }}
-            >
-              <Button
-                type="button"
-                variant="secondary"
-                handler={() => reset(defaultValues)}
+            {isEdited && (
+              <div
+                className="flex gap-2 p-1 justify-content-end"
+                style={{
+                  borderTop: "1px solid rgb(82, 82, 111)",
+                  position: "sticky",
+                  bottom: "0px",
+                  background: "rgb(29, 30, 43)",
+                  zIndex: 5,
+                  paddingRight: "16px",
+                }}
               >
-                Cancel
-              </Button>
-              <Button type="submit">Update</Button>
-            </div>
-          )}
-        </form>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  handler={() => reset(defaultValues)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">Update</Button>
+              </div>
+            )}
+          </form>
+        )}
 
         {step === StepEnum.Password && currentUser && (
           <PasswordStep setStep={setStep} user={currentUser} />
