@@ -4,7 +4,7 @@ import { Project } from '../project/entities/project.entity';
 import { Task } from './entities/task.entity';
 import { TaskRepository } from './task.repository';
 
-const task = {
+export const task = {
   id: 1,
   title: 'first task',
   isDone: false,
@@ -13,7 +13,7 @@ const task = {
   isDeleted: false,
 };
 
-const tasks = [task];
+export const tasks = [task];
 
 describe('TaskRepository', () => {
   let taskRepository: TaskRepository;

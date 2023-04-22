@@ -27,11 +27,23 @@
     }
   }
 
+  &.terciary {
+    background-color: transparent;
+    color: red;
+    border: 1px solid red;
+  }
+
   padding: 12px;
   border-radius: 5px;
 
   &:hover {
     cursor: pointer;
+  }
+
+  &:disabled {
+    /* styles for disabled button */
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
@@ -325,6 +337,14 @@
       padding: 10px;
 
       border-bottom: 1px solid $border-color;
+    }
+
+    hr {
+      color: 1px solid rgb(82, 82, 111);
+    }
+
+    .border-color-primary {
+      border-color: rgb(82, 82, 111);
     }
   }
 }

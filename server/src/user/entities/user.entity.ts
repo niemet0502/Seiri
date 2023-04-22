@@ -21,6 +21,9 @@ export class User {
   @Column('text')
   password: string;
 
+  @Column('longtext', { nullable: true, default: null })
+  avatar: string;
+
   @OneToMany(() => Project, (project) => project.user) projects: Project[];
   @OneToMany(() => Session, (session) => session.user) sessions: Session[];
 }
