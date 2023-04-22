@@ -75,6 +75,11 @@ export class UserController {
   @Delete()
   @HttpCode(204)
   async remove(@UserDecorator() user: User) {
+    if (!user) {
+      const errors = { user: 'user not found' };
+      return new HttpException({ errors }, 401);
+    }
+
     return await this.userService.remove(user);
   }
 
