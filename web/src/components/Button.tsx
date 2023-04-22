@@ -6,7 +6,7 @@ export const Button: React.FC<{
   variant?: string;
   handler?: MouseEventHandler;
   isDisabled?: boolean;
-}> = ({ type, children, variant, handler, isDisabled = false }) => {
+}> = ({ type = "button", children, variant, handler, isDisabled = false }) => {
   return (
     <button
       disabled={isDisabled}
