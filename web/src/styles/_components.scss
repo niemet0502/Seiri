@@ -27,6 +27,12 @@
     }
   }
 
+  &.terciary {
+    background-color: transparent;
+    color: red;
+    border: 1px solid red;
+  }
+
   padding: 12px;
   border-radius: 5px;
 
