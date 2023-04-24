@@ -39,3 +39,23 @@ input:focus {
 .ͼ1 .cm-scroller {
   display: block !important;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(24, 25, 34);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(29, 30, 45);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(31, 33, 48);
+}
