@@ -184,7 +184,11 @@ export const NoteDetails: React.FC = () => {
             <div className="note-body flex flex-1" ref={editorRef}>
               {readingView && (
                 <MarkdownPreview
-                  style={{ width: "100%", background: "transparent" }}
+                  style={{
+                    width: "100%",
+                    background: "transparent",
+                    marginBottom: "100px",
+                  }}
                   source={note.content}
                 />
               )}

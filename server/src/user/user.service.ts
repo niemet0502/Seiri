@@ -22,6 +22,17 @@ export class UserService {
 
     delete user.password;
 
+    // add email sending to the queue
+    // await this.mailService.sendMail({
+    //   to: 'vincentmarius8@gmail.com',
+    //   from: 'mariusvniemet@gmail.com',
+    //   subject: 'Welcome on Seiri',
+    //   template: 'welcome',
+    //   context: {
+    //     user: user,
+    //   },
+    // });
+
     return user;
   }
 
