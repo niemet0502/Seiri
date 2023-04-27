@@ -1,5 +1,8 @@
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +15,19 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.SMTP_SERVER,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      },
+      template: {
+        dir: join(__dirname, 'mails'),
+        adapter: new HandlebarsAdapter(),
+      },
+    }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
     ProjectModule,
