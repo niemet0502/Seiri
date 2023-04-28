@@ -1,8 +1,9 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NavLink, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
+import { Loader } from "../../components/Loader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { IAuthLogin } from "../../types";
 
@@ -11,8 +12,11 @@ export const SignIn: React.FC = () => {
   const { control, handleSubmit } = useForm<IAuthLogin>();
   const { push } = useHistory();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const submit = useCallback(
     async (data: IAuthLogin) => {
+      setLoading(true);
       try {
         await apiClient.SignIn(data);
 
@@ -22,6 +26,8 @@ export const SignIn: React.FC = () => {
       } catch (e) {
         // error handling
         console.log(e);
+      } finally {
+        setLoading(false);
       }
     },
     [apiClient, push]
@@ -74,11 +80,14 @@ export const SignIn: React.FC = () => {
               </span>
 
               <NavLink to="/auth/forgot-password" className="white">
-                Forgot your password ?{" "}
+                Forgot your password ?
               </NavLink>
             </div>
 
-            <Button type="submit"> Sign up </Button>
+            <Button isDisabled={loading} type="submit">
+              {loading && <Loader width="12px" height="12px" />}
+              {!loading && "Sign up"}
+            </Button>
           </form>
         </div>
       </div>
