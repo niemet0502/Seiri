@@ -13,7 +13,6 @@ import { NoteModule } from './note/note.module';
 import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
-import { MailsService } from './mails/mails.service';
 
 @Module({
   imports: [
@@ -30,8 +29,8 @@ import { MailsService } from './mails/mails.service';
       transport: {
         host: 'smtp.sendgrid.net',
         auth: {
-          user: 'apikey',
-          pass: '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',
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
         },
       },
       template: {
@@ -47,7 +46,7 @@ import { MailsService } from './mails/mails.service';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MailsService],
+  providers: [AppService],
 })
 export class AppModule {
   constructor(private readonly dataSource: DataSource) {}
