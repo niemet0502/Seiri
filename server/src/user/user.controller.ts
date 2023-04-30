@@ -13,6 +13,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ForgotPasswordSchema } from './dto/forgot-password.schema';
 import { ValidatorPipe } from './dto/p-validation.pipe';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdatePasswordSchema } from './dto/update-password.schema';
@@ -84,8 +86,12 @@ export class UserController {
     return await this.userService.remove(user);
   }
 
-  @Put('/resetpassword')
-  async resetPassword() {
-    return 'marius';
+  @Post('/forgotpassword')
+  @HttpCode(204)
+  async forgotPassword(
+    @Body(new ValidatorPipe<ForgotPasswordDto>(ForgotPasswordSchema))
+    forgotPassword: ForgotPasswordDto,
+  ) {
+    return await this.userService.forgotPassword(forgotPassword);
   }
 }
