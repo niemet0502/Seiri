@@ -129,3 +129,8 @@ export interface ResetPasswordApi {
   resetToken: string;
   password: string;
 }
+
+export interface ResetPasswordFormApi {
+  password: string;
+  confirmPassword: string;
+}
