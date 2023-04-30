@@ -16,6 +16,7 @@ export const Login: React.FC = () => {
   const { control, handleSubmit } = useForm<IAuthLogin>();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
   const submit = useCallback(
     async (data: IAuthLogin) => {
@@ -27,8 +28,8 @@ export const Login: React.FC = () => {
         setCurrentUser(user);
 
         push("/");
-      } catch (e) {
-        console.log(e);
+      } catch (e: any) {
+        setError(e.response.data.message);
       } finally {
         setLoading(false);
       }
@@ -47,6 +48,8 @@ export const Login: React.FC = () => {
               </NavLink>
             </span>
           </div>
+
+          {error && <div className="form-error-container">{error}</div>}
 
           <form
             className="form-body flex gap-3 flex-column"

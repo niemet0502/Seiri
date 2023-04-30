@@ -5,27 +5,31 @@ import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { Loader } from "../../components/Loader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { useToasts } from "../../provider/toastProvider";
 import { IAuthLogin } from "../../types";
 
 export const SignIn: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
   const { control, handleSubmit } = useForm<IAuthLogin>();
   const { push } = useHistory();
+  const { pushToast } = useToasts();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
   const submit = useCallback(
     async (data: IAuthLogin) => {
       setLoading(true);
+      setError(undefined);
       try {
         await apiClient.SignIn(data);
 
-        push("/");
-
-        // addToast
-      } catch (e) {
-        // error handling
-        console.log(e);
+        pushToast({
+          title: "Registration",
+          message: "Your account has been successfully created",
+        });
+      } catch (e: any) {
+        setError(e.response.data.message);
       } finally {
         setLoading(false);
       }
@@ -45,6 +49,8 @@ export const SignIn: React.FC = () => {
               </NavLink>
             </span>
           </div>
+
+          {error && <div className="form-error-container">{error}</div>}
 
           <form
             className="form-body flex gap-3 flex-column"

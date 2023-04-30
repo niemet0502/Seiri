@@ -311,7 +311,7 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
         )}
 
         {step === StepEnum.Password && currentUser && (
-          <PasswordStep setStep={setStep} user={currentUser} />
+          <PasswordStep setStep={setStep} />
         )}
         {step === StepEnum.Email && currentUser && (
           <EmailStep

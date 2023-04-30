@@ -1,26 +1,27 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { useToasts } from "../../provider/toastProvider";
-import { PasswordUpdateApi, User } from "../../types";
+import { PasswordUpdateApi } from "../../types";
 import { StepEnum } from "./SettingsModal";
 
 export const PasswordStep: React.FC<{
   setStep: React.Dispatch<React.SetStateAction<StepEnum>>;
-  user: User;
-}> = ({ setStep, user }) => {
+}> = ({ setStep }) => {
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
+
+  const [error, setError] = useState<string>();
 
   const { control, watch, handleSubmit, reset } = useForm<PasswordUpdateApi>();
 
   const { mutate: passwordUpdate } = useMutation(
     (data: PasswordUpdateApi) => apiClient.passwordUpdate(data),
     {
-      onSuccess: (updatedUser) => {
+      onSuccess: () => {
         pushToast({
           title: "Saved !",
           message: "Your profile information has been updated",
@@ -31,6 +32,9 @@ export const PasswordStep: React.FC<{
           newPassword: "",
           confirmPassword: "",
         });
+      },
+      onError: (error: any) => {
+        setError(error.response.data.message);
       },
     }
   );
@@ -58,10 +62,15 @@ export const PasswordStep: React.FC<{
       onSubmit={handleSubmit(submit)}
     >
       <div>
-        <p className="mb-2">
-          Your password must be at least 8 characters long. Avoid common words
-          or patterns.
-        </p>
+        {!error && (
+          <p className="mb-2">
+            Your password must be at least 8 characters long. Avoid common words
+            or patterns.
+          </p>
+        )}
+
+        {error && <div className="form-error-container">{error}</div>}
+
         <div className="flex flex-column gap-2" style={{ maxWidth: "600px" }}>
           <Controller
             name="oldPassword"

@@ -402,3 +402,9 @@
   border: 1px solid $primary;
   border-radius: 5px;
 }
+
+.form-error-container {
+  border-left: 2px solid red;
+  padding: 15px;
+  margin-bottom: 10px;
+}
