@@ -27,6 +27,7 @@ export class TaskRepository {
       .leftJoinAndSelect('task.children', 'child')
       .where('task.parentId IS NULL')
       .andWhere('task.projectId = :projectId', { projectId })
+      .orderBy('task.isDone', 'ASC')
       .getMany();
 
     return tasks;
