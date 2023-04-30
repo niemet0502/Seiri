@@ -30,11 +30,12 @@ export const ResetPassword: React.FC = () => {
           className="flex flex-column justify-content"
         >
           <div className="flex logo-border"></div>
-          <div className="p-2" style={{ marginLeft: "-22px" }}>
-            <img
-              src="https://app.logsnag.com/static/media/logo-text-dark.430acd2cdd827917cc32ce2c470bccbe.svg"
-              alt="logo"
-            />
+          <div
+            className="p-2 flex gap-2 align-items-center"
+            style={{ marginLeft: "-30px" }}
+          >
+            <img src="/white-logo.png" width="30px" alt="logo" />
+            <h2 className="login-title slideInFromRight">Seiri</h2>
           </div>
           <div className="flex logo-border"></div>
         </div>
