@@ -4,6 +4,7 @@ import {
   Controller,
   HttpCode,
   HttpException,
+  HttpStatus,
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -26,8 +27,10 @@ export class AuthController {
     const user = await this.userService.findOne(loginDto);
 
     if (!user) {
-      const errors = { user: ' not found' };
-      throw new HttpException({ errors }, 401);
+      throw new HttpException(
+        'Invalid Email or Password',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     const session = await this.authService.createSession(user);

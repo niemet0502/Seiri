@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -33,8 +34,10 @@ export class UserController {
     let user = await this.userService.findByEmail(createUserDto.email);
 
     if (user) {
-      const errors = { email: 'email already use' };
-      throw new HttpException({ errors }, 401);
+      throw new HttpException(
+        'This email address is already registered',
+        HttpStatus.CONFLICT,
+      );
     }
 
     return this.userService.create(createUserDto);
@@ -65,8 +68,7 @@ export class UserController {
     @UserDecorator() user: User,
   ) {
     if (!user) {
-      const errors = { user: 'user not found' };
-      return new HttpException({ errors }, 401);
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
     return await this.userService.updatePassword(user, updatePassword);
@@ -76,8 +78,7 @@ export class UserController {
   @HttpCode(204)
   async remove(@UserDecorator() user: User) {
     if (!user) {
-      const errors = { user: 'user not found' };
-      return new HttpException({ errors }, 401);
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
     return await this.userService.remove(user);
