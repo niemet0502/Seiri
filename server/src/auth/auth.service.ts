@@ -43,4 +43,8 @@ export class AuthService {
   async remove(session: Session) {
     return await this.sessionRepository.remove(session);
   }
+
+  async removeAll(user: User) {
+    return await this.sessionRepository.delete({ user: { id: user.id } });
+  }
 }
