@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { dataSourceOptions } from './db/data-source';
+import { SendEmailProcessor } from './mails/send-email-processor.service';
 import { NoteModule } from './note/note.module';
 import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
@@ -18,12 +19,9 @@ import { UserModule } from './user/user.module';
   imports: [
     BullModule.forRoot({
       redis: {
-        host: '172.17.0.2',
+        host: 'locahost',
         port: 6379,
       },
-    }),
-    BullModule.registerQueue({
-      name: 'sendEmail',
     }),
     MailerModule.forRoot({
       transport: {
@@ -46,7 +44,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SendEmailProcessor],
 })
 export class AppModule {
   constructor(private readonly dataSource: DataSource) {}
