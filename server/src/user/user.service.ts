@@ -6,6 +6,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -125,5 +126,21 @@ export class UserService {
 
     const { token } = await this.sessionService.createSession(user);
     // add email with token to the job queue
+  }
+
+  async resetPassword(data: ResetPasswordDto) {
+    const { resetToken, password } = data;
+
+    const session = await this.sessionService.findOne(resetToken);
+
+    if (!session) {
+      throw new HttpException('Invalid token', HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userRepository.findByEmail(session.user.email);
+
+    user.password = await bcrypt.hash(password, 10);
+
+    return await this.userRepository.save(user);
   }
 }

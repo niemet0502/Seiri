@@ -16,6 +16,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ForgotPasswordSchema } from './dto/forgot-password.schema';
 import { ValidatorPipe } from './dto/p-validation.pipe';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ResetPasswordSchema } from './dto/reset-password.schema';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdatePasswordSchema } from './dto/update-password.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -93,5 +95,13 @@ export class UserController {
     forgotPassword: ForgotPasswordDto,
   ) {
     return await this.userService.forgotPassword(forgotPassword);
+  }
+
+  @Post('/resetpassword')
+  async resetPassword(
+    @Body(new ValidatorPipe<ResetPasswordDto>(ResetPasswordSchema))
+    data: ResetPasswordDto,
+  ) {
+    return await this.userService.resetPassword(data);
   }
 }
