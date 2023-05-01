@@ -48,6 +48,13 @@ export class Client {
     return r.data;
   }
 
+  public async AuthLogout() {
+    const url = this.baseApiUrl + "auth/logout";
+
+    const r = await this.tranformOptions().post(url);
+    return r.data;
+  }
+
   public async SignIn(data: IAuthLogin) {
     const url = this.baseApiUrl + "user";
 

@@ -3,6 +3,7 @@ import { BsListTask } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { SlNote } from "react-icons/sl";
 import { SettingsModal } from "../../pages/Settings/SettingsModal";
+import { ApiClientContext } from "../../provider/apiClientProvider";
 import { currentFeatureContext } from "../../provider/currentFeatureProvider";
 import { CurrentUserContext } from "../../provider/userProvider";
 import { FeatureEnum } from "../../types";
@@ -13,6 +14,7 @@ import { DropdownItem } from "../DropdownItem";
 
 export const Features: React.FC = () => {
   const { updateCurrentFeature, feature } = useContext(currentFeatureContext);
+  const { apiClient } = useContext(ApiClientContext);
   const { logout } = useContext(CurrentUserContext);
 
   const [editSettingsHandler, setEditSettingsHandler] =
@@ -28,6 +30,16 @@ export const Features: React.FC = () => {
     } catch (e) {
     } finally {
       setEditSettingsHandler(undefined);
+    }
+  };
+
+  const signout = async () => {
+    try {
+      await apiClient.AuthLogout();
+
+      logout();
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -61,7 +73,7 @@ export const Features: React.FC = () => {
           )}
         >
           <DropdownItem handler={editSettings}>Settings</DropdownItem>
-          <DropdownItem handler={logout}>Sign out</DropdownItem>
+          <DropdownItem handler={signout}>Sign out</DropdownItem>
         </Dropdown>
       </div>
 

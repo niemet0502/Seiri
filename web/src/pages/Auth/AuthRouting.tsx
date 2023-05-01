@@ -1,4 +1,4 @@
-import { Route, Router, Switch } from "react-router-dom";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { history } from "../../App";
 import { ForgotPassword } from "./ForgotPassword";
 import { Login } from "./Login";
@@ -17,7 +17,7 @@ export const AuthRouting: React.FC = () => {
           exact
           component={ResetPassword}
         />
-        {/* <Redirect to="/" /> */}
+        <Redirect to="/" />
       </Switch>
     </Router>
   );

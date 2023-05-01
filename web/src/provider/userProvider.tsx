@@ -1,5 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { history } from "../App";
+import { Loader } from "../components/Loader";
 import { AuthRouting } from "../pages/Auth/AuthRouting";
 import { User } from "../types";
 
@@ -20,8 +21,10 @@ export const CurrentUserProvider: React.FC<{ children: any }> = ({
   children,
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     try {
       const token = localStorage.getItem(TOKEN_LS_KEY);
 
@@ -32,6 +35,9 @@ export const CurrentUserProvider: React.FC<{ children: any }> = ({
       }
     } catch (e) {
       console.log(e);
+      setCurrentUser(null);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -42,6 +48,7 @@ export const CurrentUserProvider: React.FC<{ children: any }> = ({
 
   const logout = useCallback(() => {
     // query to the backend to destroy the token
+
     localStorage.clear();
     setCurrentUser(null);
 
@@ -52,7 +59,8 @@ export const CurrentUserProvider: React.FC<{ children: any }> = ({
     <CurrentUserContext.Provider
       value={{ currentUser, setCurrentUser, logout }}
     >
-      {currentUser === null ? <AuthRouting /> : children}
+      {currentUser === null ? loading ? <Loader /> : <AuthRouting /> : children}
+      {/* {currentUser === null ? loading ? <Loader logo={true} /> : <BaseLandingPage /> : children} */}
     </CurrentUserContext.Provider>
   );
 };
