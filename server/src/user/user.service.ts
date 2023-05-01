@@ -139,6 +139,8 @@ export class UserService {
 
     const user = await this.userRepository.findByEmail(session.user.email);
 
+    await this.sessionService.removeAll(user);
+
     user.password = await bcrypt.hash(password, 10);
 
     return await this.userRepository.save(user);
