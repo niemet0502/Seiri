@@ -15,12 +15,14 @@ services:
       DB_PORT: 3306
       DB_USERNAME: marius
       DB_PASSWORD: root
-      DB_NAME: seiriprod
+      DB_NAME: thot
 
   web:
     build: ./web
     image: seiri-web
     container_name: seiri-web
+    environment:
+      SERVER_API_URL: http://server:3000/
     depends_on:
       - server
     ports:
@@ -33,7 +35,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: seiriprod
+      MYSQL_DATABASE: thot
       MYSQL_USER: marius
       MYSQL_PASSWORD: root
     ports:

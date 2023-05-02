@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 3000
 
 # Start app
-CMD [ "npm", "run", "start:dev" ]
+CMD npm run migration:run && npm run start:dev

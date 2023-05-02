@@ -15,7 +15,8 @@ import {
 } from "../types";
 
 export class Client {
-  baseApiUrl: string = "http://localhost:3000/";
+  baseApiUrl: string =
+    (process.env.SERVER_API_URL as string) || "http://localhost:3004/";
 
   protected getAuthToken() {
     try {
