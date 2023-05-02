@@ -1,4 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Task } from '../task/entities/task.entity';
+import { TaskRepository } from '../task/task.repository';
+import { task, tasks } from '../task/task.repository.spec';
 import { Project } from './entities/project.entity';
 import { ProjectRepository } from './project.repository';
 import { ProjectService } from './project.service';
@@ -11,6 +14,7 @@ const project = {
   user: null,
   tasks: null,
   notes: null,
+  handledObject: null,
 };
 
 const projects = [project];
@@ -25,6 +29,13 @@ describe('ProjectService', () => {
     delete: (id: number) => true,
   };
 
+  const mockTaskRepository = {
+    save: (task: Task) => task,
+    find: (project?: Project) => tasks,
+    findOne: (id: number) => task,
+    remove: (task: Task) => task,
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -32,6 +43,10 @@ describe('ProjectService', () => {
         {
           provide: ProjectRepository,
           useValue: mockRepository,
+        },
+        {
+          provide: TaskRepository,
+          useValue: mockTaskRepository,
         },
       ],
     }).compile();
@@ -53,6 +68,7 @@ describe('ProjectService', () => {
         user: null,
         tasks: null,
         notes: null,
+        handledObject: null,
       };
 
       jest.spyOn(mockRepository, 'save').mockReturnValue(project);
@@ -65,11 +81,17 @@ describe('ProjectService', () => {
   describe('ProjectService.__findAllByUser', () => {
     it('should return a project array', async () => {
       const userId = 1;
+      const handledObject = 1;
       jest.spyOn(mockRepository, 'findAllByUser').mockReturnValue(projects);
 
-      expect(await projectService.findAllByUser(userId)).toEqual(projects);
+      expect(await projectService.findAllByUser(userId, handledObject)).toEqual(
+        projects,
+      );
       expect(mockRepository.findAllByUser).toBeCalledTimes(1);
-      expect(mockRepository.findAllByUser).toBeCalledWith(userId);
+      expect(mockRepository.findAllByUser).toBeCalledWith(
+        userId,
+        handledObject,
+      );
     });
   });
 

@@ -15,4 +15,7 @@ export class CreateUserDto {
   public password?: string;
   @ApiProperty({ description: "The user's confirm_password" })
   public confirm_password?: string;
+
+  @ApiProperty({ description: "The user's avatar" })
+  public avatar?: string;
 }

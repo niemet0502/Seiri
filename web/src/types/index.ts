@@ -5,6 +5,7 @@ export interface User {
   firstname?: string;
   email: string;
   password: string;
+  avatar?: string | null;
 }
 export interface Note {
   id: number;
@@ -88,4 +89,34 @@ export interface EditNoteApi {
 export interface DeleteMultipleTasksApi {
   projectId: string;
   completed: boolean;
+}
+
+export interface UserFormApi {
+  id?: number;
+  firstname?: string;
+  lastname?: string;
+  newPassword?: string;
+  oldPassword?: string;
+  confirmPassword?: string;
+  newEmail?: string;
+  confirmEmail?: string;
+}
+
+export interface UpdateUser {
+  id: number;
+  email?: string;
+  password?: string;
+  firstname?: string;
+  lastname?: string;
+  avatar?: string | null;
+}
+
+export interface PasswordUpdateApi {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface DeleteUserApi {
+  password: string;
 }

@@ -10,6 +10,8 @@ import {
   EditTaskApi,
   FeatureEnum,
   IAuthLogin,
+  PasswordUpdateApi,
+  UpdateUser,
 } from "../types";
 
 export class Client {
@@ -52,6 +54,14 @@ export class Client {
       confirm_password: data.password,
     });
     return r.data;
+  }
+
+  public updateUser(user: UpdateUser) {
+    const url = this.baseApiUrl + `user/${user.id}`;
+
+    return this.tranformOptions()
+      .patch(url, user)
+      .then((r) => r.data);
   }
 
   public getProjects(feature: FeatureEnum) {
@@ -177,6 +187,22 @@ export class Client {
 
     return this.tranformOptions()
       .get(url)
+      .then((r) => r.data);
+  }
+
+  public passwordUpdate(data: PasswordUpdateApi) {
+    const url = this.baseApiUrl + "user/updatepassword";
+
+    return this.tranformOptions()
+      .put(url, data)
+      .then((r) => r.data);
+  }
+
+  public deleteAccount() {
+    const url = this.baseApiUrl + "user";
+
+    return this.tranformOptions()
+      .delete(url)
       .then((r) => r.data);
   }
 }

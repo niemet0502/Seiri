@@ -13,6 +13,10 @@ const user = {
   lastname: 'Marius',
   firstname: 'NIEMET',
   email: 'mariusniemet@gmail.com',
+  password: '',
+  projects: [],
+  sessions: null,
+  avatar: null,
 };
 
 const project = {
@@ -72,12 +76,13 @@ describe('ProjectController', () => {
       const projectDto = {
         name: 'DSA resources',
         userId: 3,
-      };
+        handledObject: 1,
+      } as CreateProjectDto;
 
       jest.spyOn(mockUserService, 'findById').mockReturnValue(null);
 
       try {
-        await projectController.create(projectDto);
+        await projectController.create(user, projectDto);
       } catch (e) {
         expect(e).toBeInstanceOf(HttpException);
       }
@@ -87,24 +92,45 @@ describe('ProjectController', () => {
       const projectDto = {
         name: 'DSA resources',
         userId: 1,
+        handledObject: 1,
+      };
+
+      const userDto = {
+        ...user,
+        password: '',
+        projects: [],
+        sessions: null,
       };
 
       jest.spyOn(mockUserService, 'findById').mockReturnValue(user);
       jest.spyOn(mockProjectService, 'create').mockReturnValue(project);
 
-      expect(await projectController.create(projectDto)).toEqual(project);
-      expect(mockUserService.findById).toBeCalledWith(projectDto.userId);
+      expect(await projectController.create(userDto, projectDto)).toEqual(
+        project,
+      );
       expect(mockProjectService.create).toBeCalledTimes(1);
     });
   });
 
   describe('ProjectController.__findAll', () => {
     it('Should return a array project', async () => {
-      const userId = 1;
+      const handledObject = 1;
+      const userDto = {
+        ...user,
+        id: 1,
+        password: '',
+        projects: [],
+        sessions: null,
+      };
       jest.spyOn(mockProjectService, 'findAllByUser').mockReturnValue(projects);
 
-      expect(await projectController.findAll(userId)).toEqual(projects);
-      expect(mockProjectService.findAllByUser).toBeCalledWith(userId);
+      expect(await projectController.findAll(handledObject, userDto)).toEqual(
+        projects,
+      );
+      expect(mockProjectService.findAllByUser).toBeCalledWith(
+        +userDto.id,
+        handledObject,
+      );
       expect(mockProjectService.findAllByUser).toBeCalledTimes(1);
     });
   });

@@ -6,7 +6,7 @@ import { User } from "../types";
 interface CurrentContextValue {
   currentUser: User | null;
   setCurrentUser: (user: User) => void;
-  logout?: () => void;
+  logout: () => void;
 }
 
 export const TOKEN_LS_KEY = "userToken";

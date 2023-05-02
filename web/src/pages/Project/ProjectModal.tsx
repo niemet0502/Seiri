@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+import { useHistory } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button } from "../../components/Button";
 import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
@@ -17,6 +18,8 @@ export const ProjectModal: React.FC<{
 }> = ({ deferred, projectToEdit }) => {
   const { feature: handledObject } = useContext(currentFeatureContext);
   const { apiClient } = useContext(ApiClientContext);
+  const { push } = useHistory();
+
   const { control, handleSubmit, reset } = useForm<CreateProject>({
     defaultValues: projectToEdit
       ? {
@@ -34,6 +37,7 @@ export const ProjectModal: React.FC<{
         deferred.resolve(newProject);
         reset();
         queryClient.invalidateQueries([["projects"], handledObject]);
+        push(`/project/${newProject.id}`);
       },
     }
   );

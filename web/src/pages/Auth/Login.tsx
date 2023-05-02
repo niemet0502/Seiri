@@ -81,7 +81,7 @@ export const Login: React.FC = () => {
               </NavLink>
             </div>
 
-            <Button>Sign in</Button>
+            <Button type="submit">Sign in</Button>
           </form>
         </div>
       </div>

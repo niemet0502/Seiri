@@ -4,7 +4,7 @@ import { Project } from '../project/entities/project.entity';
 import { Task } from './entities/task.entity';
 import { TaskRepository } from './task.repository';
 
-const task = {
+export const task = {
   id: 1,
   title: 'first task',
   isDone: false,
@@ -13,7 +13,7 @@ const task = {
   isDeleted: false,
 };
 
-const tasks = [task];
+export const tasks = [task];
 
 describe('TaskRepository', () => {
   let taskRepository: TaskRepository;
@@ -49,6 +49,8 @@ describe('TaskRepository', () => {
         description: 'task description',
         project: null,
         isDeleted: false,
+        parent: null,
+        children: [],
       };
       jest.spyOn(mockRespository, 'save').mockReturnValue(task);
 
@@ -75,32 +77,6 @@ describe('TaskRepository', () => {
     });
   });
 
-  describe('TaskRepository.__findAllByProject', () => {
-    it('should return a array of task by project', async () => {
-      //arrange
-      const project = {
-        id: 1,
-        name: 'project test',
-        description: 'DSA resources',
-        isArchive: false,
-        user: null,
-        tasks: null,
-        notes: null,
-      };
-      jest.spyOn(mockRespository, 'find').mockReturnValue(tasks);
-
-      // act
-      const result = await taskRepository.findAllByProject(project);
-
-      //assert
-      expect(result).toEqual(tasks);
-      expect(mockRespository.find).toBeCalledWith({
-        where: { project: project, isDone: false },
-      });
-      expect(mockRespository.find).toBeCalledTimes(2);
-    });
-  });
-
   describe('TaskRepository.__findById', () => {
     it('should find by id and return a task', async () => {
       //arrange
@@ -112,7 +88,10 @@ describe('TaskRepository', () => {
 
       //assert
       expect(result).toEqual(task);
-      expect(mockRespository.findOne).toBeCalledWith({ where: { id: id } });
+      expect(mockRespository.findOne).toBeCalledWith({
+        where: { id: id, parent: undefined },
+        relations: ['children', 'project'],
+      });
       expect(mockRespository.findOne).toBeCalledTimes(1);
     });
   });
@@ -127,6 +106,8 @@ describe('TaskRepository', () => {
         description: 'task description',
         project: null,
         isDeleted: false,
+        parent: null,
+        children: [],
       };
       jest.spyOn(mockRespository, 'remove').mockReturnValue(task);
 
