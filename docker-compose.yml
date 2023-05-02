@@ -40,8 +40,16 @@ services:
       MYSQL_PASSWORD: root
     ports:
       - "3307:3306" 
+    volumes:
+      - mysql-data:/var/lib/mysql
   
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+  mysql-data:
