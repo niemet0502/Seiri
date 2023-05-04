@@ -3,7 +3,7 @@ name: web
 on:
   push:
     branches:
-      - main
+      - 34-setup-a-cicd-pipeline
     paths:
       - "web/**"
 

@@ -3,7 +3,7 @@ name: server
 on:
   push:
     branches:
-      - main
+      - 34-setup-a-cicd-pipeline
     paths:
       - "server/**"
 
