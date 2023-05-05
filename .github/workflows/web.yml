@@ -17,8 +17,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: "npm"
-          cache-dependency-path: "./web/package-lock.json"
 
       - name: Build Docker image and Run Test
         working-directory: ./web
