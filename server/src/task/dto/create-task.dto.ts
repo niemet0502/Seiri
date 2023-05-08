@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateTaskDto {
   @ApiProperty({
     example: 'build a portfolio',
-    description: "The task's title",
+    description: "The task's title ",
   })
   public title: string;
   @ApiProperty({
