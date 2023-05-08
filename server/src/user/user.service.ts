@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 import { InjectQueue } from '@nestjs/bull';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Queue } from 'bull';
 import { AuthService } from 'src/auth/auth.service';
-=======
-import { HttpException, Injectable } from '@nestjs/common';
-import bcrypt from 'bcryptjs';
->>>>>>> develop
 import { LoginDto } from '../auth/dto/login.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';

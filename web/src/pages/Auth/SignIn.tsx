@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { Loader } from "../../components/Loader";
@@ -11,7 +11,6 @@ import { IAuthLogin } from "../../types";
 export const SignIn: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
   const { control, handleSubmit } = useForm<IAuthLogin>();
-  const { push } = useHistory();
   const { pushToast } = useToasts();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,7 +33,7 @@ export const SignIn: React.FC = () => {
         setLoading(false);
       }
     },
-    [apiClient, push]
+    [apiClient, pushToast]
   );
   return (
     <div className="login-wrapper-content flex flex-row ">
