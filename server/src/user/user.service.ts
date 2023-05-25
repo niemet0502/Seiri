@@ -33,19 +33,11 @@ export class UserService {
     delete user.password;
 
     // add email sending to the queue
-    // await this.mailService.sendMail({
-    //   to: email,
-    //   from: 'mariusvniemet@gmail.com',
-    //   subject: 'Welcome on Seiri',
-    //   template: 'welcome',
-    //   context: {
-    //     user: user,
-    //   },
-    // });
-    // const job = await this.sendEmailQueue.add('welcomeEmail', {
-    //   email: user.email,
-    // });
-    // this.logger.log(`add email to the queue ${job}`);
+    const job = await this.sendEmailQueue.add('welcomeEmail', {
+      email: user.email,
+      web_app_link: process.env.WEB_APP_ADDRESS,
+    });
+    this.logger.log(`add email to the queue ${job}`);
 
     return user;
   }
@@ -126,6 +118,14 @@ export class UserService {
 
     const { token } = await this.sessionService.createSession(user);
     // add email with token to the job queue
+
+    await this.sendEmailQueue.add('resetPasswordEmail', {
+      user,
+      email,
+      token,
+      web_app_link:
+        process.env.WEB_APP_ADDRESS + 'auth/reset-password/' + token,
+    });
   }
 
   async resetPassword(data: ResetPasswordDto) {
