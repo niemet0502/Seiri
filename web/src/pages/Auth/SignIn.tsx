@@ -10,11 +10,12 @@ import { IAuthLogin } from "../../types";
 
 export const SignIn: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
-  const { control, handleSubmit } = useForm<IAuthLogin>();
   const { pushToast } = useToasts();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+
+  const { control, handleSubmit, reset } = useForm<IAuthLogin>();
 
   const submit = useCallback(
     async (data: IAuthLogin) => {
@@ -22,6 +23,11 @@ export const SignIn: React.FC = () => {
       setError(undefined);
       try {
         await apiClient.SignIn(data);
+
+        reset({
+          email: "",
+          password: "",
+        });
 
         pushToast({
           title: "Registration",
@@ -33,7 +39,7 @@ export const SignIn: React.FC = () => {
         setLoading(false);
       }
     },
-    [apiClient, pushToast]
+    [apiClient, pushToast, reset]
   );
   return (
     <div className="login-wrapper-content flex flex-row ">

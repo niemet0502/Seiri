@@ -10,6 +10,7 @@ import { ApiClientContext } from "../provider/apiClientProvider";
 import { ConfirmDialogContext } from "../provider/confirmDialogProvider";
 import { useToasts } from "../provider/toastProvider";
 import { FeatureEnum, Project } from "../types";
+import { textEllipsis } from "../utils/Helpers";
 import { IconButton } from "./Button";
 import { Dropdown } from "./Dropdown";
 import { DropdownItem } from "./DropdownItem";
@@ -57,7 +58,9 @@ export const ProjectItem: React.FC<{
       <NavLink to={`/project/${project.id}`} className="flex-2">
         <div className="flex align-items-center project-title flex-2">
           <RxDotFilled style={{ color: project.color }} />
-          <span style={{ fontSize: "14px" }}>{project.name}</span>
+          <span style={{ fontSize: "14px" }}>
+            {textEllipsis(project.name, 80)}
+          </span>
         </div>
       </NavLink>
       <div className="flex align-items-center" style={{ fontSize: "12px" }}>
