@@ -19,8 +19,8 @@ import { UserModule } from './user/user.module';
   imports: [
     BullModule.forRoot({
       redis: {
-        host: 'locahost',
-        port: 6379,
+        host: process.env.CACHE_HOST,
+        port: parseInt(process.env.CACHE_PORT, 10),
       },
     }),
     MailerModule.forRoot({
