@@ -44,6 +44,17 @@ h1, h2, h3, h4, h5 {
     flex-direction: column;
 }
 
+.header__child a {
+  display: flex;
+  text-decoration: none;
+  gap: 10px;
+  align-items: center;
+}
+
+.header-container .header__child:first-child a:hover {
+  text-decoration: none;
+}
+
 .header{ 
     width: 85%;
     display: flex;
