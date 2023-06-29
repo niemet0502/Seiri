@@ -1,0 +1,108 @@
+body{
+    background-color: #191a23;
+    min-height: 100vh;
+    font-family: "Segoe UI" !important;
+
+}
+.flex { 
+  display: flex;
+}
+
+.gap-1{
+  gap: 10px;
+}
+
+.btn{
+  padding: 12px;
+  border-radius: 5px;
+  color: #E1E7EF;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn.secondary {
+  background-color: #2c2d3c;
+  border: 1px solid #2c2d3c;
+}
+
+.btn.primary {
+  background-color: rgb(87, 91, 199);
+  border: 1px solid rgb(87, 91, 199);
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 0px;
+    color: #E1E7EF;
+}
+
+.header-container { 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header{ 
+    width: 85%;
+    display: flex;
+    align-self: center;
+    padding: 20px;
+    max-width: 1200px;
+    justify-content: space-between;
+}
+
+.header__child {
+    display: flex; 
+    gap: 10px;
+    align-items: center;
+}
+
+.header__child img{
+    width: 32px;
+    height: 32px;
+}
+
+.header__child a{
+    margin-right: 10px;
+    color: #E1E7EF;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header__child a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.banner {
+    padding: 70px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.banner_title {
+  font-size: 55px;
+  max-width: 900px;
+  text-align: center;
+}
+
+.banner__p {
+  font-size: 20px;
+  max-width: 500px;
+  text-align: center;
+  color: #7F8EA3;
+}
+
+.app-demo-img {
+  border: 10px solid #E1E7EF;
+  border-radius: 15px;
+  width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}

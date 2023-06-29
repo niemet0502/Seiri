@@ -1,9 +1,14 @@
 import * as React from "react"
 
+import { Banner } from "../components/banner"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
-const IndexPage = () => <Layout>Testing</Layout>
+const IndexPage = () => (
+  <Layout>
+    <Banner />
+  </Layout>
+)
 
 /**
  * Head export to define metadata for the page
