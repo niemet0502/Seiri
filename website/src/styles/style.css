@@ -82,12 +82,16 @@ h1, h2, h3, h4, h5 {
   border-radius: 5px;
 }
 
+.header-container .github-banner a:hover, .header-container .github-banner button:hover {
+  cursor: pointer;
+}
+
 .header-container .github-banner button span{
   margin-bottom: -2px;
 }
 
 .header-container .github-banner svg, .header-container .github-banner button svg {
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .header__child a {
@@ -163,6 +167,71 @@ h1, h2, h3, h4, h5 {
   margin-right: auto;
   margin-top: 30px;
 }
+.features-container {
+  width: 100%;
+}
+
+.feature {
+  width: 100%;
+  display: flex;
+}
+
+.feature div.feature__content {
+  width: 50%;
+}
+
+.features-title h1 {
+  text-align: center;
+  font-size: 37px;
+}
+
+
+.features-title {
+  margin-bottom: 80px;
+}
+
+.features-title p {
+  text-align: center;
+  font-size: 20px;
+  color: var(--text-color);
+}
+
+
+.features-container  {
+  margin-top: 50px;
+}
+
+.feature img {
+  width: 100%;
+}
+
+.features-container .features-container__child {
+  flex-basis: 33%; 
+  flex-grow: 0; 
+}
+
+.features-container .features-container__child div {
+  width: 320px;
+  border: 1px solid var(--text-color);
+  border-radius: 7px;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+}
+
+.features-container .features-container__child div svg {
+  color: var(--title-color);
+  font-size: 32px;
+}
+
+.features-container .features-container__child div span {
+  font-size: 17px;
+  color: var(--text-color);
+}
 
 /* roadmap */
 
@@ -228,40 +297,24 @@ h1, h2, h3, h4, h5 {
   height: 100%;
 }
 
-.features-container {
-  width: 100%;
-}
+/* changelog */
 
-.feature {
-  width: 100%;
+.changelog { 
   display: flex;
 }
 
-.feature div {
-  width: 50%;
+.changelog__date {
+  width: 25%;
 }
 
-.feature div:has(video), .feature div:has(iframe){
-  border: 10px solid var(--title-color);
-  border-radius: 15px;
+.changelog__date span {
+  position: sticky;
+  top: calc(90px);
+  left: 0px; 
 }
 
-.feature div video, .feature div iframe {
-  width: 100%;
-}
+.changelog__content {
+ width: 75%;
+ height: 800px;
 
-.features-title h1 {
-  text-align: center;
-  font-size: 37px;
-}
-
-
-.features-title {
-  margin-bottom: 80px;
-}
-
-.features-title p {
-  text-align: center;
-  font-size: 20px;
-  color: var(--text-color);
 }
