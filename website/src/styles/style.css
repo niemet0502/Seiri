@@ -306,7 +306,6 @@ footer {
 }
 
 footer a {
-  
   color: var(--title-color);
   font-weight: bold;
 }
@@ -341,10 +340,33 @@ footer a {
  width: 75%;
 }
 
+.changelog__content img {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.changelog__content a {
+  color: var(--title-color);
+}
+
 code[class*="language-"], pre[class*="language-"] {
   background-color: #13141c !important;
   border: 1px solid rgb(49, 48, 53) !important;
   transition: box-shadow 0.2s ease 0s !important;
 
   color: #D0D6E0 !important;
+}
+
+.gatsby-highlight-code-line {
+  background-color: rgb(116, 207, 136, 0.1);;
+  display: block;
+  margin-left: -1rem;
+  margin-right: -1.5rem;
+  padding-left: calc(1rem - 4px);
+  border-left: 4px solid #74cf74;
+}
+
+.gatsby-highlight-code-line .gatsby-highlight-code-line {
+  background-color: transparent;
 }
