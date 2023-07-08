@@ -45,7 +45,7 @@ const IndexPage = () => {
                 <div>
                   <AiOutlineUser />
                   <h3>Profil</h3>
-                  <span>You can</span>
+                  <span>You can update your information at any time.</span>
                 </div>
               </div>
             </div>
