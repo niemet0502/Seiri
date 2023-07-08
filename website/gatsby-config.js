@@ -15,12 +15,21 @@ module.exports = {
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },
   plugins: [
+    "gatsby-remark-autolink-headers",
+    "gatsby-remark-images",
     `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "markdown-files",
+        path: `${__dirname}/src/changelog`,
       },
     },
     `gatsby-transformer-sharp`,
@@ -46,6 +55,43 @@ module.exports = {
       options: {
         name: "assets",
         path: `${__dirname}/static/`,
+      },
+    },
+    /**
+     * MARKDOWN
+     */
+    `gatsby-remark-prismjs`,
+    "gatsby-transformer-sharp",
+    "gatsby-transformer-remark",
+    "gatsby-plugin-sharp",
+    {
+      resolve: "gatsby-transformer-remark",
+      options: {
+        plugins: [
+          "gatsby-remark-autolink-headers",
+          {
+            resolve: "gatsby-remark-images",
+            options: {
+              maxWidth: 800,
+              backgroundColor: "transparent",
+            },
+          },
+          {
+            resolve: "gatsby-remark-prismjs",
+            options: {
+              classPrefix: "language-",
+              inlineCodeMarker: null,
+              aliases: {},
+              showLineNumbers: false,
+              noInlineHighlight: false,
+              prompt: {
+                user: "root",
+                host: "localhost",
+                global: true,
+              },
+            },
+          },
+        ],
       },
     },
   ],
