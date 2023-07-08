@@ -297,10 +297,32 @@ h1, h2, h3, h4, h5 {
   height: 100%;
 }
 
+/* footer **/ 
+footer {
+  padding-bottom: 25px;
+  color: var(--title-color);
+  display: flex;
+  flex-direction: row;
+}
+
+footer a {
+  
+  color: var(--title-color);
+  font-weight: bold;
+}
+
 /* changelog */
+
+.changelog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
 
 .changelog { 
   display: flex;
+  padding-top: 40px;
+  border-top: 1px solid red;
 }
 
 .changelog__date {
@@ -315,6 +337,4 @@ h1, h2, h3, h4, h5 {
 
 .changelog__content {
  width: 75%;
- height: 800px;
-
 }
