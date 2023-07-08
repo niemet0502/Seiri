@@ -300,7 +300,7 @@ h1, h2, h3, h4, h5 {
 /* footer **/ 
 footer {
   padding-bottom: 25px;
-  color: var(--title-color);
+  color: var(--text-color);
   display: flex;
   flex-direction: row;
 }
@@ -322,7 +322,9 @@ footer a {
 .changelog { 
   display: flex;
   padding-top: 40px;
-  border-top: 1px solid red;
+  border-top: 1px solid rgb(49, 48, 53) ;
+
+  color: var(--text-color);
 }
 
 .changelog__date {
@@ -337,4 +339,12 @@ footer a {
 
 .changelog__content {
  width: 75%;
+}
+
+code[class*="language-"], pre[class*="language-"] {
+  background-color: #13141c !important;
+  border: 1px solid rgb(49, 48, 53) !important;
+  transition: box-shadow 0.2s ease 0s !important;
+
+  color: #D0D6E0 !important;
 }
