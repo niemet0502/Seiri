@@ -68,7 +68,7 @@ const IndexPage = () => {
             >
               <iframe
                 title="demo"
-                src="https://www.loom.com/embed/21efd6320b09482db0fe094dfe5401f6?sid=60061a6c-f345-430f-ab9b-36109cb383c3"
+                src="https://www.loom.com/embed/84a8c93fc24a488bbfe9610248f252ca?sid=ef298e91-7cac-466a-8dae-422fed150dd0"
                 frameborder="0"
                 webkitallowfullscreen
                 mozallowfullscreen

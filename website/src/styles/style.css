@@ -370,3 +370,8 @@ code[class*="language-"], pre[class*="language-"] {
 .gatsby-highlight-code-line .gatsby-highlight-code-line {
   background-color: transparent;
 }
+
+.video-global-container{
+  border: 10px solid var(--title-color);
+  border-radius: 10px !important;
+}
