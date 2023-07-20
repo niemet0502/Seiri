@@ -1,5 +1,5 @@
 import React from "react"
-import { AiFillCheckCircle } from "react-icons/ai"
+import { BsCheckLg } from "react-icons/bs"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
@@ -38,7 +38,12 @@ const shipped = [
   },
 ]
 
-const progress = [""]
+const progress = [
+  {
+    title: "Projects handling",
+    description: "Classic CRUD operations for projects",
+  },
+]
 const Roadmap = () => {
   return (
     <Layout>
@@ -50,57 +55,54 @@ const Roadmap = () => {
 
       <div className="main-app-container">
         <div className="main-app">
-          <div className="main-app__status">
-            <span>Backlog</span>
-            <div className="main-app__tasks-list">
-              <ul>
+          <div className="roadmap-container">
+            <div className="tasks-stage">
+              <h2>Backlog</h2>
+              <div className="">
                 {backlog.map(task => (
-                  <div className="flex">
-                    <div className="main-app__tasks-list__progress-bar">
-                      <AiFillCheckCircle />
-                      {/* <div></div> */}
+                  <div className="flex tasks">
+                    <div className="tasks__icon">
+                      <BsCheckLg />
                     </div>
-                    <div className="ta">
-                      <h5>{task.title}</h5>
+                    <div className="tasks__content">
+                      <h4>{task.title}</h4>
                       <p>{task.description}</p>
                     </div>
                   </div>
                 ))}
-              </ul>
+              </div>
             </div>
-          </div>
-          <div className="main-app__status">
-            <span>In Progress</span>
-            <div className="main-app__tasks-list">
-              {progress.map(task => (
-                <div className="flex">
-                  <div className="main-app__tasks-list__progress-bar">
-                    <AiFillCheckCircle />
-                    {/* <div></div> */}
+            <div className="tasks-stage">
+              <h2>In Progress</h2>
+              <div className="">
+                {progress.map(task => (
+                  <div className="flex tasks">
+                    <div className="tasks__icon">
+                      <BsCheckLg />
+                    </div>
+                    <div className="tasks__content">
+                      <h4>{task.title}</h4>
+                      <p>{task.description}</p>
+                    </div>
                   </div>
-                  <div className="ta">
-                    <h5>{task.title}</h5>
-                    <p>{task.description}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="main-app__status">
-            <span>Shipped</span>
-            <div className="main-app__tasks-list">
-              {shipped.map(task => (
-                <div className="flex">
-                  <div className="main-app__tasks-list__progress-bar">
-                    <AiFillCheckCircle />
-                    {/* <div></div> */}
+            <div className="tasks-stage">
+              <h2>Shipped</h2>
+              <div className="">
+                {shipped.map(task => (
+                  <div className="flex tasks">
+                    <div className="tasks__icon">
+                      <BsCheckLg />
+                    </div>
+                    <div className="tasks__content">
+                      <h4>{task.title}</h4>
+                      <p>{task.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h5>{task.title}</h5>
-                    <p>{task.description}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>

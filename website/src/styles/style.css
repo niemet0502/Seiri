@@ -10,6 +10,7 @@ body{
     --title-color: #E1E7EF; 
     --primary-color: #575BC7; 
     --secondary-color: #2c2d3c; 
+    --background-color: #191a23;
 }
 
 .flex { 
@@ -113,7 +114,6 @@ h1, h2, h3, h4, h5 {
   max-width: 1200px;
   justify-content: space-between;
 }
-
 .header__child {
   display: flex; 
   gap: 10px;
@@ -136,6 +136,35 @@ h1, h2, h3, h4, h5 {
   cursor: pointer;
   text-decoration: underline;
 }
+
+.mobile-navigation-toogle {
+  display: none;
+}
+
+.mobile-navigation-toogle svg {
+  color: var(--title-color);
+  font-size: 25px;
+}
+
+@media screen and (max-width: 1180px) {
+  .header{
+    width: 90%;
+  }
+}
+
+@media screen  and (max-width: 680px) {
+  .header .header__child:nth-child(2){
+    display: none;
+  }
+  .mobile-navigation-toogle {
+    display: block;
+  }
+
+  .header .btn {
+    padding: 10px;
+  }
+}
+
 
 .banner {
   padding: 70px 10px;
@@ -167,6 +196,14 @@ h1, h2, h3, h4, h5 {
   margin-right: auto;
   margin-top: 30px;
 }
+
+
+@media screen and (max-width: 1180px) {
+  .app-demo-img {
+    width: 90%;
+  }
+}
+
 .features-container {
   width: 100%;
 }
@@ -194,6 +231,12 @@ h1, h2, h3, h4, h5 {
   text-align: center;
   font-size: 20px;
   color: var(--text-color);
+}
+
+@media screen and (max-width: 1180px) {
+  .features-title {
+    padding: 20px;
+  }
 }
 
 
@@ -233,12 +276,33 @@ h1, h2, h3, h4, h5 {
   color: var(--text-color);
 }
 
+@media screen and (max-width: 1180px) {
+  .features-container {
+    flex-direction: column;
+    gap: 25px;
+    justify-content: center;
+  }
+
+  .features-container .features-container__child {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 /* roadmap */
 
 .main-app-container {
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+@media screen and (max-width: 1180px) {
+
+  footer.main-app-container p {
+      text-align: center;
+
+  }
 }
 
 .main-app {
@@ -250,51 +314,83 @@ h1, h2, h3, h4, h5 {
 
 }
 
-.main-app__status{
+.tasks {
+  border-left: 3px solid var(--text-color);
+}
+
+.tasks__icon {
+  margin-left: -12px;
+  margin-top: -17px;
+}
+
+.tasks__icon svg {
+  color: var(--background-color);
+  font-size: 15px;
+  height: 20px;
+  border: 1px solid var(--text-color);
+  border-radius: 50%;
   display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
-.main-app__status span {
-  font-size: 20px;
-  font-style: italic;
-  color: var(--title-color);
-  text-align: center;
-
-  margin-bottom: 20px;
-}
-
-.main-app__tasks-list__progress-bar {
-  width: 40px;
-  /* display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center; */
+  width: 20px;
+  background-color: var(--text-color);
 }
 
-.main-app__tasks-list .ta::before {
-  display: inline-block;
-  content: '';
-  position: relative;
-  top: 0;
-  left: -25px;
-  width: 10px;
-  height: 40px;
-  border-left: 2px solid red;
+.tasks__content {
+  margin-top: -14px;
+  margin-left: 10px;
 }
 
-.main-app__tasks-list__progress-bar svg {
-  font-size: 22px;
-  color: var(--title-color);
+.tasks-stage .tasks:last-child{
+  border-left: none;
+}
+
+.tasks__content p {
+  color: var(--text-color);
+  margin-bottom: 40px;
+}
+
+.roadmap-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 200px;
 }
 
-.main-app__tasks-list__progress-bar div {
-  flex: 1;
-  border: 1px solid var(--title-color);
-  height: 100%;
+.tasks-stage {
+  flex-basis: 25%;
+}
+
+.tasks-stage h2 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+@media screen and (max-width: 1180px) {
+  .roadmap-container {
+    flex-wrap: wrap;
+    padding: 40px;
+    justify-content: center;
+    gap: 5%;
+  }
+  .tasks-stage {
+    flex-basis: 45%;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .banner h1 {
+    text-align: center;
+  }
+  .roadmap-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0px;
+  }
+  .tasks-stage {
+    padding: 20px;
+    flex-basis: 90%;
+  }
 }
 
 /* footer **/ 
@@ -374,4 +470,27 @@ code[class*="language-"], pre[class*="language-"] {
 .video-global-container{
   border: 10px solid var(--title-color);
   border-radius: 10px !important;
+}
+
+@media screen and (max-width: 1180px) {
+  
+  .changelog {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .changelog .changelog__content, .changelog .changelog__date {
+    width: 100%;
+  }
+}
+
+/** global responsive **/
+@media screen and (max-width: 680px) {
+  body p {
+    font-size: 18px;
+  }
+
+  .banner_title{
+    font-size: 42px;
+  }
 }

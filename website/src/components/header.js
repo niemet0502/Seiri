@@ -2,6 +2,7 @@ import { Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 import * as React from "react"
 import { AiFillGithub, AiOutlineStar } from "react-icons/ai"
+import { GiHamburgerMenu } from "react-icons/gi"
 
 const Header = ({ siteTitle }) => {
   const [star, setStar] = React.useState(0)
@@ -26,7 +27,11 @@ const Header = ({ siteTitle }) => {
         <span>
           Give us a star on GitHub <AiFillGithub />
         </span>
-        <a href="https://github.com/niemet0502/Seiri" target="_blank">
+        <a
+          href="https://github.com/niemet0502/Seiri"
+          target="_blank"
+          rel="noreferrer"
+        >
           <button>
             <AiOutlineStar /> <span>{star}</span>
           </button>
@@ -46,6 +51,9 @@ const Header = ({ siteTitle }) => {
         </div>
         <div className="header__child">
           <button className="btn secondary">Start for free</button>
+          <div className="mobile-navigation-toogle">
+            <GiHamburgerMenu />
+          </div>
         </div>
       </div>
     </div>
