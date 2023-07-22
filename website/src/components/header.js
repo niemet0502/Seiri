@@ -5,6 +5,7 @@ import { AiFillGithub, AiOutlineStar } from "react-icons/ai"
 import { GiHamburgerMenu } from "react-icons/gi"
 
 const Header = ({ siteTitle }) => {
+  const [visible, setVisible] = React.useState(false)
   const [star, setStar] = React.useState(0)
 
   React.useEffect(() => {
@@ -52,10 +53,18 @@ const Header = ({ siteTitle }) => {
         <div className="header__child">
           <button className="btn secondary">Start for free</button>
           <div className="mobile-navigation-toogle">
-            <GiHamburgerMenu />
+            <GiHamburgerMenu onClick={() => setVisible(prev => !prev)} />
           </div>
         </div>
       </div>
+
+      {visible && (
+        <div className="mobile-navigation">
+          <a>How it's built</a>
+          <Link to="/changelog">Changelog</Link>
+          <Link to="/roadmap">Roadmap</Link>
+        </div>
+      )}
     </div>
   )
 }
