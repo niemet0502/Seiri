@@ -150,8 +150,8 @@ h1, h2, h3, h4, h5 {
 }
 
 .header__child img{
-  width: 32px;
-  height: 32px;
+  width: 32px !important;
+  height: 32px !important;
 }
 
 .header__child a{
