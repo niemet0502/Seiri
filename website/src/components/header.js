@@ -46,7 +46,7 @@ const Header = ({ siteTitle }) => {
           </Link>
         </div>
         <div className="header__child">
-          <a>How it's built</a>
+          <a href="#!">How it's built</a>
           <Link to="/changelog">Changelog</Link>
           <Link to="/roadmap">Roadmap</Link>
         </div>
@@ -60,7 +60,7 @@ const Header = ({ siteTitle }) => {
 
       {visible && (
         <div className="mobile-navigation">
-          <a>How it's built</a>
+          <a href="#!">How it's built</a>
           <Link to="/changelog">Changelog</Link>
           <Link to="/roadmap">Roadmap</Link>
         </div>
