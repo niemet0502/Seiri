@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -12,7 +13,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ForgotPasswordSchema } from './dto/forgot-password.schema';
 import { ValidatorPipe } from './dto/p-validation.pipe';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ResetPasswordSchema } from './dto/reset-password.schema';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdatePasswordSchema } from './dto/update-password.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -33,8 +38,10 @@ export class UserController {
     let user = await this.userService.findByEmail(createUserDto.email);
 
     if (user) {
-      const errors = { email: 'email already use' };
-      throw new HttpException({ errors }, 401);
+      throw new HttpException(
+        'This email address is already registered',
+        HttpStatus.CONFLICT,
+      );
     }
 
     return this.userService.create(createUserDto);
@@ -65,8 +72,7 @@ export class UserController {
     @UserDecorator() user: User,
   ) {
     if (!user) {
-      const errors = { user: 'user not found' };
-      return new HttpException({ errors }, 401);
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
     return await this.userService.updatePassword(user, updatePassword);
@@ -76,15 +82,26 @@ export class UserController {
   @HttpCode(204)
   async remove(@UserDecorator() user: User) {
     if (!user) {
-      const errors = { user: 'user not found' };
-      return new HttpException({ errors }, 401);
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
     return await this.userService.remove(user);
   }
 
-  @Put('/resetpassword')
-  async resetPassword() {
-    return 'marius';
+  @Post('/forgotpassword')
+  @HttpCode(204)
+  async forgotPassword(
+    @Body(new ValidatorPipe<ForgotPasswordDto>(ForgotPasswordSchema))
+    forgotPassword: ForgotPasswordDto,
+  ) {
+    return await this.userService.forgotPassword(forgotPassword);
+  }
+
+  @Post('/resetpassword')
+  async resetPassword(
+    @Body(new ValidatorPipe<ResetPasswordDto>(ResetPasswordSchema))
+    data: ResetPasswordDto,
+  ) {
+    return await this.userService.resetPassword(data);
   }
 }

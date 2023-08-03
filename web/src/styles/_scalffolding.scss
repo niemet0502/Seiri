@@ -39,3 +39,19 @@ input:focus {
 .ͼ1 .cm-scroller {
   display: block !important;
 }
+
+.login-title {
+  position: relative;
+  animation: slideInFromRight 1s ease-in-out;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -26,6 +26,7 @@ export class AuthService {
       process.env.TOKEN_SECRET,
     );
 
+    session.user = user;
     session.token = token;
     session.expirationDate = new Date(today.setMonth(today.getMonth() + 5));
 
@@ -33,10 +34,17 @@ export class AuthService {
   }
 
   async findOne(token: string) {
-    return await this.sessionRepository.findOne({ where: { token: token } });
+    return await this.sessionRepository.findOne({
+      where: { token: token },
+      relations: ['user'],
+    });
   }
 
   async remove(session: Session) {
     return await this.sessionRepository.remove(session);
+  }
+
+  async removeAll(user: User) {
+    return await this.sessionRepository.delete({ user: { id: user.id } });
   }
 }

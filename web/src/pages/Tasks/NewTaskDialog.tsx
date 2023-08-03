@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { queryClient } from "../..";
 import { Button } from "../../components/Button";
-import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
+import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
@@ -104,7 +104,7 @@ export const NewTaskDialog: React.FC<{
           >
             Cancel
           </Button>
-          <Button>Create</Button>
+          <Button type="submit">Create</Button>
         </div>
       </form>
     </Dialog>

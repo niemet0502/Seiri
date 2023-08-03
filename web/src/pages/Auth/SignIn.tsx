@@ -1,30 +1,45 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
+import { Loader } from "../../components/Loader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
+import { useToasts } from "../../provider/toastProvider";
 import { IAuthLogin } from "../../types";
 
 export const SignIn: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
-  const { control, handleSubmit } = useForm<IAuthLogin>();
-  const { push } = useHistory();
+  const { pushToast } = useToasts();
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
+  const { control, handleSubmit, reset } = useForm<IAuthLogin>();
 
   const submit = useCallback(
     async (data: IAuthLogin) => {
+      setLoading(true);
+      setError(undefined);
       try {
         await apiClient.SignIn(data);
 
-        push("/");
+        reset({
+          email: "",
+          password: "",
+        });
 
-        // addToast
-      } catch (e) {
-        // error handling
-        console.log(e);
+        pushToast({
+          title: "Registration",
+          message: "Your account has been successfully created",
+        });
+      } catch (e: any) {
+        setError(e.response.data.message);
+      } finally {
+        setLoading(false);
       }
     },
-    [apiClient, push]
+    [apiClient, pushToast, reset]
   );
   return (
     <div className="login-wrapper-content flex flex-row ">
@@ -39,6 +54,8 @@ export const SignIn: React.FC = () => {
               </NavLink>
             </span>
           </div>
+
+          {error && <div className="form-error-container">{error}</div>}
 
           <form
             className="form-body flex gap-3 flex-column"
@@ -74,11 +91,14 @@ export const SignIn: React.FC = () => {
               </span>
 
               <NavLink to="/auth/forgot-password" className="white">
-                Forgot your password ?{" "}
+                Forgot your password ?
               </NavLink>
             </div>
 
-            <Button type="submit"> Sign up </Button>
+            <Button isDisabled={loading} type="submit">
+              {loading && <Loader width="12px" height="12px" />}
+              {!loading && "Sign up"}
+            </Button>
           </form>
         </div>
       </div>
@@ -88,11 +108,12 @@ export const SignIn: React.FC = () => {
           className="flex flex-column justify-content"
         >
           <div className="flex logo-border"></div>
-          <div className="p-2" style={{ marginLeft: "-22px" }}>
-            <img
-              src="https://app.logsnag.com/static/media/logo-text-dark.430acd2cdd827917cc32ce2c470bccbe.svg"
-              alt="logo"
-            />
+          <div
+            className="p-2 flex gap-2 align-items-center"
+            style={{ marginLeft: "-30px" }}
+          >
+            <img src="/white-logo.png" width="30px" alt="logo" />
+            <h2 className="login-title slideInFromRight">Seiri</h2>
           </div>
           <div className="flex logo-border"></div>
         </div>

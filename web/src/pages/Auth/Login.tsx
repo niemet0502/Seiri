@@ -1,8 +1,9 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NavLink, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
+import { Loader } from "../../components/Loader";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { CurrentUserContext, TOKEN_LS_KEY } from "../../provider/userProvider";
 import { IAuthLogin } from "../../types";
@@ -14,8 +15,12 @@ export const Login: React.FC = () => {
 
   const { control, handleSubmit } = useForm<IAuthLogin>();
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
   const submit = useCallback(
     async (data: IAuthLogin) => {
+      setLoading(true);
       try {
         const { user, token } = await apiClient.AuthLogin(data);
 
@@ -23,9 +28,10 @@ export const Login: React.FC = () => {
         setCurrentUser(user);
 
         push("/");
-      } catch (e) {
-        console.log(e);
+      } catch (e: any) {
+        setError(e.response.data.message);
       } finally {
+        setLoading(false);
       }
     },
     [apiClient, setCurrentUser, push]
@@ -42,6 +48,8 @@ export const Login: React.FC = () => {
               </NavLink>
             </span>
           </div>
+
+          {error && <div className="form-error-container">{error}</div>}
 
           <form
             className="form-body flex gap-3 flex-column"
@@ -81,7 +89,10 @@ export const Login: React.FC = () => {
               </NavLink>
             </div>
 
-            <Button type="submit">Sign in</Button>
+            <Button isDisabled={loading} type="submit">
+              {loading && <Loader width="12px" height="12px" />}
+              {!loading && "Sign in"}
+            </Button>
           </form>
         </div>
       </div>
@@ -91,11 +102,12 @@ export const Login: React.FC = () => {
           className="flex flex-column justify-content"
         >
           <div className="flex logo-border"></div>
-          <div className="p-2" style={{ marginLeft: "-22px" }}>
-            <img
-              src="https://app.logsnag.com/static/media/logo-text-dark.430acd2cdd827917cc32ce2c470bccbe.svg"
-              alt="logo"
-            />
+          <div
+            className="p-2 flex gap-2 align-items-center"
+            style={{ marginLeft: "-30px" }}
+          >
+            <img src="/white-logo.png" width="30px" alt="logo" />
+            <h2 className="login-title slideInFromRight">Seiri</h2>
           </div>
           <div className="flex logo-border"></div>
         </div>

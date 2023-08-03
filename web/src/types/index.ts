@@ -120,3 +120,17 @@ export interface PasswordUpdateApi {
 export interface DeleteUserApi {
   password: string;
 }
+
+export interface ForgotPasswordApi {
+  email: string;
+}
+
+export interface ResetPasswordApi {
+  resetToken: string;
+  password: string;
+}
+
+export interface ResetPasswordFormApi {
+  password: string;
+  confirmPassword: string;
+}

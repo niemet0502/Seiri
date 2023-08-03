@@ -3,6 +3,7 @@ import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { NavLink, useParams } from "react-router-dom";
 import { EditTaskApi, Task } from "../types";
+import { textEllipsis } from "../utils/Helpers";
 import { IconButton } from "./Button";
 
 export const TaskItem: React.FC<{
@@ -48,7 +49,7 @@ export const TaskItem: React.FC<{
               <NavLink to={`/project/${projectId}/task/${task.id}`}>
                 {task.title}
               </NavLink>
-              <p>{task.description || ""}</p>
+              <p>{textEllipsis(task.description, 130) || ""}</p>
             </div>
           </div>
           <div className="flex gap-2">

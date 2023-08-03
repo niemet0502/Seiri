@@ -9,8 +9,10 @@ import {
   EditProject,
   EditTaskApi,
   FeatureEnum,
+  ForgotPasswordApi,
   IAuthLogin,
   PasswordUpdateApi,
+  ResetPasswordApi,
   UpdateUser,
 } from "../types";
 
@@ -44,6 +46,13 @@ export class Client {
     const url = this.baseApiUrl + "auth/login";
 
     const r = await this.tranformOptions().post(url, data);
+    return r.data;
+  }
+
+  public async AuthLogout() {
+    const url = this.baseApiUrl + "auth/logout";
+
+    const r = await this.tranformOptions().post(url);
     return r.data;
   }
 
@@ -204,6 +213,22 @@ export class Client {
 
     return this.tranformOptions()
       .delete(url)
+      .then((r) => r.data);
+  }
+
+  public forgotPassword(data: ForgotPasswordApi) {
+    const url = this.baseApiUrl + "user/forgotpassword";
+
+    return this.tranformOptions()
+      .post(url, data)
+      .then((r) => r.data);
+  }
+
+  public resetPassword(data: ResetPasswordApi) {
+    const url = this.baseApiUrl + "user/resetpassword";
+
+    return this.tranformOptions()
+      .post(url, data)
       .then((r) => r.data);
   }
 }
