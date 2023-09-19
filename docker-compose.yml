@@ -2,9 +2,12 @@ version: "3.9"
 
 services:
   server:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: dev
     image: seiri-server
-    container_name: seiri-server
+    container_name: server
     depends_on:
       - db
     ports:
@@ -15,17 +18,28 @@ services:
       DB_PORT: 3306
       DB_USERNAME: marius
       DB_PASSWORD: root
-      DB_NAME: seiriprod
+      DB_NAME: thot
+      CACHE_HOST: redis
+      CACHE_PORT: 6379
+      SMTP_USER: YOUR_API_KEY
+      SMTP_PASSWORD: YOUR_API_PASSWORD
+      WEB_APP_ADDRESS: http://localhost:3005/
+    volumes:
+      - ./server:/app
 
   web:
     build: ./web
     image: seiri-web
-    container_name: seiri-web
+    container_name: web
+    environment:
+      SERVER_API_URL: http://server:3000/
     depends_on:
       - server
     ports:
       - "3005:3000"
     restart: always
+    volumes:
+      - ./web:/app
 
   db:
     image: mysql:5.7.41
@@ -33,13 +47,23 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: seiriprod
+      MYSQL_DATABASE: thot
       MYSQL_USER: marius
       MYSQL_PASSWORD: root
     ports:
       - "3307:3306" 
+    volumes:
+      - mysql-data:/var/lib/mysql
   
   redis:
     image: redis:latest
+    restart: always
+    container_name: redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+  mysql-data:

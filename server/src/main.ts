@@ -1,8 +1,24 @@
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { config } from 'dotenv';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  config();
+
   const app = await NestFactory.create(AppModule);
-  await app.listen(4000);
+
+  const SwaggerConfig = new DocumentBuilder()
+    .setTitle('Thot API Documentation')
+    .setDescription('The Thot API description')
+    .addTag('api')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, SwaggerConfig);
+  SwaggerModule.setup('api', app, document);
+
+  app.enableCors();
+
+  await app.listen(process.env.PORT);
 }
 bootstrap();

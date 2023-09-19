@@ -1,0 +1,525 @@
+body{
+  padding: 0px;
+  margin: 0px;
+  overflow-x: hidden;
+    background-color: #191a23;
+    min-height: 100vh;
+    font-family: "Segoe UI" !important;
+
+    --text-color: #7F8EA3; 
+    --title-color: #E1E7EF; 
+    --primary-color: #575BC7; 
+    --secondary-color: #2c2d3c; 
+    --background-color: #191a23;
+}
+
+.flex { 
+  display: flex;
+}
+
+.gap-1{
+  gap: 10px;
+}
+
+.btn{
+  padding: 12px;
+  border-radius: 5px;
+  color: #E1E7EF;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn.secondary {
+  background-color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.btn.primary {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0px;
+  color: var(--title-color);
+}
+
+
+.mobile-navigation {
+  width: 100%;
+  height: 500px;
+  background-color: #191a23;
+  position: fixed;
+  top: 100px;
+
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.mobile-navigation a {
+  padding: 17px;
+  color: var(--title-color);
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: bold;
+
+  border-bottom: 1px solid var(--title-color);
+  width: 85%;
+}
+
+.header-container { 
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0px;
+  position: fixed;
+
+  z-index: 2;
+}
+
+.header-container .github-banner {
+  background-color: var(--title-color);
+  color:#191a23;
+  padding: 8px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px;
+}
+
+.header-container .github-banner span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.header-container .github-banner button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 8px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+}
+
+.header-container .github-banner a:hover, .header-container .github-banner button:hover {
+  cursor: pointer;
+}
+
+.header-container .github-banner button span{
+  margin-bottom: -2px;
+}
+
+.header-container .github-banner svg, .header-container .github-banner button svg {
+  font-size: 17px;
+}
+
+.header__child a {
+  display: flex;
+  text-decoration: none;
+  gap: 10px;
+  align-items: center;
+}
+
+.header-container .header__child:first-child a:hover {
+  text-decoration: none;
+}
+
+.header{ 
+  width: 85%;
+  display: flex;
+  align-self: center;
+  padding: 20px;
+  max-width: 1200px;
+  justify-content: space-between;
+
+  background-color: var(--background-color);
+}
+.header__child {
+  display: flex; 
+  gap: 10px;
+  align-items: center;
+}
+
+.header__child img{
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.header__child a{
+  margin-right: 10px;
+  color: var(--title-color);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.header__child a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.mobile-navigation-toogle {
+  display: none;
+}
+
+.mobile-navigation-toogle svg {
+  color: var(--title-color);
+  font-size: 25px;
+}
+
+@media screen and (max-width: 1180px) {
+  .header{
+    width: 90%;
+  }
+}
+
+@media screen  and (max-width: 680px) {
+  .header .header__child:nth-child(2){
+    display: none;
+  }
+  .mobile-navigation-toogle {
+    display: block;
+  }
+
+  .header .btn {
+    padding: 10px;
+  }
+}
+
+
+.banner {
+  padding: 170px 10px 70px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.banner_title {
+  font-size: 55px;
+  max-width: 900px;
+  text-align: center;
+}
+
+.banner__p {
+  font-size: 20px;
+  max-width: 500px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.app-demo-img {
+  border: 10px solid var(--title-color);
+  border-radius: 15px;
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+
+
+@media screen and (max-width: 1180px) {
+  .app-demo-img {
+    width: 90%;
+  }
+}
+
+.features-container {
+  width: 100%;
+}
+
+.feature {
+  width: 100%;
+  display: flex;
+}
+
+.feature div.feature__content {
+  width: 50%;
+}
+
+.features-title h1 {
+  text-align: center;
+  font-size: 37px;
+}
+
+
+.features-title {
+  margin-bottom: 80px;
+}
+
+.features-title p {
+  text-align: center;
+  font-size: 20px;
+  color: var(--text-color);
+}
+
+@media screen and (max-width: 1180px) {
+  .features-title {
+    padding: 20px;
+  }
+}
+
+
+.features-container  {
+  margin-top: 50px;
+}
+
+.feature img {
+  width: 100%;
+}
+
+.features-container .features-container__child {
+  flex-basis: 33%; 
+  flex-grow: 0; 
+}
+
+.features-container .features-container__child div {
+  width: 320px;
+  border: 1px solid var(--text-color);
+  border-radius: 7px;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+}
+
+.features-container .features-container__child div svg {
+  color: var(--title-color);
+  font-size: 32px;
+}
+
+.features-container .features-container__child div span {
+  font-size: 17px;
+  color: var(--text-color);
+}
+
+@media screen and (max-width: 1180px) {
+  .features-container {
+    flex-direction: column;
+    gap: 25px;
+    justify-content: center;
+  }
+
+  .features-container .features-container__child {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* roadmap */
+
+.main-app-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+@media screen and (max-width: 1180px) {
+
+  footer.main-app-container p {
+      text-align: center;
+
+  }
+}
+
+.main-app {
+  width: 100%;  
+  max-width: 1200px;
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+
+}
+
+.tasks {
+  border-left: 3px solid var(--text-color);
+}
+
+.tasks__icon {
+  margin-left: -12px;
+  margin-top: -17px;
+}
+
+.tasks__icon svg {
+  color: var(--background-color);
+  font-size: 15px;
+  height: 20px;
+  border: 1px solid var(--text-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  background-color: var(--text-color);
+}
+
+.tasks__content {
+  margin-top: -14px;
+  margin-left: 10px;
+}
+
+.tasks-stage .tasks:last-child{
+  border-left: none;
+}
+
+.tasks__content p {
+  color: var(--text-color);
+  margin-bottom: 40px;
+}
+
+.roadmap-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 200px;
+}
+
+.tasks-stage {
+  flex-basis: 25%;
+}
+
+.tasks-stage h2 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+@media screen and (max-width: 1180px) {
+  .roadmap-container {
+    flex-wrap: wrap;
+    padding: 40px;
+    justify-content: center;
+    gap: 5%;
+  }
+  .tasks-stage {
+    flex-basis: 45%;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .banner h1 {
+    text-align: center;
+  }
+  .roadmap-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0px;
+  }
+  .tasks-stage {
+    padding: 20px;
+    flex-basis: 90%;
+  }
+}
+
+/* footer **/ 
+footer {
+  padding-bottom: 25px;
+  color: var(--text-color);
+  display: flex;
+  flex-direction: row;
+}
+
+footer a {
+  color: var(--title-color);
+  font-weight: bold;
+}
+
+/* changelog */
+
+.changelog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.changelog { 
+  display: flex;
+  padding-top: 40px;
+  border-top: 1px solid rgb(49, 48, 53) ;
+
+  color: var(--text-color);
+}
+
+.changelog__date {
+  width: 25%;
+}
+
+.changelog__date span {
+  position: sticky;
+  top: calc(90px);
+  left: 0px; 
+}
+
+.changelog__content {
+ width: 75%;
+}
+
+.changelog__content img {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.changelog__content a {
+  color: var(--title-color);
+}
+
+code[class*="language-"], pre[class*="language-"] {
+  background-color: #13141c !important;
+  border: 1px solid rgb(49, 48, 53) !important;
+  transition: box-shadow 0.2s ease 0s !important;
+
+  color: #D0D6E0 !important;
+}
+
+.gatsby-highlight-code-line {
+  background-color: rgb(116, 207, 136, 0.1);;
+  display: block;
+  margin-left: -1rem;
+  margin-right: -1.5rem;
+  padding-left: calc(1rem - 4px);
+  border-left: 4px solid #74cf74;
+}
+
+.gatsby-highlight-code-line .gatsby-highlight-code-line {
+  background-color: transparent;
+}
+
+.video-global-container{
+  border: 10px solid var(--title-color);
+  border-radius: 10px !important;
+}
+
+@media screen and (max-width: 1180px) {
+  
+  .changelog {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .changelog .changelog__content, .changelog .changelog__date {
+    width: 100%;
+  }
+}
+
+/** global responsive **/
+@media screen and (max-width: 680px) {
+  body p {
+    font-size: 18px;
+  }
+
+  .banner_title{
+    font-size: 42px;
+  }
+}
