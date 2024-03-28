@@ -27,10 +27,10 @@ services:
     volumes:
       - ./server:/app
 
-  web:
-    build: ./web
+  client:
+    build: ./client
     image: seiri-web
-    container_name: web
+    container_name: client
     environment:
       SERVER_API_URL: http://server:3000/
     depends_on:
@@ -39,7 +39,7 @@ services:
       - "3005:3000"
     restart: always
     volumes:
-      - ./web:/app
+      - ./client:/app
 
   db:
     image: mysql:5.7.41
