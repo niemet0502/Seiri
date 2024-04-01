@@ -1,73 +1,41 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Server
+This is the server used by the app it exposes a REST API.  
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Technical Stack
 
-## Description
+Regarding the stack, you'll find:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [NestJS](https://nestjs.com/):  A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+- [TypeORM](https://typeorm.io/): as ORM. 
+- [MySQL](https://www.mysql.com/): for the database. 
+- [Jest](https://jestjs.io/): for unit tests.
+- [Docker](https://www.docker.com/): for our containerization platform. 
 
-## Installation
+## Technical Structure
+1. `src/`: 99% of the source code lives here & this is also where you'll spend most of your time. 
+  - `main.ts`: This file serves as the entry point of your NestJS application. It initializes the Nest application, bootstraps the AppModule, and starts the server. 
+  - `note`/: folder encapsulates the functionality related to managing notes, including service logic, controller endpoints, and corresponding unit tests. 
+  - `project/`: folder encapsulates the functionality related to managing projects, including service logic, controller endpoints, and corresponding unit tests.
+  - `task/`: folder encapsulates the functionality related to managing tasks, including service logic, controller endpoints, and corresponding unit tests.
+  - `user/`: folder encapsulates the functionality related to managing users, including service logic, controller endpoints, and corresponding unit tests. 
+  - `mails/`: folder that contains the mail service and templates. 
+  - `db/`: folder that contains the database connection.
+2. `Dockerfile`: it’s a text document that contains all the commands a user could call to assemble an image. 
+3. `package.json`: file is a metadata file used in Node.js projects to manage project dependencies, scripts, and other configuration settings. 
 
-```bash
-$ npm install
+## Installation 
 ```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
 ## Test
-
-```bash
-# unit tests
-$ npm run test
+```
+# unit tests 
+npm run test
 
 # e2e tests
-$ npm run test:e2e
+npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-  Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
