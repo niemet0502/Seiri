@@ -18,6 +18,7 @@ import { languages } from "@codemirror/language-data";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { queryClient } from "../..";
 import { PageHeader } from "../../components/PageHeader";
+import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditNoteApi } from "../../types";
 import { getIntervalStringFromDate, transformDate } from "../../utils/Date";
@@ -40,6 +41,7 @@ export const NoteDetails: React.FC = () => {
   }>();
   const { push } = useHistory();
   const { pushToast } = useToasts();
+  const { confirm } = useContext(ConfirmDialogContext);
 
   const [readingView, setReadingView] = useState(true);
   const [note, setNote] = useState<any>(undefined);
@@ -79,6 +81,17 @@ export const NoteDetails: React.FC = () => {
       },
     }
   );
+
+  const onDelete = async (noteId: number) => {
+    if (
+      await confirm({
+        title: "Delete Note ?",
+        message: "Are you sure you want to delete this note ?",
+      })
+    ) {
+      deleteNote(noteId);
+    }
+  };
 
   useEffect(() => {
     if (!data) return;
@@ -132,7 +145,7 @@ export const NoteDetails: React.FC = () => {
               <BsCodeSlash /> Edit
             </DropdownItem>
 
-            <DropdownItem handler={() => deleteNote(note.id)}>
+            <DropdownItem handler={() => onDelete(note.id)}>
               <AiOutlineDelete /> Delete
             </DropdownItem>
           </Dropdown>
@@ -183,14 +196,19 @@ export const NoteDetails: React.FC = () => {
             </div>
             <div className="note-body flex flex-1" ref={editorRef}>
               {readingView && (
-                <MarkdownPreview
-                  style={{
-                    width: "100%",
-                    background: "transparent",
-                    marginBottom: "100px",
-                  }}
-                  source={note.content}
-                />
+                <div
+                  onDoubleClick={() => setReadingView(false)}
+                  style={{ width: "100%" }}
+                >
+                  <MarkdownPreview
+                    style={{
+                      width: "100%",
+                      background: "transparent",
+                      marginBottom: "100px",
+                    }}
+                    source={note.content}
+                  />
+                </div>
               )}
 
               {!readingView && (
