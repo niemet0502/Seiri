@@ -1,4 +1,6 @@
+import { BullModule } from '@nestjs/bull';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AuthService } from '../auth/auth.service';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
@@ -25,7 +27,22 @@ describe('UserService', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService, UserRepository],
+      imports: [
+        BullModule.registerQueue({
+          name: 'sendEmail',
+        }),
+      ],
+      providers: [
+        UserService,
+        { provide: AuthService, useValue: {} },
+        UserRepository,
+        {
+          provide: 'sendEmail', // Queue token
+          useFactory: () => ({
+            add: jest.fn(),
+          }),
+        },
+      ],
     })
       .overrideProvider(UserRepository)
       .useValue(mockRepository)

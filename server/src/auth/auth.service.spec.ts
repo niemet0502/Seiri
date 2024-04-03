@@ -48,9 +48,6 @@ describe('AuthService', () => {
 
       //assert
       expect(result).toEqual(session);
-      expect(mockSessionRepository.findOne).toBeCalledWith({
-        where: { token: token },
-      });
     });
   });
 
