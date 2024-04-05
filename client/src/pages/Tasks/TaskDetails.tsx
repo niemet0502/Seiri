@@ -45,6 +45,8 @@ export const TaskDetails: React.FC = () => {
     apiClient.getTask(taskId)
   );
 
+  const formattedContent = (task?.description || "").replace(/\n/g, "<br>");
+
   const { handleSubmit, control, reset } = useForm<EditTaskApi>();
 
   const { mutate: completeTask } = useMutation(
@@ -170,13 +172,12 @@ export const TaskDetails: React.FC = () => {
                     </span>
                   </div>
 
-                  <p
+                  <div
                     className="desc"
                     placeholder="Add description"
                     style={{ fontSize: "20px" }}
-                  >
-                    {task.description}
-                  </p>
+                    dangerouslySetInnerHTML={{ __html: formattedContent }}
+                  />
                 </div>
               )}
 

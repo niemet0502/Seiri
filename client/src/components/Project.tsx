@@ -32,7 +32,7 @@ export const ProjectItem: React.FC<{
         title: "Task deleted",
         message: "",
       });
-      queryClient.invalidateQueries([["projects"], feature]);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
       push("/");
     },
   });
