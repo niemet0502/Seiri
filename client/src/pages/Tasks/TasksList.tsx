@@ -31,9 +31,11 @@ export const TasksList: React.FC = () => {
 
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
   const [taskToEdit, setTaskToEdit] = useState<Task>();
+  const [showCompleted, setShowCompleted] = useState<boolean>(true);
 
-  const { isLoading, data } = useQuery([querykey, projectId], () =>
-    apiClient.getTasksByProject(projectId)
+  const { isLoading, data } = useQuery(
+    [querykey, projectId, showCompleted],
+    () => apiClient.getTasksByProject(projectId, showCompleted)
   );
 
   const { mutate: completeTask } = useMutation(
@@ -140,6 +142,12 @@ export const TasksList: React.FC = () => {
     }
   };
 
+  const updateView = () => {
+    if (!showCompleted) {
+      setShowCompleted(false);
+    }
+  };
+
   return (
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
@@ -153,8 +161,9 @@ export const TasksList: React.FC = () => {
               </IconButton>
             )}
           >
-            <DropdownItem>
-              <AiOutlineCheckCircle /> Hide completed
+            <DropdownItem handler={() => setShowCompleted((prev) => !prev)}>
+              <AiOutlineCheckCircle /> {showCompleted ? "Hide" : "Show"}{" "}
+              completed
             </DropdownItem>
 
             <DropdownItem handler={() => onMultipleDelete(projectId)}>

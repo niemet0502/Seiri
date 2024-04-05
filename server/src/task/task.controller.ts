@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ProjectService } from '../project/project.service';
@@ -40,7 +41,10 @@ export class TaskController {
   }
 
   @Get('/project/:id')
-  async findAllByProject(@Param('id') id: string) {
+  async findAllByProject(
+    @Param('id') id: string,
+    @Query('showCompleted') showCompleted?: string,
+  ) {
     const project = await this.projectService.findById(+id);
 
     if (!project) {
@@ -48,7 +52,7 @@ export class TaskController {
       return new HttpException({ errors }, 401);
     }
 
-    return this.taskService.findAllByProject(project);
+    return this.taskService.findAllByProject(project, showCompleted === 'true');
   }
 
   @Get(':id')

@@ -26,8 +26,8 @@ export class TaskService {
     return this.taskRepository.save(task);
   }
 
-  async findAllByProject(project: Project) {
-    return await this.taskRepository.findAllByProject(project);
+  async findAllByProject(project: Project, showCompleted?: boolean) {
+    return await this.taskRepository.findAllByProject(project, showCompleted);
   }
 
   async findOne(id: number) {

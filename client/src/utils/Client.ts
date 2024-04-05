@@ -104,8 +104,10 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getTasksByProject(projectId: string) {
-    const url = this.baseApiUrl + `task/project/${projectId}`;
+  public getTasksByProject(projectId: string, showCompleted: boolean = true) {
+    const url =
+      this.baseApiUrl +
+      `task/project/${projectId}?showCompleted=${showCompleted}`;
 
     return this.tranformOptions()
       .get(url)

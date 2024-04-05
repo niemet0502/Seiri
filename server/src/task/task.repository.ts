@@ -19,25 +19,40 @@ export class TaskRepository {
     return await this.tasksRepository.find();
   }
 
-  async findAllByProject(project: Project): Promise<Task[]> {
+  async findAllByProject(
+    project: Project,
+    showCompleted?: boolean,
+  ): Promise<Task[]> {
     const projectId = project.id;
 
-    const tasks = await this.tasksRepository
+    let query = this.tasksRepository
       .createQueryBuilder('task')
       .leftJoinAndSelect('task.children', 'child')
       .where('task.parentId IS NULL')
-      .andWhere('task.projectId = :projectId', { projectId })
-      .orderBy('task.isDone', 'ASC')
-      .getMany();
+      .andWhere('task.projectId = :projectId', { projectId });
+
+    if (showCompleted === false) {
+      query = query.andWhere('task.isDone = :isDone', { isDone: false });
+    }
+
+    const tasks = await query.orderBy('task.isDone', 'ASC').getMany();
 
     return tasks;
   }
 
   async findById(id: number): Promise<Task | undefined> {
-    return await this.tasksRepository.findOne({
+    const task = await this.tasksRepository.findOne({
       where: { id: id, parent: undefined },
-      relations: ['children', 'project'],
+      relations: ['project'],
     });
+
+    const children = await this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.parentId = :parentId', { parentId: id })
+      .orderBy('task.isDone', 'ASC')
+      .getMany();
+
+    return { ...task, children };
   }
 
   async remove(task: Task) {
