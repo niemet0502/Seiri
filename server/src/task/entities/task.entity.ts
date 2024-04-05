@@ -27,6 +27,9 @@ export class Task {
   @Column('boolean', { default: false })
   isDeleted: boolean;
 
+  @Column('date', { nullable: true })
+  dueDate: Date;
+
   //  dueDate, parent_id[nullable,ForeignKey],isDeleted TODO
 
   @ManyToOne(() => Task, (task) => task.children, {
