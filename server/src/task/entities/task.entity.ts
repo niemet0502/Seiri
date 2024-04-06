@@ -30,7 +30,10 @@ export class Task {
   @Column('date', { nullable: true })
   dueDate: Date;
 
-  //  dueDate, parent_id[nullable,ForeignKey],isDeleted TODO
+  @Column('date', { nullable: true })
+  completedAt: Date;
+
+  //, parent_id[nullable,ForeignKey],isDeleted TODO
 
   @ManyToOne(() => Task, (task) => task.children, {
     nullable: true,
