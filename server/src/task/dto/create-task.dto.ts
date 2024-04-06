@@ -16,4 +16,6 @@ export class CreateTaskDto {
 
   @ApiProperty({ example: '1', description: "The parent's ID" })
   public parentId: number;
+
+  public dueDate?: Date;
 }
