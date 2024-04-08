@@ -33,6 +33,9 @@ export class Task {
   @Column('date', { nullable: true })
   completedAt: Date;
 
+  @Column('int', { nullable: true })
+  createdBy: number;
+
   //, parent_id[nullable,ForeignKey],isDeleted TODO
 
   @ManyToOne(() => Task, (task) => task.children, {
