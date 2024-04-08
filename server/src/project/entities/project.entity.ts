@@ -31,4 +31,7 @@ export class Project {
 
   @Column('int')
   handledObject: number;
+
+  @Column({ default: false })
+  isDefault: boolean;
 }
