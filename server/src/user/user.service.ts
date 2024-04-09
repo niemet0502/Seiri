@@ -1,15 +1,24 @@
 import { InjectQueue } from '@nestjs/bull';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+  forwardRef,
+} from '@nestjs/common';
 import bcrypt from 'bcryptjs';
 import { Queue } from 'bull';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { LoginDto } from '../auth/dto/login.dto';
+import { ProjectService } from '../project/project.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { DEFAULT_PROJECT } from './type';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -18,6 +27,8 @@ export class UserService {
   constructor(
     private readonly sessionService: AuthService,
     private readonly userRepository: UserRepository,
+    @Inject(forwardRef(() => ProjectService))
+    private readonly projectService: ProjectService,
     @InjectQueue('sendEmail') private sendEmailQueue: Queue,
   ) {}
 
@@ -38,6 +49,16 @@ export class UserService {
       web_app_link: process.env.WEB_APP_ADDRESS,
     });
     this.logger.log(`add email to the queue ${job}`);
+
+    // create default projects
+    await this.projectService.create(
+      { name: DEFAULT_PROJECT.Completed, isDefault: true, handledObject: 1 },
+      user,
+    );
+    await this.projectService.create(
+      { name: DEFAULT_PROJECT.Today, isDefault: true, handledObject: 1 },
+      user,
+    );
 
     return user;
   }
