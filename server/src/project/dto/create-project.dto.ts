@@ -13,4 +13,6 @@ export class CreateProjectDto {
     description: 'The Object handled by the project ',
   })
   public handledObject: number;
+
+  public isDefault?: boolean;
 }
