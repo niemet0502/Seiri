@@ -142,12 +142,6 @@ export const TasksList: React.FC = () => {
     }
   };
 
-  const updateView = () => {
-    if (!showCompleted) {
-      setShowCompleted(false);
-    }
-  };
-
   return (
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
