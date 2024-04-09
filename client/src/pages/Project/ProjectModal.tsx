@@ -36,7 +36,9 @@ export const ProjectModal: React.FC<{
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
         reset();
-        queryClient.invalidateQueries({ queryKey: ["projects"] });
+        queryClient.invalidateQueries({
+          queryKey: ["projects", { feature: handledObject }],
+        });
         push(`/project/${newProject.id}`);
       },
     }
@@ -48,7 +50,9 @@ export const ProjectModal: React.FC<{
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
         reset();
-        queryClient.invalidateQueries({ queryKey: ["projects"] });
+        queryClient.invalidateQueries({
+          queryKey: ["projects", , { feature: handledObject }],
+        });
       },
     }
   );
