@@ -24,6 +24,7 @@ export interface Task {
   description: string;
   children?: Task[];
   project?: Project;
+  dueDate?: Date;
 }
 
 export interface Project {
@@ -35,6 +36,7 @@ export interface Project {
   notes: Note[];
   isArchive: boolean;
   user?: User;
+  isDefault: boolean;
 }
 
 export enum FeatureEnum {
@@ -63,6 +65,7 @@ export interface EditProject {
 export interface CreateTaskApi {
   title: string;
   description?: string;
+  dueDate?: Date;
   projectId: string;
   parentId?: string;
 }

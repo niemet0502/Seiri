@@ -38,6 +38,14 @@ export const TasksList: React.FC = () => {
     () => apiClient.getTasksByProject(projectId, showCompleted)
   );
 
+  const { data: project, refetch } = useQuery(
+    ["projects", { id: projectId }],
+    () => apiClient.getProject(projectId),
+    {
+      enabled: projectId ? true : false,
+    }
+  );
+
   const { mutate: completeTask } = useMutation(
     (data: EditTaskApi) => apiClient.editTask(data),
     {
@@ -146,24 +154,28 @@ export const TasksList: React.FC = () => {
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
         <PageHeader>
-          <Dropdown
-            left="-150px"
-            width="150px"
-            trigger={(toggle) => (
-              <IconButton handler={toggle}>
-                <BiDotsHorizontalRounded />
-              </IconButton>
-            )}
-          >
-            <DropdownItem handler={() => setShowCompleted((prev) => !prev)}>
-              <AiOutlineCheckCircle /> {showCompleted ? "Hide" : "Show"}{" "}
-              completed
-            </DropdownItem>
+          {project && !project.isDefault && (
+            <Dropdown
+              left="-150px"
+              width="150px"
+              trigger={(toggle) => (
+                <IconButton handler={toggle}>
+                  <BiDotsHorizontalRounded />
+                </IconButton>
+              )}
+            >
+              <>
+                <DropdownItem handler={() => setShowCompleted((prev) => !prev)}>
+                  <AiOutlineCheckCircle /> {showCompleted ? "Hide" : "Show"}{" "}
+                  completed
+                </DropdownItem>
 
-            <DropdownItem handler={() => onMultipleDelete(projectId)}>
-              <AiOutlineDelete /> Delete completed
-            </DropdownItem>
-          </Dropdown>
+                <DropdownItem handler={() => onMultipleDelete(projectId)}>
+                  <AiOutlineDelete /> Delete completed
+                </DropdownItem>
+              </>
+            </Dropdown>
+          )}
         </PageHeader>
 
         <div className="body flex mt-2">
@@ -185,7 +197,7 @@ export const TasksList: React.FC = () => {
                     className="align-self-center add-task align-items-center mt-2"
                     onClick={addTask}
                   >
-                    {tasks.length > 0 && (
+                    {tasks.length > 0 && !project.isDefault && (
                       <Button>
                         <AiOutlinePlus /> Add task
                       </Button>
@@ -194,7 +206,7 @@ export const TasksList: React.FC = () => {
                 </>
               )}
 
-              {tasks.length === 0 && (
+              {tasks.length === 0 && !project.isDefault && (
                 <div
                   className="flex flex-column align-items-center justify-content-center gap-2"
                   style={{ marginTop: "180px" }}

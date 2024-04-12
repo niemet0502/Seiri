@@ -9,6 +9,7 @@ import {
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { IoCloseSharp } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
@@ -25,7 +26,7 @@ import { ApiClientContext } from "../../provider/apiClientProvider";
 import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
-import { displayDuedate } from "../../utils/Date";
+import { displayDuedate, transformDateToYYYMMDDFormat } from "../../utils/Date";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
@@ -288,22 +289,39 @@ export const TaskDetails: React.FC = () => {
                 <div className="label">Project</div>
                 <div>{task.project.name}</div>
               </div>
-              <div className=" flex mt-2  attributes">
-                <div className="label">Due date</div>
-                <div>
-                  {task?.dueDate && (
-                    <button
-                      onClick={() => inputDateRef.current?.showPicker()}
-                      className="date-button"
+              <div className=" flex mt-2  attributes ">
+                <div className="label mt-1">Due date</div>
+                <div className="flex flex-column">
+                  <div
+                    className="flex flex-1 justify-content-between "
+                    style={{ marginTop: "6px" }}
+                  >
+                    <IconButton
+                      handler={() => inputDateRef.current?.showPicker()}
                     >
-                      <span
-                        className={`flex align-items-center gap-1 duedate-${status}`}
+                      {task.dueDate ? (
+                        <span
+                          className={`flex align-items-center gap-1 duedate-${status}`}
+                          style={{ fontSize: "16px" }}
+                        >
+                          <MdOutlineDateRange />
+                          <p>{label}</p>
+                        </span>
+                      ) : (
+                        <span className="color" style={{ fontSize: "16px" }}>
+                          Set date
+                        </span>
+                      )}
+                    </IconButton>
+
+                    {task.dueDate && (
+                      <IconButton
+                        handler={() => edit({ ...task, dueDate: null })}
                       >
-                        <MdOutlineDateRange />
-                        <p>{label}</p>
-                      </span>
-                    </button>
-                  )}
+                        <IoCloseSharp />
+                      </IconButton>
+                    )}
+                  </div>
                   <input
                     type="date"
                     ref={inputDateRef}
@@ -311,6 +329,10 @@ export const TaskDetails: React.FC = () => {
                     onChange={(event) =>
                       edit({ ...task, dueDate: event.target.value })
                     }
+                    min={transformDateToYYYMMDDFormat(new Date())}
+                    value={transformDateToYYYMMDDFormat(
+                      new Date(task.dueDate ? task.dueDate : null)
+                    )}
                   />
                 </div>
               </div>
