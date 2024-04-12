@@ -7,7 +7,6 @@ export const useCurrentFeature = () => {
 
   useEffect(() => {
     if (pathname.length === 1) return;
-    console.log(pathname[1]);
 
     setFeature(pathname[1]);
   }, [pathname]);
