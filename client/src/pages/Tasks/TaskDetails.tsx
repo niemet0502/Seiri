@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   AiOutlineCheck,
@@ -9,6 +9,7 @@ import {
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { MdOutlineDateRange } from "react-icons/md";
 import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
@@ -24,6 +25,7 @@ import { ApiClientContext } from "../../provider/apiClientProvider";
 import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditTaskApi, Task } from "../../types";
+import { displayDuedate } from "../../utils/Date";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
@@ -40,6 +42,7 @@ export const TaskDetails: React.FC = () => {
   const [editing, setEditing] = useState<boolean>(false);
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
   const [isChildrenVisible, setIsChildrenVisible] = useState(true);
+  const inputDateRef = useRef<HTMLInputElement>(null);
 
   const { data: task, isLoading } = useQuery(["tasks", taskId], () =>
     apiClient.getTask(taskId)
@@ -120,6 +123,8 @@ export const TaskDetails: React.FC = () => {
 
     if (redirect) goBack();
   };
+
+  const { status, label } = displayDuedate(task?.dueDate);
 
   return (
     <div className="flex page-content flex-2">
@@ -282,6 +287,32 @@ export const TaskDetails: React.FC = () => {
               <div className=" flex mt-2  attributes">
                 <div className="label">Project</div>
                 <div>{task.project.name}</div>
+              </div>
+              <div className=" flex mt-2  attributes">
+                <div className="label">Due date</div>
+                <div>
+                  {task?.dueDate && (
+                    <button
+                      onClick={() => inputDateRef.current?.showPicker()}
+                      className="date-button"
+                    >
+                      <span
+                        className={`flex align-items-center gap-1 duedate-${status}`}
+                      >
+                        <MdOutlineDateRange />
+                        <p>{label}</p>
+                      </span>
+                    </button>
+                  )}
+                  <input
+                    type="date"
+                    ref={inputDateRef}
+                    style={{ opacity: "0" }}
+                    onChange={(event) =>
+                      edit({ ...task, dueDate: event.target.value })
+                    }
+                  />
+                </div>
               </div>
             </div>
           )}

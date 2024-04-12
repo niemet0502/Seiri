@@ -84,6 +84,21 @@ export const NewTaskDialog: React.FC<{
           />
 
           <Controller
+            name="dueDate"
+            control={control}
+            rules={{ required: false }}
+            render={({ field, fieldState }) => (
+              <FormInput
+                label="Due date"
+                type="date"
+                variant="dark"
+                {...field}
+                {...fieldState}
+              />
+            )}
+          />
+
+          <Controller
             name="description"
             control={control}
             render={({ field, fieldState }) => (

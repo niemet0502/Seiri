@@ -6,6 +6,10 @@ body {
   color: $white;
 }
 
+textarea {
+  font-family: $sans-serif !important;
+}
+
 a {
   text-decoration: none;
 }
