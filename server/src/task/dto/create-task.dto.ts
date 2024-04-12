@@ -18,4 +18,6 @@ export class CreateTaskDto {
   public parentId: number;
 
   public dueDate?: Date;
+
+  public createdBy?: number;
 }
