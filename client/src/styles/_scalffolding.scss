@@ -49,6 +49,10 @@ input:focus {
   animation: slideInFromRight 1s ease-in-out;
 }
 
+.color {
+  color: $white;
+}
+
 @keyframes slideInFromRight {
   0% {
     opacity: 0;

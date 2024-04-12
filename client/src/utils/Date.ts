@@ -44,6 +44,14 @@ export const getIntervalFromDate = (dateStr?: Date) => {
   return (Date.now() - date.getTime()) / 1000;
 };
 
+export const transformDateToYYYMMDDFormat = (dateStr?: Date) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  return `${date.getFullYear()}-${addZero(date.getMonth() + 1)}-${addZero(
+    date.getDate()
+  )}`;
+};
+
 export const getIntervalStringFromDate = (dateStr?: Date) => {
   if (!dateStr) return "";
 
