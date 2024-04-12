@@ -69,4 +69,26 @@ export class TaskRepository {
       .delete()
       .execute();
   }
+
+  async findTaskDueAndToday(userId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to start of the day
+
+    const dueTasks = await this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.createdBy = :userId', { userId })
+      .andWhere('(task.dueDate IS NOT NULL AND task.dueDate <= :today)', {
+        today,
+      })
+      .andWhere('task.completedAt IS NULL')
+      .getMany();
+
+    return dueTasks;
+  }
+
+  async findCompletedTask(userId: number) {
+    return this.tasksRepository.find({
+      where: { createdBy: userId, isDone: true },
+    });
+  }
 }
