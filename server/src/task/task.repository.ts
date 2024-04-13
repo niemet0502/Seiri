@@ -89,6 +89,8 @@ export class TaskRepository {
   async findCompletedTask(userId: number) {
     return this.tasksRepository.find({
       where: { createdBy: userId, isDone: true },
+      order: { completedAt: 'DESC' },
+      relations: ['project'],
     });
   }
 }

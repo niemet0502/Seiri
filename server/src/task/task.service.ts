@@ -34,8 +34,6 @@ export class TaskService {
     userId: number,
     showCompleted?: boolean,
   ) {
-    console.log('fetch');
-
     if (project.name === DEFAULT_PROJECT.Today) {
       return this.taskRepository.findTaskDueAndToday(userId);
     }

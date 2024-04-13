@@ -25,6 +25,7 @@ export interface Task {
   children?: Task[];
   project?: Project;
   dueDate?: Date;
+  completedAt: Date | null;
 }
 
 export interface Project {

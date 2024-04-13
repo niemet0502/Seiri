@@ -81,15 +81,21 @@ export const displayDuedate = (dateStr?: Date) => {
     return { status: "tmr", label: "Tomorrow" };
   }
 
+  const dateString = transformDateToMMDDFormat(date);
+
   if (date.getTime() > currentDate.getTime()) {
     return {
       status: "next",
-      label: `${months[date.getMonth()]} ${date.getDate()}`,
+      label: dateString,
     };
   }
 
   return {
     status: "due",
-    label: `${months[date.getMonth()]} ${date.getDate()}`,
+    label: dateString,
   };
+};
+
+export const transformDateToMMDDFormat = (date: Date) => {
+  return `${months[date.getMonth()]} ${date.getDate()}`;
 };
