@@ -33,6 +33,4 @@ jobs:
           context: ./client
           file: ./client
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: prod
