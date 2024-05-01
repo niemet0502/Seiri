@@ -33,5 +33,7 @@ jobs:
           context: ./server
           file: ./server
           push: true
+          # tags: ${{ steps.meta.outputs.tags }}
+          tags: latest
           labels: ${{ steps.meta.outputs.labels }}
           target: prod
