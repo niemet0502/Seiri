@@ -15,7 +15,7 @@ const backlog = [
   },
   {
     title: "Archive projects",
-    description: "Archive projects and hide them",
+    description: "Archive projects",
   },
 ]
 
@@ -40,8 +40,8 @@ const shipped = [
 
 const progress = [
   {
-    title: "Projects handling",
-    description: "Classic CRUD operations for projects",
+    title: "Frontend app",
+    description: "Moving the frontend app from create-react-app to vite",
   },
 ]
 const Roadmap = () => {

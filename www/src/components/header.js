@@ -51,6 +51,7 @@ const Header = ({ siteTitle }) => {
           <Link to="/roadmap">Roadmap</Link>
         </div>
         <div className="header__child">
+          <button className="btn terciary">Login</button>
           <button className="btn secondary">Start for free</button>
           <div className="mobile-navigation-toogle">
             <GiHamburgerMenu onClick={() => setVisible(prev => !prev)} />
