@@ -20,7 +20,7 @@ export const PageHeader: React.FC<{
   }>();
 
   const { data, refetch } = useQuery(
-    ["projects", projectId],
+    ["projects", { id: projectId }],
     () => apiClient.getProject(projectId),
     {
       enabled: projectId ? true : false,

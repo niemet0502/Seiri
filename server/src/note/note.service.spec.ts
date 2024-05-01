@@ -57,6 +57,7 @@ describe('NoteService', () => {
         notes: null,
         tasks: null,
         handledObject: 1,
+        isDefault: false,
       };
       jest.spyOn(mockRepository, 'save').mockReturnValue(note);
 
@@ -81,6 +82,7 @@ describe('NoteService', () => {
         notes: null,
         tasks: null,
         handledObject: 1,
+        isDefault: false,
       };
       jest.spyOn(mockRepository, 'findAllByProject').mockReturnValue(notes);
 

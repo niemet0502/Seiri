@@ -68,6 +68,7 @@ describe('NoteRepository', () => {
         isArchive: false,
         tasks: null,
         handledObject: 1,
+        isDefault: null,
       };
       jest.spyOn(mockRepository, 'find').mockReturnValue(notes);
 

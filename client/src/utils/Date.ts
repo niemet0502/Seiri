@@ -1,3 +1,18 @@
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export const addZero = (number: number) => {
   return number < 10 ? `0${number}` : number;
 };
@@ -29,6 +44,14 @@ export const getIntervalFromDate = (dateStr?: Date) => {
   return (Date.now() - date.getTime()) / 1000;
 };
 
+export const transformDateToYYYMMDDFormat = (dateStr?: Date) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  return `${date.getFullYear()}-${addZero(date.getMonth() + 1)}-${addZero(
+    date.getDate()
+  )}`;
+};
+
 export const getIntervalStringFromDate = (dateStr?: Date) => {
   if (!dateStr) return "";
 
@@ -40,4 +63,39 @@ export const getIntervalStringFromDate = (dateStr?: Date) => {
   if (interval < MONTH) return `${Math.round(interval / DAY)} days ago`;
 
   return `since ${Math.round(interval / MONTH)} months`;
+};
+
+export const displayDuedate = (dateStr?: Date) => {
+  if (!dateStr) return {};
+
+  const date = new Date(dateStr);
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+  if (date.getTime() === currentDate.getTime()) {
+    return { status: "today", label: "Today" };
+  }
+  currentDate.setDate(currentDate.getDate() + 1);
+
+  if (date.getTime() === currentDate.getTime()) {
+    return { status: "tmr", label: "Tomorrow" };
+  }
+
+  const dateString = transformDateToMMDDFormat(date);
+
+  if (date.getTime() > currentDate.getTime()) {
+    return {
+      status: "next",
+      label: dateString,
+    };
+  }
+
+  return {
+    status: "due",
+    label: dateString,
+  };
+};
+
+export const transformDateToMMDDFormat = (date: Date) => {
+  return `${months[date.getMonth()]} ${date.getDate()}`;
 };

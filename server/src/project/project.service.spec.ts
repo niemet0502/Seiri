@@ -15,6 +15,7 @@ const project = {
   tasks: null,
   notes: null,
   handledObject: null,
+  isDefault: false,
 };
 
 const projects = [project];
@@ -69,6 +70,7 @@ describe('ProjectService', () => {
         tasks: null,
         notes: null,
         handledObject: null,
+        isDefault: false,
       };
 
       jest.spyOn(mockRepository, 'save').mockReturnValue(project);

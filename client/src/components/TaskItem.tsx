@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { MdOutlineDateRange } from "react-icons/md";
 import { NavLink, useParams } from "react-router-dom";
 import { EditTaskApi, Task } from "../types";
+import { displayDuedate } from "../utils/Date";
 import { textEllipsis } from "../utils/Helpers";
 import { IconButton } from "./Button";
 
@@ -16,6 +18,8 @@ export const TaskItem: React.FC<{
   const { projectId } = useParams<{ projectId: string }>();
 
   const [isChildrenVisible, setIsChildrenVisible] = useState(false);
+
+  const { status, label } = displayDuedate(task.dueDate);
 
   return (
     <>
@@ -32,10 +36,14 @@ export const TaskItem: React.FC<{
             {isChildrenVisible && <IoIosArrowDown />}
           </IconButton>
         </div>
-        <div className="task  flex-1" key={task.id}>
+        <div className="task  flex-1 " key={task.id}>
           <div className={`infos flex gap-2 isdone-${task.isDone}`}>
             <div
               className={`statut isdone-${task.isDone}`}
+              style={{
+                marginBottom: "auto",
+                marginTop: " 5px",
+              }}
               onClick={() =>
                 completeTask({
                   id: task.id,
@@ -45,11 +53,21 @@ export const TaskItem: React.FC<{
             >
               <AiOutlineCheck />
             </div>
-            <div>
-              <NavLink to={`/project/${projectId}/task/${task.id}`}>
-                {task.title}
-              </NavLink>
-              <p>{textEllipsis(task.description, 130) || ""}</p>
+            <div className="flex flex-column gap-1">
+              <div>
+                <NavLink to={`/project/${projectId}/task/${task.id}`}>
+                  {task.title}
+                </NavLink>
+                <p>{textEllipsis(task.description, 130) || ""}</p>
+              </div>
+              {task.dueDate && (
+                <div
+                  className={`flex align-items-center gap-1 duedate-${status}`}
+                >
+                  <MdOutlineDateRange />
+                  <p className={`duedate-${status}`}>{label}</p>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex gap-2">

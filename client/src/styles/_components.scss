@@ -58,7 +58,7 @@
     }
 
     textarea {
-      height: 120px;
+      height: 80px;
       border-radius: 5px;
       padding: 10px;
     }
@@ -216,6 +216,35 @@
   }
 }
 
+.user-details {
+  background-color: $background-color;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 13px;
+  width: 100%;
+  font-size: 14px;
+  gap: 10px;
+  position: sticky;
+  top: 2px;
+  padding-top: 30px;
+  z-index: 10;
+}
+
+.duedate-today {
+  color: green !important;
+}
+
+.duedate-tmr {
+  color: orange !important;
+}
+
+.duedate-due {
+  color: red !important;
+}
+
+.duedate-next {
+  color: purple !important;
+}
+
 .project-items {
   padding: 5px;
   cursor: pointer;
@@ -312,7 +341,7 @@
   flex: 0 0 auto;
   align-self: auto;
   flex-direction: column;
-  padding-top: 150px;
+  padding-top: 100px;
   background-color: rgba(25, 26, 35, 0.25);
 
   .content {

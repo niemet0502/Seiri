@@ -19,25 +19,40 @@ export class TaskRepository {
     return await this.tasksRepository.find();
   }
 
-  async findAllByProject(project: Project): Promise<Task[]> {
+  async findAllByProject(
+    project: Project,
+    showCompleted?: boolean,
+  ): Promise<Task[]> {
     const projectId = project.id;
 
-    const tasks = await this.tasksRepository
+    let query = this.tasksRepository
       .createQueryBuilder('task')
       .leftJoinAndSelect('task.children', 'child')
       .where('task.parentId IS NULL')
-      .andWhere('task.projectId = :projectId', { projectId })
-      .orderBy('task.isDone', 'ASC')
-      .getMany();
+      .andWhere('task.projectId = :projectId', { projectId });
+
+    if (showCompleted === false) {
+      query = query.andWhere('task.isDone = :isDone', { isDone: false });
+    }
+
+    const tasks = await query.orderBy('task.isDone', 'ASC').getMany();
 
     return tasks;
   }
 
   async findById(id: number): Promise<Task | undefined> {
-    return await this.tasksRepository.findOne({
+    const task = await this.tasksRepository.findOne({
       where: { id: id, parent: undefined },
-      relations: ['children', 'project'],
+      relations: ['children', 'project'], // Include children and project relations
     });
+
+    if (task && task.children && task.children.length > 0) {
+      task.children.sort((a, b) =>
+        a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1,
+      );
+    }
+
+    return task;
   }
 
   async remove(task: Task) {
@@ -53,5 +68,29 @@ export class TaskRepository {
       .andWhere('task.isDone = true')
       .delete()
       .execute();
+  }
+
+  async findTaskDueAndToday(userId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to start of the day
+
+    const dueTasks = await this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.createdBy = :userId', { userId })
+      .andWhere('(task.dueDate IS NOT NULL AND task.dueDate <= :today)', {
+        today,
+      })
+      .andWhere('task.completedAt IS NULL')
+      .getMany();
+
+    return dueTasks;
+  }
+
+  async findCompletedTask(userId: number) {
+    return this.tasksRepository.find({
+      where: { createdBy: userId, isDone: true },
+      order: { completedAt: 'DESC' },
+      relations: ['project'],
+    });
   }
 }

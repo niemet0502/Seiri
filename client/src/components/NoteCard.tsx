@@ -1,4 +1,4 @@
-import { AiOutlineDelete, AiOutlineStar } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import { NavLink, useParams } from "react-router-dom";
 import { Note } from "../types";
 import { textEllipsis } from "../utils/Helpers";
@@ -31,10 +31,6 @@ export const NoteCard: React.FC<{
         <div className="icons flex gap-2 mt-1">
           <div className="border-debug" onClick={() => onDelete(note.id)}>
             <AiOutlineDelete />
-          </div>
-
-          <div className="border-debug">
-            <AiOutlineStar />
           </div>
         </div>
       </div>

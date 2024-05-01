@@ -51,6 +51,9 @@ describe('TaskRepository', () => {
         isDeleted: false,
         parent: null,
         children: [],
+        dueDate: null,
+        completedAt: null,
+        createdBy: null,
       };
       jest.spyOn(mockRespository, 'save').mockReturnValue(task);
 
@@ -108,6 +111,9 @@ describe('TaskRepository', () => {
         isDeleted: false,
         parent: null,
         children: [],
+        dueDate: null,
+        completedAt: null,
+        createdBy: null,
       };
       jest.spyOn(mockRespository, 'remove').mockReturnValue(task);
 

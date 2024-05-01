@@ -1,30 +1,30 @@
-body{
+body {
   padding: 0px;
   margin: 0px;
   overflow-x: hidden;
-    background-color: #191a23;
-    min-height: 100vh;
-    font-family: "Segoe UI" !important;
+  background-color: #191a23;
+  min-height: 100vh;
+  font-family: "Segoe UI" !important;
 
-    --text-color: #7F8EA3; 
-    --title-color: #E1E7EF; 
-    --primary-color: #575BC7; 
-    --secondary-color: #2c2d3c; 
-    --background-color: #191a23;
+  --text-color: #7f8ea3;
+  --title-color: #e1e7ef;
+  --primary-color: #575bc7;
+  --secondary-color: #2c2d3c;
+  --background-color: #191a23;
 }
 
-.flex { 
+.flex {
   display: flex;
 }
 
-.gap-1{
+.gap-1 {
   gap: 10px;
 }
 
-.btn{
+.btn {
   padding: 12px;
   border-radius: 5px;
-  color: #E1E7EF;
+  color: #e1e7ef;
 }
 
 .btn:hover {
@@ -41,11 +41,19 @@ body{
   border: 1px solid var(--primary-color);
 }
 
-h1, h2, h3, h4, h5 {
+.btn.terciary {
+  background: transparent;
+  border: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
   margin: 0px;
   color: var(--title-color);
 }
-
 
 .mobile-navigation {
   width: 100%;
@@ -70,7 +78,7 @@ h1, h2, h3, h4, h5 {
   width: 85%;
 }
 
-.header-container { 
+.header-container {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -83,7 +91,7 @@ h1, h2, h3, h4, h5 {
 
 .header-container .github-banner {
   background-color: var(--title-color);
-  color:#191a23;
+  color: #191a23;
   padding: 8px;
   font-size: 15px;
   display: flex;
@@ -110,15 +118,17 @@ h1, h2, h3, h4, h5 {
   border-radius: 5px;
 }
 
-.header-container .github-banner a:hover, .header-container .github-banner button:hover {
+.header-container .github-banner a:hover,
+.header-container .github-banner button:hover {
   cursor: pointer;
 }
 
-.header-container .github-banner button span{
+.header-container .github-banner button span {
   margin-bottom: -2px;
 }
 
-.header-container .github-banner svg, .header-container .github-banner button svg {
+.header-container .github-banner svg,
+.header-container .github-banner button svg {
   font-size: 17px;
 }
 
@@ -133,7 +143,7 @@ h1, h2, h3, h4, h5 {
   text-decoration: none;
 }
 
-.header{ 
+.header {
   width: 85%;
   display: flex;
   align-self: center;
@@ -144,17 +154,17 @@ h1, h2, h3, h4, h5 {
   background-color: var(--background-color);
 }
 .header__child {
-  display: flex; 
+  display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.header__child img{
+.header__child img {
   width: 32px !important;
   height: 32px !important;
 }
 
-.header__child a{
+.header__child a {
   margin-right: 10px;
   color: var(--title-color);
   font-size: 18px;
@@ -176,13 +186,13 @@ h1, h2, h3, h4, h5 {
 }
 
 @media screen and (max-width: 1180px) {
-  .header{
+  .header {
     width: 90%;
   }
 }
 
-@media screen  and (max-width: 680px) {
-  .header .header__child:nth-child(2){
+@media screen and (max-width: 680px) {
+  .header .header__child:nth-child(2) {
     display: none;
   }
   .mobile-navigation-toogle {
@@ -193,7 +203,6 @@ h1, h2, h3, h4, h5 {
     padding: 10px;
   }
 }
-
 
 .banner {
   padding: 170px 10px 70px 10px;
@@ -220,12 +229,11 @@ h1, h2, h3, h4, h5 {
 .app-demo-img {
   border: 10px solid var(--title-color);
   border-radius: 15px;
-  width: 900px;
+  width: 1100px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 30px;
 }
-
 
 @media screen and (max-width: 1180px) {
   .app-demo-img {
@@ -251,7 +259,6 @@ h1, h2, h3, h4, h5 {
   font-size: 37px;
 }
 
-
 .features-title {
   margin-bottom: 80px;
 }
@@ -268,8 +275,7 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-
-.features-container  {
+.features-container {
   margin-top: 50px;
 }
 
@@ -278,8 +284,8 @@ h1, h2, h3, h4, h5 {
 }
 
 .features-container .features-container__child {
-  flex-basis: 33%; 
-  flex-grow: 0; 
+  flex-basis: 33%;
+  flex-grow: 0;
 }
 
 .features-container .features-container__child div {
@@ -292,7 +298,6 @@ h1, h2, h3, h4, h5 {
   display: flex;
   flex-direction: column;
   gap: 15px;
-
 }
 
 .features-container .features-container__child div svg {
@@ -327,20 +332,17 @@ h1, h2, h3, h4, h5 {
 }
 
 @media screen and (max-width: 1180px) {
-
   footer.main-app-container p {
-      text-align: center;
-
+    text-align: center;
   }
 }
 
 .main-app {
-  width: 100%;  
+  width: 100%;
   max-width: 1200px;
   display: flex;
   align-self: center;
   flex-direction: column;
-
 }
 
 .tasks {
@@ -370,7 +372,7 @@ h1, h2, h3, h4, h5 {
   margin-left: 10px;
 }
 
-.tasks-stage .tasks:last-child{
+.tasks-stage .tasks:last-child {
   border-left: none;
 }
 
@@ -422,7 +424,7 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-/* footer **/ 
+/* footer **/
 footer {
   padding-bottom: 25px;
   color: var(--text-color);
@@ -443,10 +445,10 @@ footer a {
   gap: 40px;
 }
 
-.changelog { 
+.changelog {
   display: flex;
   padding-top: 40px;
-  border-top: 1px solid rgb(49, 48, 53) ;
+  border-top: 1px solid rgb(49, 48, 53);
 
   color: var(--text-color);
 }
@@ -458,11 +460,11 @@ footer a {
 .changelog__date span {
   position: sticky;
   top: calc(90px);
-  left: 0px; 
+  left: 0px;
 }
 
 .changelog__content {
- width: 75%;
+  width: 75%;
 }
 
 .changelog__content img {
@@ -475,16 +477,17 @@ footer a {
   color: var(--title-color);
 }
 
-code[class*="language-"], pre[class*="language-"] {
+code[class*="language-"],
+pre[class*="language-"] {
   background-color: #13141c !important;
   border: 1px solid rgb(49, 48, 53) !important;
   transition: box-shadow 0.2s ease 0s !important;
 
-  color: #D0D6E0 !important;
+  color: #d0d6e0 !important;
 }
 
 .gatsby-highlight-code-line {
-  background-color: rgb(116, 207, 136, 0.1);;
+  background-color: rgb(116, 207, 136, 0.1);
   display: block;
   margin-left: -1rem;
   margin-right: -1.5rem;
@@ -496,19 +499,19 @@ code[class*="language-"], pre[class*="language-"] {
   background-color: transparent;
 }
 
-.video-global-container{
+.video-global-container {
   border: 10px solid var(--title-color);
   border-radius: 10px !important;
 }
 
 @media screen and (max-width: 1180px) {
-  
   .changelog {
     flex-direction: column;
     padding: 20px;
   }
 
-  .changelog .changelog__content, .changelog .changelog__date {
+  .changelog .changelog__content,
+  .changelog .changelog__date {
     width: 100%;
   }
 }
@@ -519,7 +522,7 @@ code[class*="language-"], pre[class*="language-"] {
     font-size: 18px;
   }
 
-  .banner_title{
+  .banner_title {
     font-size: 42px;
   }
 }

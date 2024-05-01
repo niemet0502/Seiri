@@ -17,13 +17,14 @@ export class ProjectService {
   ) {}
 
   async create(createProjectDto: CreateProjectDto, user: User) {
-    const { name, description, handledObject } = createProjectDto;
+    const { name, description, handledObject, isDefault } = createProjectDto;
 
     const project = new Project();
     project.name = name;
     project.description = description;
     project.user = user;
     project.handledObject = handledObject;
+    project.isDefault = isDefault;
 
     return this.save(project);
   }

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import {
   AiOutlineCheckCircle,
   AiOutlineDelete,
@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
+import { CompletedTaskItem } from "../../components/CompletedTaskItem";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
 import { Loader } from "../../components/Loader";
@@ -18,7 +19,9 @@ import { ApiClientContext } from "../../provider/apiClientProvider";
 import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { DeleteMultipleTasksApi, EditTaskApi, Task } from "../../types";
+import { transformDateToMMDDFormat } from "../../utils/Date";
 import { Deferred } from "../../utils/Deferred";
+import { groupTasksByCompletedDate } from "../../utils/Helpers";
 import { NewTaskDialog } from "./NewTaskDialog";
 
 export const TasksList: React.FC = () => {
@@ -31,9 +34,19 @@ export const TasksList: React.FC = () => {
 
   const [newTaskHandler, setNewTaskHandler] = useState<Deferred<Task>>();
   const [taskToEdit, setTaskToEdit] = useState<Task>();
+  const [showCompleted, setShowCompleted] = useState<boolean>(true);
 
-  const { isLoading, data } = useQuery([querykey, projectId], () =>
-    apiClient.getTasksByProject(projectId)
+  const { isLoading, data: tasks } = useQuery(
+    [querykey, projectId, showCompleted],
+    () => apiClient.getTasksByProject(projectId, showCompleted)
+  );
+
+  const { data: project } = useQuery(
+    ["projects", { id: projectId }],
+    () => apiClient.getProject(projectId),
+    {
+      enabled: projectId ? true : false,
+    }
   );
 
   const { mutate: completeTask } = useMutation(
@@ -77,8 +90,6 @@ export const TasksList: React.FC = () => {
       },
     }
   );
-
-  const tasks = data || [];
 
   const addTask = useCallback(async () => {
     const deferred = new Deferred<Task>();
@@ -140,27 +151,39 @@ export const TasksList: React.FC = () => {
     }
   };
 
+  const isCompleted = project && project.name === "Completed";
+
+  const groupedTasks = useMemo(() => {
+    if (!(project && project.name === "Completed") || !tasks) return;
+    return groupTasksByCompletedDate(tasks);
+  }, [project, tasks]);
+
   return (
     <div className="flex page-content flex-2">
       <div className="tasks-list ">
         <PageHeader>
-          <Dropdown
-            left="-150px"
-            width="150px"
-            trigger={(toggle) => (
-              <IconButton handler={toggle}>
-                <BiDotsHorizontalRounded />
-              </IconButton>
-            )}
-          >
-            <DropdownItem>
-              <AiOutlineCheckCircle /> Hide completed
-            </DropdownItem>
+          {project && !project.isDefault && (
+            <Dropdown
+              left="-150px"
+              width="150px"
+              trigger={(toggle) => (
+                <IconButton handler={toggle}>
+                  <BiDotsHorizontalRounded />
+                </IconButton>
+              )}
+            >
+              <>
+                <DropdownItem handler={() => setShowCompleted((prev) => !prev)}>
+                  <AiOutlineCheckCircle /> {showCompleted ? "Hide" : "Show"}{" "}
+                  completed
+                </DropdownItem>
 
-            <DropdownItem handler={() => onMultipleDelete(projectId)}>
-              <AiOutlineDelete /> Delete completed
-            </DropdownItem>
-          </Dropdown>
+                <DropdownItem handler={() => onMultipleDelete(projectId)}>
+                  <AiOutlineDelete /> Delete completed
+                </DropdownItem>
+              </>
+            </Dropdown>
+          )}
         </PageHeader>
 
         <div className="body flex mt-2">
@@ -168,21 +191,39 @@ export const TasksList: React.FC = () => {
             <>
               {tasks && (
                 <>
-                  {tasks.map((task: Task) => (
-                    <TaskItem
-                      key={task.id}
-                      task={task}
-                      editable={true}
-                      completeTask={(data: EditTaskApi) => completeTask(data)}
-                      deleteTask={(taskId: number) => onDelete(taskId)}
-                      editTask={(task: Task) => editTask(task)}
-                    />
-                  ))}
+                  {!isCompleted &&
+                    tasks.map((task: Task) => (
+                      <TaskItem
+                        key={task.id}
+                        task={task}
+                        editable={true}
+                        completeTask={(data: EditTaskApi) => completeTask(data)}
+                        deleteTask={(taskId: number) => onDelete(taskId)}
+                        editTask={(task: Task) => editTask(task)}
+                      />
+                    ))}
+
+                  {isCompleted &&
+                    groupedTasks &&
+                    Array.from(groupedTasks?.entries()).map((value: any) => (
+                      <div>
+                        <div className="p-b-1 border-b">
+                          <h4 className="bold">
+                            {transformDateToMMDDFormat(new Date(value[0]))}
+                          </h4>
+                        </div>
+
+                        {value[1].map((task: Task) => (
+                          <CompletedTaskItem task={task} />
+                        ))}
+                      </div>
+                      // <span>{JSON.stringify(value)}</span>
+                    ))}
                   <div
                     className="align-self-center add-task align-items-center mt-2"
                     onClick={addTask}
                   >
-                    {tasks.length > 0 && (
+                    {tasks.length > 0 && !project.isDefault && (
                       <Button>
                         <AiOutlinePlus /> Add task
                       </Button>
@@ -191,7 +232,7 @@ export const TasksList: React.FC = () => {
                 </>
               )}
 
-              {tasks.length === 0 && (
+              {tasks.length === 0 && !project.isDefault && (
                 <div
                   className="flex flex-column align-items-center justify-content-center gap-2"
                   style={{ marginTop: "180px" }}

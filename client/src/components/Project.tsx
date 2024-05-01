@@ -32,7 +32,7 @@ export const ProjectItem: React.FC<{
         title: "Task deleted",
         message: "",
       });
-      queryClient.invalidateQueries([["projects"], feature]);
+      queryClient.invalidateQueries({ queryKey: ["projects", { feature }] });
       push("/");
     },
   });
@@ -58,33 +58,35 @@ export const ProjectItem: React.FC<{
       <NavLink to={`/project/${project.id}`} className="flex-2">
         <div className="flex align-items-center project-title flex-2">
           <RxDotFilled style={{ color: project.color }} />
-          <span style={{ fontSize: "14px" }}>
+          <span style={{ fontSize: "13px" }}>
             {textEllipsis(project.name, 80)}
           </span>
         </div>
       </NavLink>
-      <div className="flex align-items-center" style={{ fontSize: "12px" }}>
-        <Dropdown
-          left="-120px"
-          trigger={(toggle) => (
-            <IconButton handler={toggle}>
-              <BiDotsHorizontalRounded />
-            </IconButton>
-          )}
-        >
-          <DropdownItem handler={() => setProjectToEdit(project)}>
-            <AiOutlineEdit /> Edit
-          </DropdownItem>
+      {!project.isDefault && (
+        <div className="flex align-items-center" style={{ fontSize: "12px" }}>
+          <Dropdown
+            left="-120px"
+            trigger={(toggle) => (
+              <IconButton handler={toggle}>
+                <BiDotsHorizontalRounded />
+              </IconButton>
+            )}
+          >
+            <DropdownItem handler={() => setProjectToEdit(project)}>
+              <AiOutlineEdit /> Edit
+            </DropdownItem>
 
-          <DropdownItem handler={() => onDelete(project.id)}>
-            <AiOutlineDelete /> Delete
-          </DropdownItem>
+            <DropdownItem handler={() => onDelete(project.id)}>
+              <AiOutlineDelete /> Delete
+            </DropdownItem>
 
-          <DropdownItem>
-            <BsArchive /> Archive
-          </DropdownItem>
-        </Dropdown>
-      </div>
+            <DropdownItem>
+              <BsArchive /> Archive
+            </DropdownItem>
+          </Dropdown>
+        </div>
+      )}
     </div>
   );
 };

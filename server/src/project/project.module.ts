@@ -12,8 +12,8 @@ import { ProjectService } from './project.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project]),
-    UserModule,
     forwardRef(() => TaskModule),
+    forwardRef(() => UserModule),
   ],
   controllers: [ProjectController],
   providers: [ProjectService, ProjectRepository],

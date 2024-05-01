@@ -4,7 +4,7 @@ import { useMutation } from "react-query";
 import { useHistory } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button } from "../../components/Button";
-import { Dialog, DIALOG_CLOSED_REASON } from "../../components/Dialog";
+import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
 import { ApiClientContext } from "../../provider/apiClientProvider";
@@ -36,7 +36,9 @@ export const ProjectModal: React.FC<{
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
         reset();
-        queryClient.invalidateQueries([["projects"], handledObject]);
+        queryClient.invalidateQueries({
+          queryKey: ["projects", { feature: handledObject }],
+        });
         push(`/project/${newProject.id}`);
       },
     }
@@ -48,7 +50,9 @@ export const ProjectModal: React.FC<{
       onSuccess: (newProject) => {
         deferred.resolve(newProject);
         reset();
-        queryClient.invalidateQueries([["projects"], handledObject]);
+        queryClient.invalidateQueries({
+          queryKey: ["projects", , { feature: handledObject }],
+        });
       },
     }
   );

@@ -52,11 +52,15 @@
 }
 
 .p-l-0 {
-  padding-left: 0px;
+  padding-left: 0px !important;
 }
 
 .p-r-1 {
   padding-right: 10px;
+}
+
+.p-b-1 {
+  padding-bottom: 10px;
 }
 
 .primary {
@@ -129,4 +133,20 @@
 
 .h-100 {
   height: 100%;
+}
+
+.color {
+  color: $white;
+}
+
+.border-b {
+  border-bottom: 1px solid $border-color;
+}
+
+.fz-14 {
+  font-size: 14px;
+}
+
+.fz-12 {
+  font-size: 12px;
 }

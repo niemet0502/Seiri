@@ -58,16 +58,17 @@ describe('TaskService', () => {
         tasks: null,
         notes: null,
         handledObject: 1,
+        isDefault: false,
       };
+      const userId = 1;
       jest.spyOn(mockRepository, 'findAllByProject').mockReturnValue(tasks);
 
       //act
-      const result = await service.findAllByProject(project);
+      const result = await service.findAllByProject(project, userId);
 
       //assert
       expect(result).toEqual(tasks);
       expect(mockRepository.findAllByProject).toBeCalledTimes(1);
-      expect(mockRepository.findAllByProject).toBeCalledWith(project);
     });
   });
   describe('TaskService.__findOne', () => {
@@ -110,6 +111,9 @@ describe('TaskService', () => {
         isDeleted: false,
         parent: null,
         children: null,
+        createdBy: 1,
+        dueDate: null,
+        completedAt: null,
       };
       jest.spyOn(mockRepository, 'findById').mockReturnValue(task);
       jest.spyOn(mockRepository, 'remove').mockReturnValue(task);

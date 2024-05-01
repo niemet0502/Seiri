@@ -5,6 +5,7 @@ export const TaskSchema = Joi.object({
   projectId: Joi.number().required(),
   description: Joi.string(),
   parentId: Joi.number(),
+  dueDate: Joi.date(),
 }).options({
   abortEarly: false,
 });

@@ -63,6 +63,7 @@ describe('ProjectRepository', () => {
         tasks: null,
         notes: null,
         handledObject: 2,
+        isDefault: null,
       };
 
       jest.spyOn(mockRepository, 'save').mockReturnValue(project);
