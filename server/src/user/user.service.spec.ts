@@ -1,6 +1,7 @@
 import { BullModule } from '@nestjs/bull';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth/auth.service';
+import { ProjectService } from '../project/project.service';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
@@ -35,6 +36,7 @@ describe('UserService', () => {
       providers: [
         UserService,
         { provide: AuthService, useValue: {} },
+        { provide: ProjectService, useValue: {} },
         UserRepository,
         {
           provide: 'sendEmail', // Queue token

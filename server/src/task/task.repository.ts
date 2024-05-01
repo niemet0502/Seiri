@@ -43,16 +43,16 @@ export class TaskRepository {
   async findById(id: number): Promise<Task | undefined> {
     const task = await this.tasksRepository.findOne({
       where: { id: id, parent: undefined },
-      relations: ['project'],
+      relations: ['children', 'project'], // Include children and project relations
     });
 
-    const children = await this.tasksRepository
-      .createQueryBuilder('task')
-      .where('task.parentId = :parentId', { parentId: id })
-      .orderBy('task.isDone', 'ASC')
-      .getMany();
+    if (task && task.children && task.children.length > 0) {
+      task.children.sort((a, b) =>
+        a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1,
+      );
+    }
 
-    return { ...task, children };
+    return task;
   }
 
   async remove(task: Task) {

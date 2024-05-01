@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DEFAULT_PROJECT } from 'src/user/type';
 import { Project } from '../project/entities/project.entity';
+import { DEFAULT_PROJECT } from '../user/type';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
