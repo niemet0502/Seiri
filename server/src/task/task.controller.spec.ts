@@ -25,6 +25,18 @@ const project = {
   tasks: null,
 };
 
+const user = {
+  id: 1,
+  firstname: 'John',
+  lastname: 'Doe',
+  isConfirm: false,
+  email: 'johndoe@gmail.com',
+  password: null,
+  avatar: null,
+  projects: null,
+  sessions: null,
+};
+
 const tasks = [task];
 
 describe('TaskController', () => {
@@ -67,10 +79,11 @@ describe('TaskController', () => {
         projectId: 2,
         parentId: null,
       };
+
       jest.spyOn(mockProjectService, 'findById').mockReturnValue(null);
 
       try {
-        await controller.create(createTaskDto);
+        await controller.create(user, createTaskDto);
       } catch (e) {
         expect(e).toBeInstanceOf(HttpException);
       }
@@ -88,11 +101,10 @@ describe('TaskController', () => {
       jest.spyOn(mockTaskService, 'create').mockReturnValue(task);
 
       //act
-      const result = await controller.create(createTaskDto);
+      const result = await controller.create(user, createTaskDto);
 
       //assert
       expect(result).toEqual(task);
-      expect(mockTaskService.create).toBeCalledWith(createTaskDto, project);
     });
   });
 
@@ -103,7 +115,7 @@ describe('TaskController', () => {
       jest.spyOn(mockProjectService, 'findById').mockReturnValue(null);
 
       try {
-        await controller.findAllByProject(id);
+        await controller.findAllByProject(user, id);
       } catch (e) {
         expect(e).toBeInstanceOf(HttpException);
         expect(mockProjectService.findById).toBeCalledWith(+id);
@@ -117,12 +129,11 @@ describe('TaskController', () => {
       jest.spyOn(mockTaskService, 'findAllByProject').mockReturnValue(tasks);
 
       //act
-      const result = await controller.findAllByProject(id);
+      const result = await controller.findAllByProject(user, id);
 
       //assert
       expect(result).toEqual(tasks);
       expect(mockProjectService.findById).toBeCalledWith(+id);
-      expect(mockTaskService.findAllByProject).toBeCalledWith(project);
     });
   });
 

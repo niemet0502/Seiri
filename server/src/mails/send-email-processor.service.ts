@@ -5,6 +5,7 @@ import { Logger } from '@nestjs/common';
 @Processor('sendEmail')
 export class SendEmailProcessor {
   private readonly logger = new Logger('EmailSending');
+
   constructor(private readonly mailService: MailerService) {}
 
   @Process('welcomeEmail')
