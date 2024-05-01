@@ -1,13 +1,6 @@
-version: "3.9"
-
 services:
   server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-      target: dev
-    image: seiri-server
-    container_name: server
+    image: mariusniemet/seiri-server
     depends_on:
       - db
     ports:
@@ -24,22 +17,15 @@ services:
       SMTP_USER: YOUR_API_KEY
       SMTP_PASSWORD: YOUR_API_PASSWORD
       WEB_APP_ADDRESS: http://localhost:3005/
-    volumes:
-      - ./server:/app
+      PORT: 3000
 
   client:
-    build: ./client
-    image: seiri-web
-    container_name: client
-    environment:
-      SERVER_API_URL: http://server:3000/
+    image: mariusniemet/seiri-web
     depends_on:
       - server
     ports:
       - "3005:3000"
     restart: always
-    volumes:
-      - ./client:/app
 
   db:
     image: mysql:5.7.41
