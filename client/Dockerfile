@@ -1,4 +1,5 @@
-FROM node:14-alpine
+# Development stage
+FROM node:20-alpine as development
 
 # Set working directory
 WORKDIR /app
@@ -12,8 +13,26 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Expose port 3000
+# Expose port 3000 for development
 EXPOSE 3000
 
-# Start app
-CMD [ "npm", "run", "start" ]
+# Start the development server
+CMD ["npm", "start"]
+
+# Production build stage
+FROM development as build
+
+# Build the app
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine as prod
+
+# Copy build files from the build stage to Nginx server directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
