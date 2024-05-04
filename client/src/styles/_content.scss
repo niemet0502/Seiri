@@ -23,6 +23,8 @@
         color: $white;
         height: 45px;
         resize: none;
+        overflow-y: hidden;
+        padding: 5px;
 
         &:focus {
           outline: none;
