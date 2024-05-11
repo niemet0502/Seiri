@@ -17,6 +17,8 @@ services:
   client:
     build: ./client
     image: seiri-web
+    ports:
+      - "3005:3000" 
     develop:
       watch:
         - action: sync
