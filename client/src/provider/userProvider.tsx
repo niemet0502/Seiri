@@ -1,8 +1,9 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { history } from "../App";
 import { Loader } from "../components/Loader";
-import { AuthRouting } from "../pages/Auth/AuthRouting";
 import { User } from "../types";
+
+const AuthRouting = React.lazy(() => import("../pages/Auth/AuthRouting"));
 
 interface CurrentContextValue {
   currentUser: User | null;

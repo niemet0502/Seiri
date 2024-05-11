@@ -30,7 +30,7 @@ import { displayDuedate, transformDateToYYYMMDDFormat } from "../../utils/Date";
 import { Deferred } from "../../utils/Deferred";
 import { NewTaskDialog } from "./NewTaskDialog";
 
-export const TaskDetails: React.FC = () => {
+const TaskDetails: React.FC = () => {
   const { taskId, projectId } = useParams<{
     taskId: string;
     projectId: string;
@@ -351,3 +351,5 @@ export const TaskDetails: React.FC = () => {
     </div>
   );
 };
+
+export default TaskDetails;

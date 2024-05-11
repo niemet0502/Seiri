@@ -1,16 +1,18 @@
 import { createBrowserHistory } from "history";
+import React from "react";
 import { Route, Router, Switch } from "react-router";
 import "./App.css";
 import { NotFound } from "./components/NotFound";
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import { NoteDetails } from "./pages/Notes/NoteDetails";
-import { BaseList } from "./pages/Project/BaseList";
-import { TaskDetails } from "./pages/Tasks/TaskDetails";
 import { ApiClientProvider } from "./provider/apiClientProvider";
 import { ConfirmDialogProvider } from "./provider/confirmDialogProvider";
 import { CurrentFeatureProvider } from "./provider/currentFeatureProvider";
 import { ToastContextProvider } from "./provider/toastProvider";
 import { CurrentUserProvider } from "./provider/userProvider";
+
+const TaskDetails = React.lazy(() => import("./pages/Tasks/TaskDetails"));
+const NoteDetails = React.lazy(() => import("./pages/Notes/NoteDetails"));
+const BaseList = React.lazy(() => import("./pages/Project/BaseList"));
 
 export const history = createBrowserHistory();
 
