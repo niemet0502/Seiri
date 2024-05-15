@@ -15,7 +15,10 @@ services:
         - action: rebuild
           path: package.json
   client:
-    build: ./client
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+      target: development
     image: seiri-web
     develop:
       watch:
