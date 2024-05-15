@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
+import { PageLoader } from "./components/PageLoader";
 import "./styles/index.scss";
 
 const root = ReactDOM.createRoot(
@@ -21,9 +22,11 @@ export const queryClient = new QueryClient({
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <Suspense fallback={<PageLoader />}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </Suspense>
   </React.StrictMode>
 );
 

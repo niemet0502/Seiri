@@ -1,8 +1,9 @@
 import { createBrowserHistory } from "history";
-import React from "react";
+import React, { Suspense } from "react";
 import { Route, Router, Switch } from "react-router";
 import "./App.css";
 import { NotFound } from "./components/NotFound";
+import { PageLoader } from "./components/PageLoader";
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import { ApiClientProvider } from "./provider/apiClientProvider";
 import { ConfirmDialogProvider } from "./provider/confirmDialogProvider";
@@ -26,26 +27,28 @@ function App() {
               <div className="content-wrapper flex">
                 <Router history={history}>
                   <Sidebar />
-                  <Switch>
-                    <Route
-                      exact
-                      path="/project/:projectId/task/:taskId"
-                      component={TaskDetails}
-                    />
+                  <Suspense fallback={<PageLoader />}>
+                    <Switch>
+                      <Route
+                        exact
+                        path="/project/:projectId/task/:taskId"
+                        component={TaskDetails}
+                      />
 
-                    <Route
-                      exact
-                      path="/project/:projectId/note/:noteId"
-                      component={NoteDetails}
-                    />
+                      <Route
+                        exact
+                        path="/project/:projectId/note/:noteId"
+                        component={NoteDetails}
+                      />
 
-                    <Route
-                      exact
-                      path="/project/:projectId"
-                      component={BaseList}
-                    />
-                    <Route exact path="/" component={NotFound} />
-                  </Switch>
+                      <Route
+                        exact
+                        path="/project/:projectId"
+                        component={BaseList}
+                      />
+                      <Route path="*" component={NotFound} />
+                    </Switch>
+                  </Suspense>
                 </Router>
               </div>
             </CurrentUserProvider>
