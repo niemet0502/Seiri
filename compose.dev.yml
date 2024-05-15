@@ -20,6 +20,8 @@ services:
       dockerfile: Dockerfile
       target: development
     image: seiri-web
+    ports:
+      - "3005:3000" 
     develop:
       watch:
         - action: sync

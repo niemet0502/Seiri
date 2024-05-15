@@ -33,7 +33,7 @@ const myTheme = createTheme({
   styles: [],
 });
 
-export const NoteDetails: React.FC = () => {
+const NoteDetails: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
   const { noteId, projectId } = useParams<{
     noteId: string;
@@ -239,3 +239,5 @@ export const NoteDetails: React.FC = () => {
     </div>
   );
 };
+
+export default NoteDetails;

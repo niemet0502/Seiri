@@ -5,7 +5,7 @@ import { Login } from "./Login";
 import { ResetPassword } from "./ResetPassword";
 import { SignIn } from "./SignIn";
 
-export const AuthRouting: React.FC = () => {
+const AuthRouting: React.FC = () => {
   return (
     <Router history={history}>
       <Switch>
@@ -22,3 +22,5 @@ export const AuthRouting: React.FC = () => {
     </Router>
   );
 };
+
+export default AuthRouting;
