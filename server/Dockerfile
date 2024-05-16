@@ -1,3 +1,4 @@
+# Use a multi-stage build for smaller final image size
 FROM node:16-alpine AS base
 
 # Set working directory
@@ -6,28 +7,38 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-FROM base AS dev
 # Install dependencies
-RUN npm install 
+RUN npm install --only=production
 
-# Copy source code
-COPY . .
+# Second stage for development
+FROM base AS dev
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
 
 # Expose port 3000
 EXPOSE 3000
 
-# Start app
-# CMD npm run migration:run && npm run start:dev
-CMD ["npm", "run", "start:dev"]
-
-FROM base AS prod
-
-ENV NODE_ENV production
-
-RUN npm install
-
+# Copy source code
 COPY . .
 
+# Start app in development mode
+CMD ["npm", "run", "start:dev"]
+
+# Third stage for production
+FROM base AS prod
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Copy source code
+COPY . .
+
+# Build TypeScript code
+RUN npm run build
+
+# Expose port 3000
 EXPOSE 3000
 
-CMD [ "npm", "run", "start:prod" ]
+# Start app in production mode
+CMD ["node", "dist/main"]
