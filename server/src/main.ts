@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const SwaggerConfig = new DocumentBuilder()
-    .setTitle('Seiri API Documentation')
+    .setTitle('Seiri API Doc')
     .setDescription('The seiri API description')
     .addTag('api')
     .build();
