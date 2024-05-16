@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const SwaggerConfig = new DocumentBuilder()
     .setTitle('Seiri API Documentation')
-    .setDescription('The Seiri API description')
+    .setDescription('The seiri API description')
     .addTag('api')
     .build();
 
