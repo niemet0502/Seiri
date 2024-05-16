@@ -33,7 +33,7 @@ jobs:
           context: ./server
           file: ./server/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: mariusniemet/seiri-server:1.0
           # tags: latest
           labels: ${{ steps.meta.outputs.labels }}
           target: prod
