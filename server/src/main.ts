@@ -9,8 +9,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const SwaggerConfig = new DocumentBuilder()
-    .setTitle('Thot API Documentation')
-    .setDescription('The Thot API description')
+    .setTitle('Seiri API Documentation')
+    .setDescription('The Seiri API description')
     .addTag('api')
     .build();
 
