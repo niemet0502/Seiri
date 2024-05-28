@@ -33,6 +33,6 @@ jobs:
           context: ./client
           file: ./client/Dockerfile
           push: true
-          tags: latest
+          tags: mariusniemet/seiri-web:latest
           # tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
