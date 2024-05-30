@@ -26,12 +26,13 @@ services:
       - server
     ports:
       - "80:80"
+      - "443:443"
     restart: always
 
   db:
     image: mysql:5.7.41
     container_name: db
-    restart: always
+    restart: always   
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: thot
