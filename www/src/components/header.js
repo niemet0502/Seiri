@@ -46,16 +46,22 @@ const Header = ({ siteTitle }) => {
           </Link>
         </div>
         <div className="header__child">
-          <a href="#!">How it's built</a>
+          <a
+            href="https://mariusniemet.me/building-seiri-my-tasks-notes-app/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            How it's built
+          </a>
           <Link to="/changelog">Changelog</Link>
           <Link to="/roadmap">Roadmap</Link>
         </div>
         <div className="header__child">
-          <a href="http://apiseiri.mariusniemet.me/">
+          <a href="https://apiseiri.mariusniemet.me/">
             <button className="btn terciary">Login</button>
           </a>
 
-          <a href="http://apiseiri.mariusniemet.me/auth/signin">
+          <a href="https://apiseiri.mariusniemet.me/auth/signin">
             <button className="btn secondary">Start for free</button>
           </a>
           <div className="mobile-navigation-toogle">
