@@ -17,7 +17,7 @@ import {
 } from "../types";
 
 export class Client {
-  baseApiUrl: string = "http://127.0.0.1:3004/";
+  baseApiUrl: string = process.env.DOMAIN as string;
 
   protected getAuthToken() {
     try {
