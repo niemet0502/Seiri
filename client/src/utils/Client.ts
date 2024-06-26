@@ -17,7 +17,7 @@ import {
 } from "../types";
 
 export class Client {
-  baseApiUrl: string = `https://apiseiri.mariusniemet.me/api/`;
+  baseApiUrl: string = "http://127.0.0.1:3004/";
 
   protected getAuthToken() {
     try {
