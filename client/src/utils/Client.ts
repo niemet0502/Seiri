@@ -17,7 +17,9 @@ import {
 } from "../types";
 
 export class Client {
-  baseApiUrl: string = process.env.DOMAIN as string;
+  baseApiUrl: string = `${
+    process.env.REACT_APP_API_URL || "http://localhost:3005/api/"
+  }`;
 
   protected getAuthToken() {
     try {
