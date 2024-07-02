@@ -15,7 +15,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, SwaggerConfig);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   // Set global prefix for all API endpoints
   app.setGlobalPrefix('api');

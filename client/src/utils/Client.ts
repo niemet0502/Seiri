@@ -18,7 +18,7 @@ import {
 
 export class Client {
   baseApiUrl: string = `${
-    process.env.REACT_APP_API_URL || "http://localhost:3005/api/"
+    process.env.REACT_APP_API_URL || "https://apiseiri.mariusniemet.me/api/"
   }`;
 
   protected getAuthToken() {

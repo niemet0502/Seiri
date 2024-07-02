@@ -37,8 +37,8 @@ COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy SSL certificates
-# COPY /certificates/fullchain.pem /etc/letsencrypt/live/apiseiri.mariusniemet.me/fullchain.pem
-# COPY /certificates/privkey.pem /etc/letsencrypt/live/apiseiri.mariusniemet.me/privkey.pem
+COPY /certificates/fullchain.pem /etc/letsencrypt/live/apiseiri.mariusniemet.me/fullchain.pem
+COPY /certificates/privkey.pem /etc/letsencrypt/live/apiseiri.mariusniemet.me/privkey.pem
 
 # Expose port 80 and 443
 EXPOSE 80
