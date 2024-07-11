@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seiri-db
+  namespace: seiri-app
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: seiri-db
+  template: 
+    metadata:
+      labels:
+        app: seiri-db
+    spec:
+      containers: 
+        - name: seiri-db
+          image: mysql:8
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          ports: 
+            - containerPort: 3306
+          env: 
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom: 
+                secretKeyRef:  
+                  name: database-credentials
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom: 
+                secretKeyRef:  
+                  name: database-credentials
+                  key: mysql-database-name
+            - name: MYSQL_USER
+              valueFrom: 
+                secretKeyRef:  
+                  name: database-credentials
+                  key: mysql-database-user
+            - name: MYSQL_PASSWORD
+              valueFrom: 
+                secretKeyRef:  
+                  name: database-credentials
+                  key: mysql-database-password
+
+
