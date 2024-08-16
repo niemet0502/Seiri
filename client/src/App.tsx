@@ -4,7 +4,9 @@ import { Route, Router, Switch } from "react-router";
 import "./App.css";
 import { NotFound } from "./components/NotFound";
 import { PageLoader } from "./components/PageLoader";
-import { Sidebar } from "./components/Sidebar/Sidebar";
+import { Features } from "./components/Sidebar/Features";
+import { AllProjectsList } from "./domains/projects/pages/AllProjectsList";
+import { ProjectsList } from "./domains/projects/pages/ProjectsList";
 import { ApiClientProvider } from "./provider/apiClientProvider";
 import { ConfirmDialogProvider } from "./provider/confirmDialogProvider";
 import { CurrentFeatureProvider } from "./provider/currentFeatureProvider";
@@ -26,9 +28,15 @@ function App() {
             <CurrentUserProvider>
               <div className="content-wrapper flex">
                 <Router history={history}>
-                  <Sidebar />
+                  <Features />
+                  <ProjectsList />
                   <Suspense fallback={<PageLoader />}>
                     <Switch>
+                      <Route
+                        exact
+                        path="/projects"
+                        component={AllProjectsList}
+                      />
                       <Route
                         exact
                         path="/project/:projectId/task/:taskId"
