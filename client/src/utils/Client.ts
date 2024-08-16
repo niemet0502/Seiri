@@ -75,8 +75,10 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getProjects(feature: FeatureEnum) {
-    const url = this.baseApiUrl + `project/${feature}`;
+  public getProjects(feature: FeatureEnum, includeArchived: boolean) {
+    const url =
+      this.baseApiUrl +
+      `projects?handledObject=${feature}&includeArchived=${includeArchived}`;
 
     return this.tranformOptions()
       .get(url)
@@ -84,7 +86,7 @@ export class Client {
   }
 
   public addProject(project: CreateProject) {
-    const url = this.baseApiUrl + "project";
+    const url = this.baseApiUrl + "projects";
 
     return this.tranformOptions()
       .post(url, project)
@@ -92,13 +94,13 @@ export class Client {
   }
 
   public removeProject(projectId: number) {
-    const url = this.baseApiUrl + `project/${projectId}`;
+    const url = this.baseApiUrl + `projects/${projectId}`;
 
     return this.tranformOptions().delete(url);
   }
 
   public editProject(data: EditProject) {
-    const url = this.baseApiUrl + `project/${data.id}`;
+    const url = this.baseApiUrl + `projects/${data.id}`;
 
     return this.tranformOptions()
       .patch(url, data)
@@ -196,7 +198,7 @@ export class Client {
   }
 
   public getProject(projectId: string) {
-    const url = this.baseApiUrl + `project/get/${projectId}`;
+    const url = this.baseApiUrl + `projects/${projectId}`;
 
     return this.tranformOptions()
       .get(url)
