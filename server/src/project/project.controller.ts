@@ -46,23 +46,12 @@ export class ProjectController {
     @Query('includeArchived') includeArchived: string,
     @UserDecorator() user: User,
   ): Promise<Project[] | undefined> {
-    console.log(includeArchived);
-    
     return await this.projectService.findAllByUser(
       +user.id,
       handledObject,
       includeArchived === 'true',
     );
   }
-
-  // @Get('/archived/:id')
-  // async findAllArchived(
-  //   @Param('id') id: number,
-  // ): Promise<Project[] | undefined> {
-  //   // replace by req.user after the auth setup
-
-  //   return await this.projectService.findArchivedProjectByUser(+id);
-  // }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Project | undefined> {

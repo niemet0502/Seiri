@@ -122,31 +122,22 @@ describe('ProjectController', () => {
         projects: [],
         sessions: null,
       };
+      const includeArchived = 'true';
       jest.spyOn(mockProjectService, 'findAllByUser').mockReturnValue(projects);
 
-      expect(await projectController.findAll(handledObject, userDto)).toEqual(
-        projects,
-      );
+      expect(
+        await projectController.findAll(
+          handledObject,
+          includeArchived,
+          userDto,
+        ),
+      ).toEqual(projects);
       expect(mockProjectService.findAllByUser).toBeCalledWith(
         +userDto.id,
         handledObject,
+        includeArchived === 'true',
       );
       expect(mockProjectService.findAllByUser).toBeCalledTimes(1);
-    });
-  });
-
-  describe('ProjectController.__findAll', () => {
-    it('Should return a array project', async () => {
-      const userId = 1;
-      jest
-        .spyOn(mockProjectService, 'findArchivedProjectByUser')
-        .mockReturnValue(projects);
-
-      expect(await projectController.findAllArchived(userId)).toEqual(projects);
-      expect(mockProjectService.findArchivedProjectByUser).toBeCalledWith(
-        userId,
-      );
-      expect(mockProjectService.findArchivedProjectByUser).toBeCalledTimes(1);
     });
   });
 

@@ -84,15 +84,21 @@ describe('ProjectService', () => {
     it('should return a project array', async () => {
       const userId = 1;
       const handledObject = 1;
+      const includeArchived = true;
       jest.spyOn(mockRepository, 'findAllByUser').mockReturnValue(projects);
 
-      expect(await projectService.findAllByUser(userId, handledObject)).toEqual(
-        projects,
-      );
+      expect(
+        await projectService.findAllByUser(
+          userId,
+          handledObject,
+          includeArchived,
+        ),
+      ).toEqual(projects);
       expect(mockRepository.findAllByUser).toBeCalledTimes(1);
       expect(mockRepository.findAllByUser).toBeCalledWith(
         userId,
         handledObject,
+        includeArchived,
       );
     });
   });
