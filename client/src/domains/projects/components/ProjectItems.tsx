@@ -16,8 +16,9 @@ import { useRemoveProject } from "../hooks/useRemoveProject";
 export const ProjectItems: React.FC<{
   project: Project;
   active: boolean;
+  onEdit: (project: Project) => void;
   showBadge?: boolean;
-}> = ({ project, active, showBadge = false }) => {
+}> = ({ project, active, onEdit, showBadge = false }) => {
   const { confirm } = useContext(ConfirmDialogContext);
 
   const { updateProject } = useUpdateProject();
@@ -65,9 +66,7 @@ export const ProjectItems: React.FC<{
               </IconButton>
             )}
           >
-            <DropdownItem
-            // handler={() => setProjectToEdit(project)}
-            >
+            <DropdownItem handler={() => onEdit(project)}>
               <AiOutlineEdit /> Edit
             </DropdownItem>
 

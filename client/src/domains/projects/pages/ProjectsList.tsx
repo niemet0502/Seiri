@@ -16,13 +16,23 @@ export const ProjectsList: React.FC = () => {
   const { currentUser } = useContext(CurrentUserContext);
 
   const [projectHandler, setProjectHandler] = useState<Deferred<Project>>();
-
-  const deferred = new Deferred<Project>();
+  const [projectToEdit, setProjectToEdit] = useState<Project>();
 
   const onCreate = async () => {
+    const deferred = new Deferred<Project>();
     setProjectHandler(deferred);
     await deferred.promise;
     setProjectHandler(undefined);
+  };
+
+  const onEdit = async (project: Project) => {
+    const deferred = new Deferred<Project>();
+
+    setProjectToEdit(project);
+    setProjectHandler(deferred);
+    await deferred.promise;
+    setProjectHandler(undefined);
+    setProjectToEdit(undefined);
   };
 
   return (
@@ -47,7 +57,12 @@ export const ProjectsList: React.FC = () => {
         {(projects || [])
           .filter((project: Project) => project.isDefault)
           .map((project: Project) => (
-            <ProjectItems key={project.id} project={project} active={false} />
+            <ProjectItems
+              key={project.id}
+              project={project}
+              active={false}
+              onEdit={onEdit}
+            />
           ))}
       </div>
 
@@ -71,13 +86,14 @@ export const ProjectsList: React.FC = () => {
               key={project.id}
               project={project}
               active={false}
-              // setProjectToEdit={setProjectToEdit}
-              // feature={feature}
+              onEdit={onEdit}
             />
           ))}
       </div>
 
-      {projectHandler && <ProjectModal deferred={projectHandler} />}
+      {projectHandler && (
+        <ProjectModal deferred={projectHandler} projectToEdit={projectToEdit} />
+      )}
     </div>
   );
 };

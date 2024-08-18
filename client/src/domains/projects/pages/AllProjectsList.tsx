@@ -1,9 +1,32 @@
+import { useState } from "react";
+import { ProjectModal } from "../../../pages/Project/ProjectModal";
 import { Project } from "../../../types";
+import { Deferred } from "../../../utils/Deferred";
 import { ProjectItems } from "../components/ProjectItems";
 import { useProjects } from "../hooks/useProjects";
 
 export const AllProjectsList: React.FC = () => {
   const { data: projects } = useProjects(true);
+
+  const [projectHandler, setProjectHandler] = useState<Deferred<Project>>();
+  const [projectToEdit, setProjectToEdit] = useState<Project>();
+
+  const onCreate = async () => {
+    const deferred = new Deferred<Project>();
+    setProjectHandler(deferred);
+    await deferred.promise;
+    setProjectHandler(undefined);
+  };
+
+  const onEdit = async (project: Project) => {
+    const deferred = new Deferred<Project>();
+
+    setProjectToEdit(project);
+    setProjectHandler(deferred);
+    await deferred.promise;
+    setProjectHandler(undefined);
+    setProjectToEdit(undefined);
+  };
 
   return (
     <div className="flex page-content flex-2">
@@ -20,11 +43,16 @@ export const AllProjectsList: React.FC = () => {
                 key={project.id}
                 project={project}
                 active={false}
+                onEdit={onEdit}
                 showBadge
               />
             ))}
         </div>
       </div>
+
+      {projectHandler && (
+        <ProjectModal deferred={projectHandler} projectToEdit={projectToEdit} />
+      )}
     </div>
   );
 };
