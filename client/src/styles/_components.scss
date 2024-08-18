@@ -47,6 +47,14 @@
   }
 }
 
+.badge {
+  margin-left: 15px;
+  font-size: 10px;
+  border: 1px solid $white;
+  border-radius: 2px;
+  padding: 3px;
+}
+
 .input-wrapper {
   &.dark {
     input,

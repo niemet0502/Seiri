@@ -1,6 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import { useContext, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
 import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
@@ -44,33 +44,29 @@ export const SettingsModal: React.FC<{ deferred: Deferred<void> }> = ({
     defaultValues,
   });
 
-  const { mutate: deleteAccount } = useMutation(
-    () => apiClient.deleteAccount(),
-    {
-      onSuccess: () => {
-        logout();
-      },
-    }
-  );
+  const { mutate: deleteAccount } = useMutation({
+    mutationFn: () => apiClient.deleteAccount(),
+    onSuccess: () => {
+      logout();
+    },
+  });
 
-  const { mutate: updatedUser } = useMutation(
-    (data: UpdateUser) => apiClient.updateUser(data),
-    {
-      onSuccess: (updatedUser) => {
-        pushToast({
-          title: "Saved !",
-          message: "Your profile information has been updated",
-        });
+  const { mutate: updatedUser } = useMutation({
+    mutationFn: (data: UpdateUser) => apiClient.updateUser(data),
+    onSuccess: (updatedUser) => {
+      pushToast({
+        title: "Saved !",
+        message: "Your profile information has been updated",
+      });
 
-        setCurrentUser(updatedUser as User);
+      setCurrentUser(updatedUser as User);
 
-        reset({
-          firstname: updatedUser.firstname,
-          lastname: updatedUser.lastname,
-        });
-      },
-    }
-  );
+      reset({
+        firstname: updatedUser.firstname,
+        lastname: updatedUser.lastname,
+      });
+    },
+  });
 
   const firstname = watch("firstname");
   const lastname = watch("lastname");

@@ -6,6 +6,7 @@ import { TasksList } from "../Tasks/TasksList";
 
 const BaseList: React.FC = () => {
   const { feature } = useContext(currentFeatureContext);
+
   return feature === FeatureEnum.Note ? <NotesList /> : <TasksList />;
 };
 

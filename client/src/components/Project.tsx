@@ -3,10 +3,8 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
-import { useMutation } from "react-query";
 import { NavLink, useHistory } from "react-router-dom";
-import { queryClient } from "../index";
-import { ApiClientContext } from "../provider/apiClientProvider";
+import { useRemoveProject } from "../domains/projects/hooks/useRemoveProject";
 import { ConfirmDialogContext } from "../provider/confirmDialogProvider";
 import { useToasts } from "../provider/toastProvider";
 import { FeatureEnum, Project } from "../types";
@@ -21,21 +19,11 @@ export const ProjectItem: React.FC<{
   setProjectToEdit: (project: Project) => void;
   feature: FeatureEnum;
 }> = ({ project, active, setProjectToEdit, feature }) => {
-  const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
   const { confirm } = useContext(ConfirmDialogContext);
   const { push } = useHistory();
 
-  const { mutate } = useMutation((id: number) => apiClient.removeProject(id), {
-    onSuccess: () => {
-      pushToast({
-        title: "Task deleted",
-        message: "",
-      });
-      queryClient.invalidateQueries({ queryKey: ["projects", { feature }] });
-      push("/");
-    },
-  });
+  const { removeProject } = useRemoveProject();
 
   const onDelete = async (projectId: number) => {
     if (
@@ -44,7 +32,7 @@ export const ProjectItem: React.FC<{
         message: `Are you sure you want to delete ${project.name} ?`,
       })
     ) {
-      mutate(projectId);
+      removeProject(projectId);
     }
   };
 
@@ -55,7 +43,7 @@ export const ProjectItem: React.FC<{
         active ? "active" : undefined
       }`}
     >
-      <NavLink to={`/project/${project.id}`} className="flex-2">
+      <NavLink to={`/projects/${project.id}`} className="flex-2">
         <div className="flex align-items-center project-title flex-2">
           <RxDotFilled style={{ color: project.color }} />
           <span style={{ fontSize: "13px" }}>

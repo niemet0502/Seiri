@@ -15,24 +15,7 @@ export const Sidebar: React.FC = () => {
   const { pushToast } = useToasts();
   const { push } = useHistory();
 
-  const addNewProject = useCallback(async () => {
-    const deferred = new Deferred<Project>();
-
-    setNewProjectHandler(deferred);
-
-    try {
-      const result = await deferred.promise;
-
-      pushToast({
-        title: "Project created",
-        message: result.name,
-      });
-      push(`/project/${result.id}`);
-    } catch (e) {
-    } finally {
-      setNewProjectHandler(undefined);
-    }
-  }, [push, pushToast]);
+  const addNewProject = useCallback(async () => {}, []);
 
   const editProject = useCallback(
     async (project: Project) => {

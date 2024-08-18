@@ -1,7 +1,7 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTaskX } from "react-icons/bi";
-import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
@@ -19,38 +19,37 @@ export const NotesList: React.FC = () => {
   const { apiClient } = useContext(ApiClientContext);
   const { confirm } = useContext(ConfirmDialogContext);
 
-  const { data, isLoading } = useQuery(["notes", projectId], () =>
-    apiClient.getNotesByProject(projectId)
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["notes", projectId],
+    queryFn: () => apiClient.getNotesByProject(projectId),
+  });
 
   const notes = data || [];
 
-  const { mutate: createNote } = useMutation(
-    (data: CreateNoteApi) => apiClient.createNote(data),
-    {
-      onSuccess: (newNote) => {
-        pushToast({
-          title: "Note created",
-          message: newNote.title,
-        });
+  const { mutate: createNote } = useMutation({
+    mutationFn: (data: CreateNoteApi) => apiClient.createNote(data),
 
-        push(`/project/${projectId}/note/${newNote.id}`);
-      },
-    }
-  );
+    onSuccess: (newNote) => {
+      pushToast({
+        title: "Note created",
+        message: newNote.title,
+      });
 
-  const { mutate: deleteNote } = useMutation(
-    (id: number) => apiClient.deleteNote(id),
-    {
-      onSuccess: () => {
-        pushToast({
-          title: "Note deleted",
-          message: "",
-        });
-        queryClient.invalidateQueries(["notes", projectId]);
-      },
-    }
-  );
+      push(`/project/${projectId}/note/${newNote.id}`);
+    },
+  });
+
+  const { mutate: deleteNote } = useMutation({
+    mutationFn: (id: number) => apiClient.deleteNote(id),
+
+    onSuccess: () => {
+      pushToast({
+        title: "Note deleted",
+        message: "",
+      });
+      queryClient.invalidateQueries({ queryKey: ["notes", projectId] });
+    },
+  });
 
   const onDelete = async (noteId: number) => {
     if (

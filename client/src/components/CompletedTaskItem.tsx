@@ -18,7 +18,7 @@ export const CompletedTaskItem: React.FC<{ task: Task }> = ({ task }) => {
         </p>
         <div className="fz-14">
           Project:{" "}
-          <NavLink to={`/project/${task.project?.id}`}>
+          <NavLink to={`/projects/${task.project?.id}`}>
             {task?.project?.name}
           </NavLink>
         </div>

@@ -39,19 +39,19 @@ function App() {
                       />
                       <Route
                         exact
-                        path="/project/:projectId/task/:taskId"
+                        path="/projects/:projectId/task/:taskId"
                         component={TaskDetails}
                       />
 
                       <Route
                         exact
-                        path="/project/:projectId/note/:noteId"
+                        path="/projects/:projectId/note/:noteId"
                         component={NoteDetails}
                       />
 
                       <Route
                         exact
-                        path="/project/:projectId"
+                        path="/projects/:projectId"
                         component={BaseList}
                       />
                       <Route path="*" component={NotFound} />

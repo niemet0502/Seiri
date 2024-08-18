@@ -1,5 +1,5 @@
+import { useMutation } from "@tanstack/react-query";
 import { useContext, useState } from "react";
-import { useMutation } from "react-query";
 import { NavLink } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
@@ -14,22 +14,21 @@ export const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>();
 
-  const { mutate: sendPassword } = useMutation(
-    (data: ForgotPasswordApi) => apiClient.forgotPassword(data),
-    {
-      onSuccess: () => {
-        setError(undefined);
-        setEmail("");
-        pushToast({
-          title: "Password reset email sent!",
-          message: " Please check your inbox. ",
-        });
-      },
-      onError: (error: any) => {
-        setError(error.response.data.message);
-      },
-    }
-  );
+  const { mutate: sendPassword } = useMutation({
+    mutationFn: (data: ForgotPasswordApi) => apiClient.forgotPassword(data),
+
+    onSuccess: () => {
+      setError(undefined);
+      setEmail("");
+      pushToast({
+        title: "Password reset email sent!",
+        message: " Please check your inbox. ",
+      });
+    },
+    onError: (error: any) => {
+      setError(error.response.data.message);
+    },
+  });
 
   const onSubmit = () => {
     sendPassword({ email });

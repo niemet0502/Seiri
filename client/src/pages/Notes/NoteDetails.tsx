@@ -1,8 +1,8 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsCodeSlash, BsDot } from "react-icons/bs";
-import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import { IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
@@ -21,7 +21,7 @@ import { PageHeader } from "../../components/PageHeader";
 import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
 import { useToasts } from "../../provider/toastProvider";
 import { EditNoteApi } from "../../types";
-import { getIntervalStringFromDate, transformDate } from "../../utils/Date";
+import { transformDate } from "../../utils/Date";
 
 const myTheme = createTheme({
   theme: "dark",
@@ -48,9 +48,10 @@ const NoteDetails: React.FC = () => {
   const editorRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const { data, isLoading } = useQuery(["notes", noteId], () =>
-    apiClient.getNote(noteId)
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["notes", noteId],
+    queryFn: () => apiClient.getNote(noteId),
+  });
 
   const handleNoteUpdaing = (key: string, value: string) => {
     const updatedNote = { ...note, [key]: value, id: data.id };
@@ -58,29 +59,27 @@ const NoteDetails: React.FC = () => {
     setNote(updatedNote);
   };
 
-  const { mutate: updateNote, isLoading: isUpdating } = useMutation(
-    (data: EditNoteApi) => apiClient.editNote(data),
-    {
-      onSuccess: (editedNote) => {
-        setNote(editedNote);
-        queryClient.invalidateQueries(["notes", noteId]);
-      },
-    }
-  );
+  const { mutate: updateNote } = useMutation({
+    mutationFn: (data: EditNoteApi) => apiClient.editNote(data),
 
-  const { mutate: deleteNote } = useMutation(
-    (id: number) => apiClient.deleteNote(id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["notes", projectId]);
-        pushToast({
-          title: "Note deleted",
-          message: "",
-        });
-        push(`/project/${projectId}`);
-      },
-    }
-  );
+    onSuccess: (editedNote) => {
+      setNote(editedNote);
+      queryClient.invalidateQueries({ queryKey: ["notes", noteId] });
+    },
+  });
+
+  const { mutate: deleteNote } = useMutation({
+    mutationFn: (id: number) => apiClient.deleteNote(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notes", projectId] });
+      pushToast({
+        title: "Note deleted",
+        message: "",
+      });
+      push(`/projects/${projectId}`);
+    },
+  });
 
   const onDelete = async (noteId: number) => {
     if (
@@ -179,9 +178,9 @@ const NoteDetails: React.FC = () => {
                 <span>
                   Last Edited
                   <span className="markee">
-                    {isUpdating && <Loader width="12px" height="12px" />}
+                    {/* {isUpdating && <Loader width="12px" height="12px" />}
 
-                    {!isUpdating && getIntervalStringFromDate(note.updatedAt)}
+                    {!isUpdating && getIntervalStringFromDate(note.updatedAt)} */}
                   </span>
                   <BsDot />
                 </span>

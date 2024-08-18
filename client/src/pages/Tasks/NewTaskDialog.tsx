@@ -1,6 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { queryClient } from "../..";
 import { Button } from "../../components/Button";
 import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
@@ -24,30 +24,26 @@ export const NewTaskDialog: React.FC<{
       : { projectId, parentId: parentId || undefined },
   });
 
-  const { mutate: createTask } = useMutation(
-    (data: CreateTaskApi) => apiClient.createTask(data),
-    {
-      onSuccess: (newTask) => {
-        deferred.resolve(newTask);
-        reset();
-        if (parentId) {
-          queryClient.invalidateQueries(["tasks", parentId]);
-        } else {
-          queryClient.invalidateQueries([["tasks"], projectId]);
-        }
-      },
-    }
-  );
+  const { mutate: createTask } = useMutation({
+    mutationFn: (data: CreateTaskApi) => apiClient.createTask(data),
+    onSuccess: (newTask) => {
+      deferred.resolve(newTask);
+      reset();
+      if (parentId) {
+        queryClient.invalidateQueries({ queryKey: ["tasks", parentId] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: [["tasks"], projectId] });
+      }
+    },
+  });
 
-  const { mutate: editTask } = useMutation(
-    (data: EditTaskApi) => apiClient.editTask(data),
-    {
-      onSuccess: (editedTask) => {
-        deferred.resolve(editedTask);
-        queryClient.invalidateQueries([["tasks"], projectId]);
-      },
-    }
-  );
+  const { mutate: editTask } = useMutation({
+    mutationFn: (data: EditTaskApi) => apiClient.editTask(data),
+    onSuccess: (editedTask) => {
+      deferred.resolve(editedTask);
+      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
+    },
+  });
 
   const submit = (data: CreateTaskApi) => {
     try {

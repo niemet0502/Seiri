@@ -1,17 +1,29 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import { IconButton } from "../../../components/Button";
 import { Loader } from "../../../components/Loader";
 import { PageHeader } from "../../../components/PageHeader";
+import { ProjectModal } from "../../../pages/Project/ProjectModal";
 import { CurrentUserContext } from "../../../provider/userProvider";
 import { Project } from "../../../types";
+import { Deferred } from "../../../utils/Deferred";
 import { ProjectItems } from "../components/ProjectItems";
 import { useProjects } from "../hooks/useProjects";
 
 export const ProjectsList: React.FC = () => {
   const { data: projects, isLoading } = useProjects(false);
   const { currentUser } = useContext(CurrentUserContext);
+
+  const [projectHandler, setProjectHandler] = useState<Deferred<Project>>();
+
+  const deferred = new Deferred<Project>();
+
+  const onCreate = async () => {
+    setProjectHandler(deferred);
+    await deferred.promise;
+    setProjectHandler(undefined);
+  };
 
   return (
     <div className="project-sidebar">
@@ -42,9 +54,7 @@ export const ProjectsList: React.FC = () => {
       <br />
       <PageHeader>
         <NavLink to="/projects">Projects</NavLink>
-        <IconButton
-        // handler={newProjecthandler}
-        >
+        <IconButton handler={onCreate}>
           <AiOutlinePlus />
         </IconButton>
       </PageHeader>
@@ -66,6 +76,8 @@ export const ProjectsList: React.FC = () => {
             />
           ))}
       </div>
+
+      {projectHandler && <ProjectModal deferred={projectHandler} />}
     </div>
   );
 };

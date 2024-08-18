@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useCallback, useContext, useMemo, useState } from "react";
 import {
   AiOutlineCheckCircle,
@@ -5,7 +6,6 @@ import {
   AiOutlinePlus,
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
-import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { queryClient } from "../..";
 import { Button, IconButton } from "../../components/Button";
@@ -36,60 +36,55 @@ export const TasksList: React.FC = () => {
   const [taskToEdit, setTaskToEdit] = useState<Task>();
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
 
-  const { isLoading, data: tasks } = useQuery(
-    [querykey, projectId, showCompleted],
-    () => apiClient.getTasksByProject(projectId, showCompleted)
-  );
+  const { isLoading, data: tasks } = useQuery({
+    queryKey: [querykey, projectId, showCompleted],
+    queryFn: () => apiClient.getTasksByProject(projectId, showCompleted),
+  });
 
-  const { data: project } = useQuery(
-    ["projects", { id: projectId }],
-    () => apiClient.getProject(projectId),
-    {
-      enabled: projectId ? true : false,
-    }
-  );
+  const { data: project } = useQuery({
+    queryKey: ["projects", { id: projectId }],
+    queryFn: () => apiClient.getProject(projectId),
+  });
 
-  const { mutate: completeTask } = useMutation(
-    (data: EditTaskApi) => apiClient.editTask(data),
-    {
-      onSuccess: (editedTask) => {
-        pushToast({
-          title: "Task completed",
-          message: editedTask.title,
-        });
+  const { mutate: completeTask } = useMutation({
+    mutationFn: (data: EditTaskApi) => apiClient.editTask(data),
 
-        queryClient.invalidateQueries([querykey, projectId]);
-      },
-    }
-  );
+    onSuccess: (editedTask) => {
+      pushToast({
+        title: "Task completed",
+        message: editedTask.title,
+      });
 
-  const { mutate: deleteTask } = useMutation(
-    (taskId: number) => apiClient.deleteTask(taskId),
-    {
-      onSuccess: ({ data }) => {
-        pushToast({
-          title: "Task deleted",
-          message: "",
-        });
+      queryClient.invalidateQueries({ queryKey: [querykey, projectId] });
+    },
+  });
 
-        queryClient.invalidateQueries([querykey, projectId]);
-      },
-    }
-  );
+  const { mutate: deleteTask } = useMutation({
+    mutationFn: (taskId: number) => apiClient.deleteTask(taskId),
 
-  const { mutate: deleteMultipleTask } = useMutation(
-    (data: DeleteMultipleTasksApi) => apiClient.deleteMultipleTasks(data),
-    {
-      onSuccess: ({ data }) => {
-        pushToast({
-          title: "Task deleted",
-          message: "",
-        });
+    onSuccess: ({ data }) => {
+      pushToast({
+        title: "Task deleted",
+        message: "",
+      });
 
-        queryClient.invalidateQueries([querykey, projectId]);
-      },
-    }
-  );
+      queryClient.invalidateQueries({ queryKey: [querykey, projectId] });
+    },
+  });
+
+  const { mutate: deleteMultipleTask } = useMutation({
+    mutationFn: (data: DeleteMultipleTasksApi) =>
+      apiClient.deleteMultipleTasks(data),
+
+    onSuccess: ({ data }) => {
+      pushToast({
+        title: "Task deleted",
+        message: "",
+      });
+
+      queryClient.invalidateQueries({ queryKey: [querykey, projectId] });
+    },
+  });
 
   const addTask = useCallback(async () => {
     const deferred = new Deferred<Task>();
@@ -223,7 +218,7 @@ export const TasksList: React.FC = () => {
                     className="align-self-center add-task align-items-center mt-2"
                     onClick={addTask}
                   >
-                    {tasks.length > 0 && !project.isDefault && (
+                    {tasks.length > 0 && project && !project.isDefault && (
                       <Button>
                         <AiOutlinePlus /> Add task
                       </Button>

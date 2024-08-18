@@ -1,6 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import { useContext, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { ApiClientContext } from "../../provider/apiClientProvider";
@@ -18,26 +18,24 @@ export const PasswordStep: React.FC<{
 
   const { control, watch, handleSubmit, reset } = useForm<PasswordUpdateApi>();
 
-  const { mutate: passwordUpdate } = useMutation(
-    (data: PasswordUpdateApi) => apiClient.passwordUpdate(data),
-    {
-      onSuccess: () => {
-        pushToast({
-          title: "Saved !",
-          message: "Your profile information has been updated",
-        });
+  const { mutate: passwordUpdate } = useMutation({
+    mutationFn: (data: PasswordUpdateApi) => apiClient.passwordUpdate(data),
+    onSuccess: () => {
+      pushToast({
+        title: "Saved !",
+        message: "Your profile information has been updated",
+      });
 
-        reset({
-          oldPassword: "",
-          newPassword: "",
-          confirmPassword: "",
-        });
-      },
-      onError: (error: any) => {
-        setError(error.response.data.message);
-      },
-    }
-  );
+      reset({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    },
+    onError: (error: any) => {
+      setError(error.response.data.message);
+    },
+  });
 
   const newPassword = watch("newPassword");
   const oldPassword = watch("oldPassword");
