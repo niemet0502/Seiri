@@ -1,9 +1,8 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsCodeSlash, BsDot } from "react-icons/bs";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IconButton } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
 import { DropdownItem } from "../../components/DropdownItem";
@@ -16,11 +15,12 @@ import CodeMirror from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { queryClient } from "../..";
 import { PageHeader } from "../../components/PageHeader";
+import { useGetNote } from "../../domains/notes/hooks/useGetNote";
+import { useRemoveNote } from "../../domains/notes/hooks/useRemoveNote";
+import { useUpdateNote } from "../../domains/notes/hooks/useUpdateNote";
 import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
-import { useToasts } from "../../provider/toastProvider";
-import { EditNoteApi } from "../../types";
+import { Note } from "../../types";
 import { transformDate } from "../../utils/Date";
 
 const myTheme = createTheme({
@@ -39,47 +39,16 @@ const NoteDetails: React.FC = () => {
     noteId: string;
     projectId: string;
   }>();
-  const { push } = useHistory();
-  const { pushToast } = useToasts();
   const { confirm } = useContext(ConfirmDialogContext);
 
   const [readingView, setReadingView] = useState(true);
-  const [note, setNote] = useState<any>(undefined);
+  const [note, setNote] = useState<Note>();
   const editorRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["notes", noteId],
-    queryFn: () => apiClient.getNote(noteId),
-  });
-
-  const handleNoteUpdaing = (key: string, value: string) => {
-    const updatedNote = { ...note, [key]: value, id: data.id };
-
-    setNote(updatedNote);
-  };
-
-  const { mutate: updateNote } = useMutation({
-    mutationFn: (data: EditNoteApi) => apiClient.editNote(data),
-
-    onSuccess: (editedNote) => {
-      setNote(editedNote);
-      queryClient.invalidateQueries({ queryKey: ["notes", noteId] });
-    },
-  });
-
-  const { mutate: deleteNote } = useMutation({
-    mutationFn: (id: number) => apiClient.deleteNote(id),
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes", projectId] });
-      pushToast({
-        title: "Note deleted",
-        message: "",
-      });
-      push(`/projects/${projectId}`);
-    },
-  });
+  const { data, isLoading } = useGetNote(+noteId);
+  const { updateNote } = useUpdateNote();
+  const { removeNote } = useRemoveNote();
 
   const onDelete = async (noteId: number) => {
     if (
@@ -88,7 +57,7 @@ const NoteDetails: React.FC = () => {
         message: "Are you sure you want to delete this note ?",
       })
     ) {
-      deleteNote(noteId);
+      removeNote(noteId);
     }
   };
 
@@ -100,6 +69,7 @@ const NoteDetails: React.FC = () => {
   useEffect(() => {
     function handleClickOutsideEditor(event: MouseEvent) {
       if (
+        note &&
         editorRef.current &&
         !editorRef.current.contains(event.target as Node) &&
         readingView === false
@@ -111,6 +81,7 @@ const NoteDetails: React.FC = () => {
 
     function handleClickOutsideInput(event: MouseEvent) {
       if (
+        note &&
         inputRef.current &&
         !inputRef.current.contains(event.target as Node) &&
         data.title !== note?.title
@@ -144,7 +115,7 @@ const NoteDetails: React.FC = () => {
               <BsCodeSlash /> Edit
             </DropdownItem>
 
-            <DropdownItem handler={() => onDelete(note.id)}>
+            <DropdownItem handler={() => onDelete(note?.id as number)}>
               <AiOutlineDelete /> Delete
             </DropdownItem>
           </Dropdown>
@@ -163,7 +134,9 @@ const NoteDetails: React.FC = () => {
                 ref={inputRef}
                 defaultValue={data.title}
                 onChange={({ target }) =>
-                  handleNoteUpdaing("title", target.value)
+                  setNote((prev) =>
+                    prev ? { ...prev, title: target.value } : undefined
+                  )
                 }
               ></textarea>
               <div className="br"></div>
@@ -227,7 +200,9 @@ const NoteDetails: React.FC = () => {
                     }),
                   ]}
                   onChange={(value, viewUpdate) => {
-                    handleNoteUpdaing("content", value);
+                    setNote((prev) =>
+                      prev ? { ...prev, content: value } : undefined
+                    );
                   }}
                 />
               )}

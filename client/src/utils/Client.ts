@@ -5,12 +5,12 @@ import {
   CreateProject,
   CreateTaskApi,
   DeleteMultipleTasksApi,
-  EditNoteApi,
   EditProject,
   EditTaskApi,
   FeatureEnum,
   ForgotPasswordApi,
   IAuthLogin,
+  Note,
   PasswordUpdateApi,
   ResetPasswordApi,
   UpdateUser,
@@ -159,7 +159,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getNotesByProject(projectId: string) {
+  public getNotesByProject(projectId: number) {
     const url = this.baseApiUrl + `note/project/${projectId}`;
 
     return this.tranformOptions()
@@ -175,7 +175,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getNote(id: string) {
+  public getNote(id: number) {
     const url = this.baseApiUrl + `note/${id}`;
 
     return this.tranformOptions()
@@ -183,7 +183,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public editNote(data: EditNoteApi) {
+  public editNote(data: Note) {
     const url = this.baseApiUrl + `note/${data.id}`;
 
     return this.tranformOptions()
@@ -194,7 +194,9 @@ export class Client {
   public deleteNote(id: number) {
     const url = this.baseApiUrl + `note/${id}`;
 
-    return this.tranformOptions().delete(url);
+    return this.tranformOptions()
+      .delete(url)
+      .then((r) => r.data);
   }
 
   public getProject(projectId: string) {
