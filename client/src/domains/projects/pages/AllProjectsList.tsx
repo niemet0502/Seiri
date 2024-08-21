@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ProjectModal } from "../../../pages/Project/ProjectModal";
 import { Project } from "../../../types";
 import { Deferred } from "../../../utils/Deferred";
 import { ProjectItems } from "../components/ProjectItems";
+import { ProjectModal } from "../components/ProjectModal";
 import { useProjects } from "../hooks/useProjects";
 
 export const AllProjectsList: React.FC = () => {

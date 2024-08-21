@@ -17,7 +17,9 @@ const TaskDetails = React.lazy(() => import("./pages/Tasks/TaskDetails"));
 const NoteDetails = React.lazy(
   () => import("./domains/notes/pages/NoteDetails")
 );
-const BaseList = React.lazy(() => import("./pages/Project/BaseList"));
+const BaseList = React.lazy(
+  () => import("./domains/projects/components/BaseList")
+);
 
 export const history = createBrowserHistory();
 

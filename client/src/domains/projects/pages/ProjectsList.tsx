@@ -4,11 +4,11 @@ import { NavLink } from "react-router-dom";
 import { IconButton } from "../../../components/Button";
 import { Loader } from "../../../components/Loader";
 import { PageHeader } from "../../../components/PageHeader";
-import { ProjectModal } from "../../../pages/Project/ProjectModal";
 import { CurrentUserContext } from "../../../provider/userProvider";
 import { Project } from "../../../types";
 import { Deferred } from "../../../utils/Deferred";
 import { ProjectItems } from "../components/ProjectItems";
+import { ProjectModal } from "../components/ProjectModal";
 import { useProjects } from "../hooks/useProjects";
 
 export const ProjectsList: React.FC = () => {

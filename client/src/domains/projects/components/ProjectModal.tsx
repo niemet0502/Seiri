@@ -1,17 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { queryClient } from "../..";
-import { Button } from "../../components/Button";
-import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
+import { queryClient } from "../../..";
+import { Button } from "../../../components/Button";
+import { DIALOG_CLOSED_REASON, Dialog } from "../../../components/Dialog";
 
 import { Controller, useForm } from "react-hook-form";
-import { FormInput } from "../../components/Input";
-import { TextArea } from "../../components/TextArea";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { currentFeatureContext } from "../../provider/currentFeatureProvider";
-import { CreateProject, EditProject, Project } from "../../types";
-import { Deferred } from "../../utils/Deferred";
+import { FormInput } from "../../../components/Input";
+import { TextArea } from "../../../components/TextArea";
+import { ApiClientContext } from "../../../provider/apiClientProvider";
+import { currentFeatureContext } from "../../../provider/currentFeatureProvider";
+import { CreateProject, EditProject, Project } from "../../../types";
+import { Deferred } from "../../../utils/Deferred";
 
 export const ProjectModal: React.FC<{
   deferred: Deferred<Project>;
