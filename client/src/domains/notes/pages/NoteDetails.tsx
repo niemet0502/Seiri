@@ -3,11 +3,11 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsCodeSlash, BsDot } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import { IconButton } from "../../components/Button";
-import { Dropdown } from "../../components/Dropdown";
-import { DropdownItem } from "../../components/DropdownItem";
-import { Loader } from "../../components/Loader";
-import { ApiClientContext } from "../../provider/apiClientProvider";
+import { IconButton } from "../../../components/Button";
+import { Dropdown } from "../../../components/Dropdown";
+import { DropdownItem } from "../../../components/DropdownItem";
+import { Loader } from "../../../components/Loader";
+import { ApiClientContext } from "../../../provider/apiClientProvider";
 
 import { createTheme } from "@uiw/codemirror-themes";
 import CodeMirror from "@uiw/react-codemirror";
@@ -15,13 +15,13 @@ import CodeMirror from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { PageHeader } from "../../components/PageHeader";
-import { useGetNote } from "../../domains/notes/hooks/useGetNote";
-import { useRemoveNote } from "../../domains/notes/hooks/useRemoveNote";
-import { useUpdateNote } from "../../domains/notes/hooks/useUpdateNote";
-import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
-import { Note } from "../../types";
-import { transformDate } from "../../utils/Date";
+import { PageHeader } from "../../../components/PageHeader";
+import { ConfirmDialogContext } from "../../../provider/confirmDialogProvider";
+import { Note } from "../../../types";
+import { transformDate } from "../../../utils/Date";
+import { useGetNote } from "../hooks/useGetNote";
+import { useRemoveNote } from "../hooks/useRemoveNote";
+import { useUpdateNote } from "../hooks/useUpdateNote";
 
 const myTheme = createTheme({
   theme: "dark",

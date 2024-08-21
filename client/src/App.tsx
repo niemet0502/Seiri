@@ -14,7 +14,9 @@ import { ToastContextProvider } from "./provider/toastProvider";
 import { CurrentUserProvider } from "./provider/userProvider";
 
 const TaskDetails = React.lazy(() => import("./pages/Tasks/TaskDetails"));
-const NoteDetails = React.lazy(() => import("./pages/Notes/NoteDetails"));
+const NoteDetails = React.lazy(
+  () => import("./domains/notes/pages/NoteDetails")
+);
 const BaseList = React.lazy(() => import("./pages/Project/BaseList"));
 
 export const history = createBrowserHistory();

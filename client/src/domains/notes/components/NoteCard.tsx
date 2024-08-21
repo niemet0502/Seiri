@@ -1,7 +1,7 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import { NavLink, useParams } from "react-router-dom";
-import { Note } from "../types";
-import { textEllipsis } from "../utils/Helpers";
+import { Note } from "../../../types";
+import { textEllipsis } from "../../../utils/Helpers";
 
 export const NoteCard: React.FC<{
   note: Note;

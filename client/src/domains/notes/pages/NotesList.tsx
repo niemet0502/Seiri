@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTaskX } from "react-icons/bi";
 import { useParams } from "react-router-dom";
-import { Button, IconButton } from "../../components/Button";
-import { NoteCard } from "../../components/NoteCard";
-import { PageHeader } from "../../components/PageHeader";
-import { useCreateNote } from "../../domains/notes/hooks/useCreateNote";
-import { useNotes } from "../../domains/notes/hooks/useNotes";
-import { useRemoveNote } from "../../domains/notes/hooks/useRemoveNote";
-import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
-import { Note } from "../../types";
+import { Button, IconButton } from "../../../components/Button";
+import { PageHeader } from "../../../components/PageHeader";
+import { ConfirmDialogContext } from "../../../provider/confirmDialogProvider";
+import { Note } from "../../../types";
+import { NoteCard } from "../components/NoteCard";
+import { useCreateNote } from "../hooks/useCreateNote";
+import { useNotes } from "../hooks/useNotes";
+import { useRemoveNote } from "../hooks/useRemoveNote";
 
 export const NotesList: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();

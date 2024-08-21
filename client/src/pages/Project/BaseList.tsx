@@ -1,7 +1,7 @@
 import { useContext } from "react";
+import { NotesList } from "../../domains/notes/pages/NotesList";
 import { currentFeatureContext } from "../../provider/currentFeatureProvider";
 import { FeatureEnum } from "../../types";
-import { NotesList } from "../Notes/NotesList";
 import { TasksList } from "../Tasks/TasksList";
 
 const BaseList: React.FC = () => {
