@@ -31,9 +31,9 @@ import {
   transformDateToYYYMMDDFormat,
 } from "../../../utils/Date";
 import { Deferred } from "../../../utils/Deferred";
+import { NewTaskDialog } from "../components/NewTaskDialog";
 import { useGetTask } from "../hooks/useGetTask";
 import { useUpdateTask } from "../hooks/useUpdateTask";
-import { NewTaskDialog } from "./NewTaskDialog";
 
 const TaskDetails: React.FC = () => {
   const { taskId, projectId } = useParams<{
