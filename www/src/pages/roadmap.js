@@ -47,6 +47,10 @@ const progress = [
     title: "Frontend app",
     description: "Code refactoring",
   },
+  {
+    title: "Improving observability",
+    description: "Setup metrics collection",
+  },
 ]
 const Roadmap = () => {
   return (
