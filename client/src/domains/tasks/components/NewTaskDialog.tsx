@@ -1,12 +1,12 @@
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "../../components/Button";
-import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
-import { FormInput } from "../../components/Input";
-import { TextArea } from "../../components/TextArea";
-import { useCreateTask } from "../../domains/tasks/hooks/useCreateTask";
-import { useUpdateTask } from "../../domains/tasks/hooks/useUpdateTask";
-import { CreateTaskApi, Task } from "../../types";
-import { Deferred } from "../../utils/Deferred";
+import { Button } from "../../../components/Button";
+import { Dialog, DIALOG_CLOSED_REASON } from "../../../components/Dialog";
+import { FormInput } from "../../../components/Input";
+import { TextArea } from "../../../components/TextArea";
+import { CreateTaskApi, Task } from "../../../types";
+import { Deferred } from "../../../utils/Deferred";
+import { useCreateTask } from "../hooks/useCreateTask";
+import { useUpdateTask } from "../hooks/useUpdateTask";
 
 export const NewTaskDialog: React.FC<{
   deferred: Deferred<Task>;
