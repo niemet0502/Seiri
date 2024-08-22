@@ -1,13 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { queryClient } from "../..";
 import { Button } from "../../components/Button";
 import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
 import { FormInput } from "../../components/Input";
 import { TextArea } from "../../components/TextArea";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { CreateTaskApi, EditTaskApi, Task } from "../../types";
+import { useCreateTask } from "../../domains/tasks/hooks/useCreateTask";
+import { useUpdateTask } from "../../domains/tasks/hooks/useUpdateTask";
+import { CreateTaskApi, Task } from "../../types";
 import { Deferred } from "../../utils/Deferred";
 
 export const NewTaskDialog: React.FC<{
@@ -16,41 +14,27 @@ export const NewTaskDialog: React.FC<{
   taskToEdit?: Task;
   projectId: string;
 }> = ({ deferred, parentId, taskToEdit, projectId }) => {
-  const { apiClient } = useContext(ApiClientContext);
-
   const { handleSubmit, control, reset } = useForm<CreateTaskApi>({
     defaultValues: taskToEdit
       ? taskToEdit
-      : { projectId, parentId: parentId || undefined },
+      : { parentId: parentId || undefined },
   });
 
-  const { mutate: createTask } = useMutation({
-    mutationFn: (data: CreateTaskApi) => apiClient.createTask(data),
-    onSuccess: (newTask) => {
-      deferred.resolve(newTask);
-      reset();
-      if (parentId) {
-        queryClient.invalidateQueries({ queryKey: ["tasks", parentId] });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [["tasks"], projectId] });
-      }
-    },
-  });
+  const { createTask } = useCreateTask();
+  const { updateTask, data: updatedTask } = useUpdateTask();
 
-  const { mutate: editTask } = useMutation({
-    mutationFn: (data: EditTaskApi) => apiClient.editTask(data),
-    onSuccess: (editedTask) => {
-      deferred.resolve(editedTask);
-      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
-    },
-  });
-
-  const submit = (data: CreateTaskApi) => {
+  const submit = async (data: CreateTaskApi) => {
     try {
       if (taskToEdit) {
-        editTask({ ...data, id: taskToEdit.id } as EditTaskApi);
+        updateTask({
+          ...data,
+          id: taskToEdit.id,
+          isDone: taskToEdit.isDone,
+          completedAt: taskToEdit.completedAt,
+        });
+        deferred.resolve(updatedTask);
       } else {
-        createTask(data);
+        deferred.resolve(await createTask({ ...data, projectId }));
       }
     } catch (e) {
       console.log(e);
@@ -115,7 +99,7 @@ export const NewTaskDialog: React.FC<{
           >
             Cancel
           </Button>
-          <Button type="submit">Create</Button>
+          <Button type="submit">{taskToEdit ? "Save" : "Create"}</Button>
         </div>
       </form>
     </Dialog>

@@ -13,7 +13,9 @@ import { CurrentFeatureProvider } from "./provider/currentFeatureProvider";
 import { ToastContextProvider } from "./provider/toastProvider";
 import { CurrentUserProvider } from "./provider/userProvider";
 
-const TaskDetails = React.lazy(() => import("./pages/Tasks/TaskDetails"));
+const TaskDetails = React.lazy(
+  () => import("./domains/tasks/pages/TaskDetails")
+);
 const NoteDetails = React.lazy(
   () => import("./domains/notes/pages/NoteDetails")
 );

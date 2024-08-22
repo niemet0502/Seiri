@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { TasksList } from "../../../pages/Tasks/TasksList";
 import { currentFeatureContext } from "../../../provider/currentFeatureProvider";
 import { FeatureEnum } from "../../../types";
 import { NotesList } from "../../notes/pages/NotesList";
+import { TasksList } from "../../tasks/pages/TasksList";
 
 const BaseList: React.FC = () => {
   const { feature } = useContext(currentFeatureContext);

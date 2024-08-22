@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useCallback, useContext, useMemo, useState } from "react";
 import {
   AiOutlineCheckCircle,
@@ -7,26 +7,27 @@ import {
 } from "react-icons/ai";
 import { BiDotsHorizontalRounded, BiTaskX } from "react-icons/bi";
 import { useParams } from "react-router-dom";
-import { queryClient } from "../..";
-import { Button, IconButton } from "../../components/Button";
-import { CompletedTaskItem } from "../../components/CompletedTaskItem";
-import { Dropdown } from "../../components/Dropdown";
-import { DropdownItem } from "../../components/DropdownItem";
-import { Loader } from "../../components/Loader";
-import { PageHeader } from "../../components/PageHeader";
-import { TaskItem } from "../../components/TaskItem";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
-import { useToasts } from "../../provider/toastProvider";
-import { DeleteMultipleTasksApi, EditTaskApi, Task } from "../../types";
-import { transformDateToMMDDFormat } from "../../utils/Date";
-import { Deferred } from "../../utils/Deferred";
-import { groupTasksByCompletedDate } from "../../utils/Helpers";
-import { NewTaskDialog } from "./NewTaskDialog";
+import { queryClient } from "../../..";
+import { Button, IconButton } from "../../../components/Button";
+import { CompletedTaskItem } from "../../../components/CompletedTaskItem";
+import { Dropdown } from "../../../components/Dropdown";
+import { DropdownItem } from "../../../components/DropdownItem";
+import { Loader } from "../../../components/Loader";
+import { PageHeader } from "../../../components/PageHeader";
+import { TaskItem } from "../../../components/TaskItem";
+import { ApiClientContext } from "../../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../../provider/confirmDialogProvider";
+import { useToasts } from "../../../provider/toastProvider";
+import { DeleteMultipleTasksApi, Task } from "../../../types";
+import { transformDateToMMDDFormat } from "../../../utils/Date";
+import { Deferred } from "../../../utils/Deferred";
+import { groupTasksByCompletedDate } from "../../../utils/Helpers";
+import { useGetProject } from "../../projects/hooks/useGetProject";
+import { NewTaskDialog } from "../components/NewTaskDialog";
+import { useRemoveTask } from "../hooks/useRemoveTask";
+import { useTasks } from "../hooks/useTasks";
 
 export const TasksList: React.FC = () => {
-  const querykey = ["tasks"];
-
   const { projectId } = useParams<{ projectId: string }>();
   const { apiClient } = useContext(ApiClientContext);
   const { pushToast } = useToasts();
@@ -36,41 +37,9 @@ export const TasksList: React.FC = () => {
   const [taskToEdit, setTaskToEdit] = useState<Task>();
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
 
-  const { isLoading, data: tasks } = useQuery({
-    queryKey: [querykey, projectId, showCompleted],
-    queryFn: () => apiClient.getTasksByProject(projectId, showCompleted),
-  });
-
-  const { data: project } = useQuery({
-    queryKey: ["projects", { id: projectId }],
-    queryFn: () => apiClient.getProject(projectId),
-  });
-
-  const { mutate: completeTask } = useMutation({
-    mutationFn: (data: EditTaskApi) => apiClient.editTask(data),
-
-    onSuccess: (editedTask) => {
-      pushToast({
-        title: "Task completed",
-        message: editedTask.title,
-      });
-
-      queryClient.invalidateQueries({ queryKey: [querykey, projectId] });
-    },
-  });
-
-  const { mutate: deleteTask } = useMutation({
-    mutationFn: (taskId: number) => apiClient.deleteTask(taskId),
-
-    onSuccess: ({ data }) => {
-      pushToast({
-        title: "Task deleted",
-        message: "",
-      });
-
-      queryClient.invalidateQueries({ queryKey: [querykey, projectId] });
-    },
-  });
+  const { isLoading, data: tasks } = useTasks(+projectId, showCompleted);
+  const { removeTask } = useRemoveTask();
+  const { data: project } = useGetProject(+projectId);
 
   const { mutate: deleteMultipleTask } = useMutation({
     mutationFn: (data: DeleteMultipleTasksApi) =>
@@ -82,7 +51,7 @@ export const TasksList: React.FC = () => {
         message: "",
       });
 
-      queryClient.invalidateQueries({ queryKey: [querykey, projectId] });
+      queryClient.invalidateQueries({ queryKey: ["tasks", { projectId }] });
     },
   });
 
@@ -131,7 +100,7 @@ export const TasksList: React.FC = () => {
         message: "Are you sure you want to delete this task ?",
       })
     ) {
-      deleteTask(taskId);
+      removeTask(taskId);
     }
   };
 
@@ -192,9 +161,7 @@ export const TasksList: React.FC = () => {
                         key={task.id}
                         task={task}
                         editable={true}
-                        completeTask={(data: EditTaskApi) => completeTask(data)}
-                        deleteTask={(taskId: number) => onDelete(taskId)}
-                        editTask={(task: Task) => editTask(task)}
+                        editTask={editTask}
                       />
                     ))}
 
