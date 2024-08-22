@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -11,24 +12,28 @@ import { BsArchive } from "react-icons/bs";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
-import { useMutation, useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
-import { queryClient } from "../..";
-import { Button, IconButton } from "../../components/Button";
-import { Dropdown } from "../../components/Dropdown";
-import { DropdownItem } from "../../components/DropdownItem";
-import { FormInput } from "../../components/Input";
-import { Loader } from "../../components/Loader";
-import { PageHeader } from "../../components/PageHeader";
-import { TaskItem } from "../../components/TaskItem";
-import { TextArea } from "../../components/TextArea";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
-import { useToasts } from "../../provider/toastProvider";
-import { EditTaskApi, Task } from "../../types";
-import { displayDuedate, transformDateToYYYMMDDFormat } from "../../utils/Date";
-import { Deferred } from "../../utils/Deferred";
-import { NewTaskDialog } from "./NewTaskDialog";
+import { queryClient } from "../../..";
+import { Button, IconButton } from "../../../components/Button";
+import { Dropdown } from "../../../components/Dropdown";
+import { DropdownItem } from "../../../components/DropdownItem";
+import { FormInput } from "../../../components/Input";
+import { Loader } from "../../../components/Loader";
+import { PageHeader } from "../../../components/PageHeader";
+import { TaskItem } from "../../../components/TaskItem";
+import { TextArea } from "../../../components/TextArea";
+import { ApiClientContext } from "../../../provider/apiClientProvider";
+import { ConfirmDialogContext } from "../../../provider/confirmDialogProvider";
+import { useToasts } from "../../../provider/toastProvider";
+import { Task } from "../../../types";
+import {
+  displayDuedate,
+  transformDateToYYYMMDDFormat,
+} from "../../../utils/Date";
+import { Deferred } from "../../../utils/Deferred";
+import { NewTaskDialog } from "../components/NewTaskDialog";
+import { useGetTask } from "../hooks/useGetTask";
+import { useUpdateTask } from "../hooks/useUpdateTask";
 
 const TaskDetails: React.FC = () => {
   const { taskId, projectId } = useParams<{
@@ -45,39 +50,24 @@ const TaskDetails: React.FC = () => {
   const [isChildrenVisible, setIsChildrenVisible] = useState(true);
   const inputDateRef = useRef<HTMLInputElement>(null);
 
-  const { data: task, isLoading } = useQuery(["tasks", taskId], () =>
-    apiClient.getTask(taskId)
-  );
+  const { data: task, isLoading } = useGetTask(+taskId);
 
   const formattedContent = (task?.description || "").replace(/\n/g, "<br>");
 
-  const { handleSubmit, control, reset } = useForm<EditTaskApi>();
+  const { handleSubmit, control, reset } = useForm<Task>();
 
-  const { mutate: completeTask } = useMutation(
-    (data: EditTaskApi) => apiClient.editTask(data),
-    {
-      onSuccess: (editedTask) => {
-        pushToast({
-          title: "Task edited",
-          message: editedTask.title,
-        });
-        queryClient.invalidateQueries(["tasks", taskId]);
-      },
-    }
-  );
+  const { updateTask } = useUpdateTask();
 
-  const { mutate: deleteTask } = useMutation(
-    (taskId: number) => apiClient.deleteTask(taskId),
-    {
-      onSuccess: (deletedTask) => {
-        pushToast({
-          title: "Task deleted",
-          message: deletedTask.title,
-        });
-        queryClient.invalidateQueries(["tasks", taskId]);
-      },
-    }
-  );
+  const { mutate: deleteTask } = useMutation({
+    mutationFn: (taskId: number) => apiClient.deleteTask(taskId),
+    onSuccess: (deletedTask) => {
+      pushToast({
+        title: "Task deleted",
+        message: deletedTask.title,
+      });
+      queryClient.invalidateQueries({ queryKey: ["tasks", taskId] });
+    },
+  });
 
   const addTask = useCallback(async () => {
     const deferred = new Deferred<Task>();
@@ -97,9 +87,9 @@ const TaskDetails: React.FC = () => {
     }
   }, [pushToast]);
 
-  const edit = (data: EditTaskApi) => {
+  const edit = (data: Task) => {
     try {
-      completeTask(data);
+      updateTask(data);
       reset();
     } catch (e) {
     } finally {
@@ -165,10 +155,10 @@ const TaskDetails: React.FC = () => {
                     <div
                       className={`statut isdone-${task.isDone}`}
                       onClick={() =>
-                        completeTask({
-                          id: task.id,
+                        updateTask({
+                          ...task,
                           isDone: !task.isDone,
-                        } as EditTaskApi)
+                        })
                       }
                     >
                       <AiOutlineCheck />
@@ -251,8 +241,7 @@ const TaskDetails: React.FC = () => {
                       key={task.id}
                       task={task}
                       editable={false}
-                      completeTask={completeTask}
-                      deleteTask={(taskId: number) => onDelete(taskId)}
+                      editTask={edit}
                     />
                   ))}
                 </div>

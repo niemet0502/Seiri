@@ -1,25 +1,40 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineCheck, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { MdOutlineDateRange } from "react-icons/md";
 import { NavLink, useParams } from "react-router-dom";
-import { EditTaskApi, Task } from "../types";
+import { useRemoveTask } from "../domains/tasks/hooks/useRemoveTask";
+import { useUpdateTask } from "../domains/tasks/hooks/useUpdateTask";
+import { ConfirmDialogContext } from "../provider/confirmDialogProvider";
+import { Task } from "../types";
 import { displayDuedate } from "../utils/Date";
 import { textEllipsis } from "../utils/Helpers";
 import { IconButton } from "./Button";
 
 export const TaskItem: React.FC<{
   task: Task;
+  editTask: (task: Task) => void;
   editable?: boolean;
-  completeTask: (data: EditTaskApi) => void;
-  deleteTask: (taskId: number) => void;
-  editTask?: (task: Task) => void;
-}> = ({ task, editable, completeTask, deleteTask, editTask }) => {
+}> = ({ task, editable, editTask }) => {
   const { projectId } = useParams<{ projectId: string }>();
-
+  const { confirm } = useContext(ConfirmDialogContext);
   const [isChildrenVisible, setIsChildrenVisible] = useState(false);
 
   const { status, label } = displayDuedate(task.dueDate);
+
+  const { removeTask } = useRemoveTask();
+  const { updateTask } = useUpdateTask();
+
+  const onDelete = async (taskId: number, redirect?: boolean) => {
+    if (
+      await confirm({
+        title: "Delete Task ?",
+        message: "Are you sure you want to delete this task ?",
+      })
+    ) {
+      removeTask(taskId);
+    }
+  };
 
   return (
     <>
@@ -45,20 +60,20 @@ export const TaskItem: React.FC<{
                 marginTop: " 5px",
               }}
               onClick={() =>
-                completeTask({
-                  id: task.id,
+                updateTask({
+                  ...task,
                   isDone: !task.isDone,
-                } as EditTaskApi)
+                })
               }
             >
               <AiOutlineCheck />
             </div>
             <div className="flex flex-column gap-1">
               <div>
-                <NavLink to={`/project/${projectId}/task/${task.id}`}>
+                <NavLink to={`/projects/${projectId}/task/${task.id}`}>
                   {task.title}
                 </NavLink>
-                <p>{textEllipsis(task.description, 130) || ""}</p>
+                <p>{textEllipsis(task.description || "", 130) || ""}</p>
               </div>
               {task.dueDate && (
                 <div
@@ -71,12 +86,12 @@ export const TaskItem: React.FC<{
             </div>
           </div>
           <div className="flex gap-2">
-            {editable && editTask && (
+            {editable && (
               <IconButton handler={() => editTask(task)}>
                 <AiOutlineEdit />
               </IconButton>
             )}
-            <IconButton handler={() => deleteTask(task.id)}>
+            <IconButton handler={() => onDelete(task.id)}>
               <AiOutlineDelete />
             </IconButton>
           </div>
@@ -85,13 +100,7 @@ export const TaskItem: React.FC<{
       {task.children && isChildrenVisible && (
         <div style={{ marginLeft: "25px" }}>
           {task.children.map((child) => (
-            <TaskItem
-              key={child.id}
-              task={child}
-              completeTask={completeTask}
-              deleteTask={deleteTask}
-              editTask={editTask}
-            />
+            <TaskItem key={child.id} task={child} editTask={editTask} />
           ))}
         </div>
       )}

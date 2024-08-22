@@ -5,12 +5,12 @@ import {
   CreateProject,
   CreateTaskApi,
   DeleteMultipleTasksApi,
-  EditNoteApi,
   EditProject,
   EditTaskApi,
   FeatureEnum,
   ForgotPasswordApi,
   IAuthLogin,
+  Note,
   PasswordUpdateApi,
   ResetPasswordApi,
   UpdateUser,
@@ -75,8 +75,10 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getProjects(feature: FeatureEnum) {
-    const url = this.baseApiUrl + `project/${feature}`;
+  public getProjects(feature: FeatureEnum, includeArchived: boolean) {
+    const url =
+      this.baseApiUrl +
+      `projects?handledObject=${feature}&includeArchived=${includeArchived}`;
 
     return this.tranformOptions()
       .get(url)
@@ -84,7 +86,7 @@ export class Client {
   }
 
   public addProject(project: CreateProject) {
-    const url = this.baseApiUrl + "project";
+    const url = this.baseApiUrl + "projects";
 
     return this.tranformOptions()
       .post(url, project)
@@ -92,20 +94,20 @@ export class Client {
   }
 
   public removeProject(projectId: number) {
-    const url = this.baseApiUrl + `project/${projectId}`;
+    const url = this.baseApiUrl + `projects/${projectId}`;
 
     return this.tranformOptions().delete(url);
   }
 
   public editProject(data: EditProject) {
-    const url = this.baseApiUrl + `project/${data.id}`;
+    const url = this.baseApiUrl + `projects/${data.id}`;
 
     return this.tranformOptions()
       .patch(url, data)
       .then((r) => r.data);
   }
 
-  public getTasksByProject(projectId: string, showCompleted: boolean = true) {
+  public getTasksByProject(projectId: number, showCompleted: boolean = true) {
     const url =
       this.baseApiUrl +
       `task/project/${projectId}?showCompleted=${showCompleted}`;
@@ -115,7 +117,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getTask(taskId: string) {
+  public getTask(taskId: number) {
     const url = this.baseApiUrl + `task/${taskId}`;
 
     return this.tranformOptions()
@@ -157,7 +159,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getNotesByProject(projectId: string) {
+  public getNotesByProject(projectId: number) {
     const url = this.baseApiUrl + `note/project/${projectId}`;
 
     return this.tranformOptions()
@@ -173,7 +175,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getNote(id: string) {
+  public getNote(id: number) {
     const url = this.baseApiUrl + `note/${id}`;
 
     return this.tranformOptions()
@@ -181,7 +183,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public editNote(data: EditNoteApi) {
+  public editNote(data: Note) {
     const url = this.baseApiUrl + `note/${data.id}`;
 
     return this.tranformOptions()
@@ -192,11 +194,13 @@ export class Client {
   public deleteNote(id: number) {
     const url = this.baseApiUrl + `note/${id}`;
 
-    return this.tranformOptions().delete(url);
+    return this.tranformOptions()
+      .delete(url)
+      .then((r) => r.data);
   }
 
-  public getProject(projectId: string) {
-    const url = this.baseApiUrl + `project/get/${projectId}`;
+  public getProject(projectId: number) {
+    const url = this.baseApiUrl + `projects/${projectId}`;
 
     return this.tranformOptions()
       .get(url)

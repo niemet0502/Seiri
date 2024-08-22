@@ -1,7 +1,7 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import { NavLink, useParams } from "react-router-dom";
-import { Note } from "../types";
-import { textEllipsis } from "../utils/Helpers";
+import { Note } from "../../../types";
+import { textEllipsis } from "../../../utils/Helpers";
 
 export const NoteCard: React.FC<{
   note: Note;
@@ -13,7 +13,7 @@ export const NoteCard: React.FC<{
     <div>
       <div className="note-card flex">
         <NavLink
-          to={`/project/${projectId}/note/${note.id}`}
+          to={`/projects/${projectId}/note/${note.id}`}
           className="flex-1"
         >
           <h3>{textEllipsis(note.title, 22)}</h3>

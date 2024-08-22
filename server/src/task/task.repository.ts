@@ -43,7 +43,7 @@ export class TaskRepository {
   async findById(id: number): Promise<Task | undefined> {
     const task = await this.tasksRepository.findOne({
       where: { id: id, parent: undefined },
-      relations: ['children', 'project'], // Include children and project relations
+      relations: ['children', 'project', 'parent'], // Include children and project relations
     });
 
     if (task && task.children && task.children.length > 0) {

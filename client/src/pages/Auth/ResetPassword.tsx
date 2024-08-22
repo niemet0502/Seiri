@@ -1,6 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import { useContext, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { NavLink, useParams } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
@@ -18,26 +18,25 @@ export const ResetPassword: React.FC = () => {
   const { control, watch, handleSubmit, reset } =
     useForm<ResetPasswordFormApi>();
 
-  const { mutate: resetPassword } = useMutation(
-    (data: ResetPasswordApi) => apiClient.resetPassword(data),
-    {
-      onSuccess: () => {
-        setError(undefined);
-        reset({
-          password: "",
-          confirmPassword: "",
-        });
+  const { mutate: resetPassword } = useMutation({
+    mutationFn: (data: ResetPasswordApi) => apiClient.resetPassword(data),
 
-        pushToast({
-          title: "Password reset",
-          message: "You can sign in with your new password",
-        });
-      },
-      onError: (error: any) => {
-        setError(error.response.data.message);
-      },
-    }
-  );
+    onSuccess: () => {
+      setError(undefined);
+      reset({
+        password: "",
+        confirmPassword: "",
+      });
+
+      pushToast({
+        title: "Password reset",
+        message: "You can sign in with your new password",
+      });
+    },
+    onError: (error: any) => {
+      setError(error.response.data.message);
+    },
+  });
 
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");

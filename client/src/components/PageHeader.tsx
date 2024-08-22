@@ -1,6 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { useQuery } from "react-query";
 import { NavLink, useParams } from "react-router-dom";
 import { ApiClientContext } from "../provider/apiClientProvider";
 import { Note, Task } from "../types";
@@ -19,13 +19,10 @@ export const PageHeader: React.FC<{
     taskId: string;
   }>();
 
-  const { data, refetch } = useQuery(
-    ["projects", { id: projectId }],
-    () => apiClient.getProject(projectId),
-    {
-      enabled: projectId ? true : false,
-    }
-  );
+  const { data, refetch } = useQuery({
+    queryKey: ["projects", { id: projectId }],
+    queryFn: () => apiClient.getProject(+projectId),
+  });
 
   useEffect(() => {
     if (!projectId) return;
@@ -39,7 +36,7 @@ export const PageHeader: React.FC<{
           <h4 className="flex align-items-center gap-1">
             {title && <span>{title}</span>}
             {!title && (
-              <NavLink to={`/project/${data.id}`}>{data.name}</NavLink>
+              <NavLink to={`/projects/${data.id}`}>{data.name}</NavLink>
             )}
 
             {note && (

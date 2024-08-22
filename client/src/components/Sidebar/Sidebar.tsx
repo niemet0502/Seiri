@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { ProjectModal } from "../../pages/Project/ProjectModal";
+import { ProjectModal } from "../../domains/projects/components/ProjectModal";
 import { useToasts } from "../../provider/toastProvider";
 import { Project } from "../../types";
 import { Deferred } from "../../utils/Deferred";
@@ -15,24 +15,7 @@ export const Sidebar: React.FC = () => {
   const { pushToast } = useToasts();
   const { push } = useHistory();
 
-  const addNewProject = useCallback(async () => {
-    const deferred = new Deferred<Project>();
-
-    setNewProjectHandler(deferred);
-
-    try {
-      const result = await deferred.promise;
-
-      pushToast({
-        title: "Project created",
-        message: result.name,
-      });
-      push(`/project/${result.id}`);
-    } catch (e) {
-    } finally {
-      setNewProjectHandler(undefined);
-    }
-  }, [push, pushToast]);
+  const addNewProject = useCallback(async () => {}, []);
 
   const editProject = useCallback(
     async (project: Project) => {

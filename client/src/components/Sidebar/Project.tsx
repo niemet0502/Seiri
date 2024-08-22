@@ -1,6 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useContext, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { ApiClientContext } from "../../provider/apiClientProvider";
 import { currentFeatureContext } from "../../provider/currentFeatureProvider";
@@ -22,7 +22,7 @@ export const Projects: React.FC<{
 
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["projects", { feature }],
-    queryFn: () => apiClient.getProjects(feature),
+    queryFn: () => apiClient.getProjects(feature, true),
   });
 
   const projects = data || [];

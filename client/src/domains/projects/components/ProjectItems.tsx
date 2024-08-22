@@ -3,42 +3,43 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsArchive } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
-import { NavLink, useHistory } from "react-router-dom";
-import { useRemoveProject } from "../domains/projects/hooks/useRemoveProject";
-import { ConfirmDialogContext } from "../provider/confirmDialogProvider";
-import { useToasts } from "../provider/toastProvider";
-import { FeatureEnum, Project } from "../types";
-import { textEllipsis } from "../utils/Helpers";
-import { IconButton } from "./Button";
-import { Dropdown } from "./Dropdown";
-import { DropdownItem } from "./DropdownItem";
+import { NavLink } from "react-router-dom";
+import { IconButton } from "../../../components/Button";
+import { Dropdown } from "../../../components/Dropdown";
+import { DropdownItem } from "../../../components/DropdownItem";
+import { ConfirmDialogContext } from "../../../provider/confirmDialogProvider";
+import { Project } from "../../../types";
+import { textEllipsis } from "../../../utils/Helpers";
+import { useUpdateProject } from "../hooks/useProjectUpdate";
+import { useRemoveProject } from "../hooks/useRemoveProject";
 
-export const ProjectItem: React.FC<{
+export const ProjectItems: React.FC<{
   project: Project;
   active: boolean;
-  setProjectToEdit: (project: Project) => void;
-  feature: FeatureEnum;
-}> = ({ project, active, setProjectToEdit, feature }) => {
-  const { pushToast } = useToasts();
+  onEdit: (project: Project) => void;
+  showBadge?: boolean;
+}> = ({ project, active, onEdit, showBadge = false }) => {
   const { confirm } = useContext(ConfirmDialogContext);
-  const { push } = useHistory();
 
+  const { updateProject } = useUpdateProject();
   const { removeProject } = useRemoveProject();
 
-  const onDelete = async (projectId: number) => {
+  const archiveProject = () => {
+    updateProject({ ...project, isArchive: !project.isArchive });
+  };
+
+  const onDelete = async () => {
     if (
       await confirm({
         title: "Delete Project ? ",
         message: `Are you sure you want to delete ${project.name} ?`,
       })
     ) {
-      removeProject(projectId);
+      removeProject(project.id);
     }
   };
-
   return (
     <div
-      key={project.id}
       className={`project-items flex justify-content-between align-items-center ${
         active ? "active" : undefined
       }`}
@@ -49,6 +50,10 @@ export const ProjectItem: React.FC<{
           <span style={{ fontSize: "13px" }}>
             {textEllipsis(project.name, 80)}
           </span>
+
+          {project.isArchive && showBadge && (
+            <span className="badge">Archived</span>
+          )}
         </div>
       </NavLink>
       {!project.isDefault && (
@@ -61,16 +66,17 @@ export const ProjectItem: React.FC<{
               </IconButton>
             )}
           >
-            <DropdownItem handler={() => setProjectToEdit(project)}>
+            <DropdownItem handler={() => onEdit(project)}>
               <AiOutlineEdit /> Edit
             </DropdownItem>
 
-            <DropdownItem handler={() => onDelete(project.id)}>
+            <DropdownItem handler={onDelete}>
               <AiOutlineDelete /> Delete
             </DropdownItem>
 
-            <DropdownItem>
-              <BsArchive /> Archive
+            <DropdownItem handler={archiveProject}>
+              <BsArchive />
+              {project.isArchive ? "Unarchive" : "Archive"}
             </DropdownItem>
           </Dropdown>
         </div>

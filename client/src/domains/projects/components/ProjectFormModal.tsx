@@ -1,24 +1,23 @@
 import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import { useHistory } from "react-router-dom";
-import { queryClient } from "../..";
-import { Button } from "../../components/Button";
-import { DIALOG_CLOSED_REASON, Dialog } from "../../components/Dialog";
-import { FormInput } from "../../components/Input";
-import { TextArea } from "../../components/TextArea";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { currentFeatureContext } from "../../provider/currentFeatureProvider";
-import { CreateProject, EditProject, Project } from "../../types";
-import { Deferred } from "../../utils/Deferred";
+import { Button } from "../../../components/Button";
+import { Dialog, DIALOG_CLOSED_REASON } from "../../../components/Dialog";
+import { FormInput } from "../../../components/Input";
+import { TextArea } from "../../../components/TextArea";
+import { currentFeatureContext } from "../../../provider/currentFeatureProvider";
+import { CreateProject, Project } from "../../../types";
+import { Deferred } from "../../../utils/Deferred";
+import { useCreateProject } from "../hooks/useCreateProject";
+import { useUpdateProject } from "../hooks/useProjectUpdate";
 
-export const ProjectModal: React.FC<{
+export const ProjectFormModal: React.FC<{
   deferred: Deferred<Project>;
   projectToEdit?: Project;
 }> = ({ deferred, projectToEdit }) => {
   const { feature: handledObject } = useContext(currentFeatureContext);
-  const { apiClient } = useContext(ApiClientContext);
-  const { push } = useHistory();
+
+  const { createProject } = useCreateProject();
+  const { updateProject } = useUpdateProject();
 
   const { control, handleSubmit, reset } = useForm<CreateProject>({
     defaultValues: projectToEdit
@@ -30,47 +29,13 @@ export const ProjectModal: React.FC<{
       : { handledObject },
   });
 
-  const { mutate: addProjectMutation } = useMutation(
-    (data: CreateProject) => apiClient.addProject(data),
-    {
-      onSuccess: (newProject) => {
-        deferred.resolve(newProject);
-        reset();
-        queryClient.invalidateQueries({
-          queryKey: ["projects", { feature: handledObject }],
-        });
-        push(`/project/${newProject.id}`);
-      },
-    }
-  );
-
-  const { mutate: editProjectMutation } = useMutation(
-    (data: EditProject) => apiClient.editProject(data),
-    {
-      onSuccess: (newProject) => {
-        deferred.resolve(newProject);
-        reset();
-        queryClient.invalidateQueries({
-          queryKey: ["projects", , { feature: handledObject }],
-        });
-      },
-    }
-  );
-
-  const submit = async (data: CreateProject) => {
-    try {
-      if (projectToEdit) {
-        editProjectMutation({ ...data, id: projectToEdit.id });
-      } else {
-        addProjectMutation(data);
-      }
-
-      // display toast
-    } catch (e: any) {
-      console.log(e);
+  const submit = (data: CreateProject) => {
+    if (projectToEdit) {
+      updateProject({ ...data, id: projectToEdit.id });
+    } else {
+      createProject(data);
     }
   };
-
   return (
     <Dialog
       title={
@@ -115,7 +80,7 @@ export const ProjectModal: React.FC<{
           >
             Cancel
           </Button>
-          <Button type="submit">Create</Button>
+          <Button type="submit">{projectToEdit ? "Save" : "Create"}</Button>
         </div>
       </form>
     </Dialog>

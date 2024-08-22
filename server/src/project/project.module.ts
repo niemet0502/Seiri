@@ -21,6 +21,6 @@ import { ProjectService } from './project.service';
 })
 export class ProjectModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('project');
+    consumer.apply(AuthMiddleware).forRoutes('projects');
   }
 }

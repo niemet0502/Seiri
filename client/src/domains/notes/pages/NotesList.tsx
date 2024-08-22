@@ -1,56 +1,26 @@
 import { useContext } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTaskX } from "react-icons/bi";
-import { useMutation, useQuery } from "react-query";
-import { useHistory, useParams } from "react-router-dom";
-import { queryClient } from "../..";
-import { Button, IconButton } from "../../components/Button";
-import { NoteCard } from "../../components/NoteCard";
-import { PageHeader } from "../../components/PageHeader";
-import { ApiClientContext } from "../../provider/apiClientProvider";
-import { ConfirmDialogContext } from "../../provider/confirmDialogProvider";
-import { useToasts } from "../../provider/toastProvider";
-import { CreateNoteApi, Note } from "../../types";
+import { useParams } from "react-router-dom";
+import { Button, IconButton } from "../../../components/Button";
+import { PageHeader } from "../../../components/PageHeader";
+import { ConfirmDialogContext } from "../../../provider/confirmDialogProvider";
+import { Note } from "../../../types";
+import { NoteCard } from "../components/NoteCard";
+import { useCreateNote } from "../hooks/useCreateNote";
+import { useNotes } from "../hooks/useNotes";
+import { useRemoveNote } from "../hooks/useRemoveNote";
 
 export const NotesList: React.FC = () => {
-  const { pushToast } = useToasts();
   const { projectId } = useParams<{ projectId: string }>();
-  const { push } = useHistory();
-  const { apiClient } = useContext(ApiClientContext);
   const { confirm } = useContext(ConfirmDialogContext);
 
-  const { data, isLoading } = useQuery(["notes", projectId], () =>
-    apiClient.getNotesByProject(projectId)
-  );
+  const { data, isLoading } = useNotes(+projectId);
 
   const notes = data || [];
 
-  const { mutate: createNote } = useMutation(
-    (data: CreateNoteApi) => apiClient.createNote(data),
-    {
-      onSuccess: (newNote) => {
-        pushToast({
-          title: "Note created",
-          message: newNote.title,
-        });
-
-        push(`/project/${projectId}/note/${newNote.id}`);
-      },
-    }
-  );
-
-  const { mutate: deleteNote } = useMutation(
-    (id: number) => apiClient.deleteNote(id),
-    {
-      onSuccess: () => {
-        pushToast({
-          title: "Note deleted",
-          message: "",
-        });
-        queryClient.invalidateQueries(["notes", projectId]);
-      },
-    }
-  );
+  const { createNote } = useCreateNote(+projectId);
+  const { removeNote } = useRemoveNote();
 
   const onDelete = async (noteId: number) => {
     if (
@@ -59,7 +29,7 @@ export const NotesList: React.FC = () => {
         message: "Are you sure you want to delete this note ?",
       })
     ) {
-      deleteNote(noteId);
+      removeNote(noteId);
     }
   };
 

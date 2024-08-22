@@ -48,8 +48,13 @@ export class ProjectService {
   async findAllByUser(
     id: number,
     handledObject: number,
+    includeArchived: boolean,
   ): Promise<Project[] | undefined> {
-    return await this.projectRepository.findAllByUser(id, handledObject);
+    return await this.projectRepository.findAllByUser(
+      id,
+      handledObject,
+      includeArchived,
+    );
   }
 
   async findArchivedProjectByUser(id: number): Promise<Project[] | undefined> {

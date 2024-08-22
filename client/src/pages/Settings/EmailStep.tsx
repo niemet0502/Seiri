@@ -1,6 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import { useContext, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { Button } from "../../components/Button";
 import { FormInput } from "../../components/Input";
 import { ApiClientContext } from "../../provider/apiClientProvider";
@@ -20,26 +20,24 @@ export const EmailStep: React.FC<{
     defaultValues: user,
   });
 
-  const { mutate: updateEmail } = useMutation(
-    (data: UpdateUser) => apiClient.updateUser(data),
-    {
-      onSuccess: (updatedUser) => {
-        pushToast({
-          title: "Saved !",
-          message: "Your profile information has been updated",
-        });
+  const { mutate: updateEmail } = useMutation({
+    mutationFn: (data: UpdateUser) => apiClient.updateUser(data),
+    onSuccess: (updatedUser) => {
+      pushToast({
+        title: "Saved !",
+        message: "Your profile information has been updated",
+      });
 
-        setCurrentUser(updatedUser as User);
+      setCurrentUser(updatedUser as User);
 
-        reset({
-          newEmail: "",
-          confirmEmail: "",
-        });
+      reset({
+        newEmail: "",
+        confirmEmail: "",
+      });
 
-        setStep((prev) => StepEnum.Undefinied);
-      },
-    }
-  );
+      setStep((prev) => StepEnum.Undefinied);
+    },
+  });
 
   const newEmail = watch("newEmail");
   const confirmEmail = watch("confirmEmail");

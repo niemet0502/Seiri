@@ -93,7 +93,7 @@ describe('TaskRepository', () => {
       expect(result).toEqual(task);
       expect(mockRespository.findOne).toBeCalledWith({
         where: { id: id, parent: undefined },
-        relations: ['children', 'project'],
+        relations: ['children', 'project', 'parent'],
       });
       expect(mockRespository.findOne).toBeCalledTimes(1);
     });

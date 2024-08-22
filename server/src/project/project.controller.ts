@@ -19,8 +19,8 @@ import { CreateProjectValidatorPipe } from './dto/validation.pipe';
 import { Project } from './entities/project.entity';
 import { ProjectService } from './project.service';
 
-@Controller('project')
-@ApiTags('Project')
+@Controller('projects')
+@ApiTags('Projects')
 export class ProjectController {
   constructor(
     private readonly projectService: ProjectService,
@@ -40,24 +40,20 @@ export class ProjectController {
     return this.projectService.create(createProjectDto, user);
   }
 
-  @Get(':handledObject')
+  @Get()
   async findAll(
-    @Param('handledObject') handledObject: number,
+    @Query('handledObject') handledObject: number,
+    @Query('includeArchived') includeArchived: string,
     @UserDecorator() user: User,
   ): Promise<Project[] | undefined> {
-    return await this.projectService.findAllByUser(+user.id, handledObject);
+    return await this.projectService.findAllByUser(
+      +user.id,
+      handledObject,
+      includeArchived === 'true',
+    );
   }
 
-  @Get('/archived/:id')
-  async findAllArchived(
-    @Param('id') id: number,
-  ): Promise<Project[] | undefined> {
-    // replace by req.user after the auth setup
-
-    return await this.projectService.findArchivedProjectByUser(+id);
-  }
-
-  @Get('/get/:id')
+  @Get(':id')
   async findOne(@Param('id') id: string): Promise<Project | undefined> {
     return await this.projectService.findById(+id);
   }
