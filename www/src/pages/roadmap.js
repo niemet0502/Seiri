@@ -14,8 +14,8 @@ const backlog = [
       "Being able to create multiple tasks without opening the modal each time",
   },
   {
-    title: "Archive projects",
-    description: "Archive projects",
+    title: "Frontend app",
+    description: "Moving the frontend app from create-react-app to vite",
   },
 ]
 
@@ -36,12 +36,16 @@ const shipped = [
     title: "Containerize the app",
     description: "The app is fully containerize with docker",
   },
+  {
+    title: "Archive projects",
+    description: "Archive projects",
+  },
 ]
 
 const progress = [
   {
     title: "Frontend app",
-    description: "Moving the frontend app from create-react-app to vite",
+    description: "Code refactoring",
   },
 ]
 const Roadmap = () => {
