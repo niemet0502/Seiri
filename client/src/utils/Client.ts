@@ -107,7 +107,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getTasksByProject(projectId: string, showCompleted: boolean = true) {
+  public getTasksByProject(projectId: number, showCompleted: boolean = true) {
     const url =
       this.baseApiUrl +
       `task/project/${projectId}?showCompleted=${showCompleted}`;
@@ -117,7 +117,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getTask(taskId: string) {
+  public getTask(taskId: number) {
     const url = this.baseApiUrl + `task/${taskId}`;
 
     return this.tranformOptions()
@@ -199,7 +199,7 @@ export class Client {
       .then((r) => r.data);
   }
 
-  public getProject(projectId: string) {
+  public getProject(projectId: number) {
     const url = this.baseApiUrl + `projects/${projectId}`;
 
     return this.tranformOptions()
