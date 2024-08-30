@@ -26,6 +26,12 @@ export const useUpdateTask = () => {
       queryClient.invalidateQueries({
         queryKey: ["tasks", { projectId: result.project.id }],
       });
+
+      if (result.parent) {
+        queryClient.invalidateQueries({
+          queryKey: ["tasks", { taskId: result.parent.id }],
+        });
+      }
     },
   });
 
