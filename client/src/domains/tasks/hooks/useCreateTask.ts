@@ -10,7 +10,7 @@ export const useCreateTask = () => {
   const { mutateAsync: createTask } = useMutation({
     mutationFn: (data: CreateTaskApi) => apiClient.createTask(data),
     onSuccess: (result) => {
-      if (result.parent.id) {
+      if (result.parent && result.parent.id) {
         queryClient.invalidateQueries({
           queryKey: ["tasks", { taskId: result.parent.id }],
         });
