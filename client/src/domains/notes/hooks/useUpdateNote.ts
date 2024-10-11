@@ -13,6 +13,9 @@ export const useUpdateNote = () => {
       queryClient.invalidateQueries({
         queryKey: ["notes", { noteId: result.id }],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["notes", { projectId: result.project.id }],
+      });
     },
   });
   return { updateNote };
