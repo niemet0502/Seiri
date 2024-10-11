@@ -12,6 +12,7 @@ export interface Note {
   title: string;
   content: string;
   description: string;
+  isFav: boolean;
   project: Project;
   createdAt: Date;
   updatedAt: Date;
