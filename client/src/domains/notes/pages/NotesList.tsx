@@ -52,13 +52,26 @@ export const NotesList: React.FC = () => {
         </div>
         <div className="flex notes-list">
           {notes.length > 0 &&
-            notes.map((note: Note) => (
-              <NoteCard
-                key={note.id}
-                note={note}
-                onDelete={(noteId: number) => onDelete(noteId)}
-              />
-            ))}
+            notes
+              .filter((note: Note) => note.isFav)
+              .map((note: Note) => (
+                <NoteCard
+                  key={note.id}
+                  note={note}
+                  onDelete={(noteId: number) => onDelete(noteId)}
+                />
+              ))}
+
+          {notes.length > 0 &&
+            notes
+              .filter((note: Note) => !note.isFav)
+              .map((note: Note) => (
+                <NoteCard
+                  key={note.id}
+                  note={note}
+                  onDelete={(noteId: number) => onDelete(noteId)}
+                />
+              ))}
         </div>
 
         {notes.length === 0 && !isLoading && (
