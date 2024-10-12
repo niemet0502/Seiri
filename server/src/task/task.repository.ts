@@ -16,7 +16,7 @@ export class TaskRepository {
   }
 
   async findAll(): Promise<Task[]> {
-    return await this.tasksRepository.find();
+    return await this.tasksRepository.find({ where: { isDeleted: false } });
   }
 
   async findAllByProject(
@@ -29,6 +29,7 @@ export class TaskRepository {
       .createQueryBuilder('task')
       .leftJoinAndSelect('task.children', 'child')
       .where('task.parentId IS NULL')
+      .andWhere('task.isDeleted = :isDeleted', { isDeleted: false })
       .andWhere('task.projectId = :projectId', { projectId });
 
     if (showCompleted === false) {
@@ -41,22 +42,24 @@ export class TaskRepository {
   }
 
   async findById(id: number): Promise<Task | undefined> {
+    let children: Task[];
+
     const task = await this.tasksRepository.findOne({
       where: { id: id, parent: undefined },
       relations: ['children', 'project', 'parent'], // Include children and project relations
     });
 
     if (task && task.children && task.children.length > 0) {
-      task.children.sort((a, b) =>
-        a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1,
-      );
+      children = task.children
+        .filter((t) => t.isDeleted === false)
+        .sort((a, b) => (a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1));
     }
 
-    return task;
+    return { ...task, children: children };
   }
 
   async remove(task: Task) {
-    return await this.tasksRepository.remove(task);
+    return await this.tasksRepository.save({ ...task, isDeleted: true });
   }
 
   async removeTasks(project: Project, isDone: boolean) {
@@ -66,7 +69,8 @@ export class TaskRepository {
       .where('task.projectId = :projectId', { projectId: project.id })
       .andWhere('task.parentId IS NULL')
       .andWhere('task.isDone = true')
-      .delete()
+      .update()
+      .set({ isDeleted: true })
       .execute();
   }
 
@@ -80,6 +84,7 @@ export class TaskRepository {
       .andWhere('(task.dueDate IS NOT NULL AND task.dueDate <= :today)', {
         today,
       })
+      .andWhere('task.isDeleted = :isDeleted', { isDeleted: false })
       .andWhere('task.completedAt IS NULL')
       .getMany();
 
@@ -88,7 +93,7 @@ export class TaskRepository {
 
   async findCompletedTask(userId: number) {
     return this.tasksRepository.find({
-      where: { createdBy: userId, isDone: true },
+      where: { createdBy: userId, isDone: true, isDeleted: false },
       order: { completedAt: 'DESC' },
       relations: ['project'],
     });
