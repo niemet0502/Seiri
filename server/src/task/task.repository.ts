@@ -42,27 +42,20 @@ export class TaskRepository {
   }
 
   async findById(id: number): Promise<Task | undefined> {
-    const task = await this.tasksRepository
-      .createQueryBuilder('task')
-      .leftJoinAndSelect(
-        'task.children',
-        'child',
-        'child.isDeleted = :isDeleted',
-        { isDeleted: false },
-      )
-      .leftJoinAndSelect('task.project', 'project')
-      .leftJoinAndSelect('task.parent', 'parent')
-      .where('task.id = :id', { id })
-      .andWhere('task.isDeleted = :isDeleted', { isDeleted: false })
-      .getOne();
+    let children: Task[];
+
+    const task = await this.tasksRepository.findOne({
+      where: { id: id, parent: undefined },
+      relations: ['children', 'project', 'parent'], // Include children and project relations
+    });
 
     if (task && task.children && task.children.length > 0) {
-      task.children.sort((a, b) =>
-        a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1,
-      );
+      children = task.children
+        .filter((t) => t.isDeleted === false)
+        .sort((a, b) => (a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1));
     }
 
-    return task;
+    return { ...task, children: children };
   }
 
   async remove(task: Task) {
