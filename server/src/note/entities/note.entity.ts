@@ -20,4 +20,7 @@ export class Note {
 
   @Column('text', { nullable: true })
   updatedAt: string;
+
+  @Column('boolean', { default: false })
+  isFav: boolean;
 }

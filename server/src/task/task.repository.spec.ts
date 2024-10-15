@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Project } from '../project/entities/project.entity';
 import { Task } from './entities/task.entity';
 import { TaskRepository } from './task.repository';
 
@@ -18,11 +17,20 @@ export const tasks = [task];
 describe('TaskRepository', () => {
   let taskRepository: TaskRepository;
 
-  const mockRespository = {
-    save: (task: Task) => task,
-    find: (project?: Project) => tasks,
-    findOne: (id: number) => task,
-    remove: (task: Task) => task,
+  const mockRepository = {
+    createQueryBuilder: jest.fn(() => ({
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      update: jest.fn().mockReturnThis(),
+      set: jest.fn().mockReturnThis(),
+      execute: jest.fn(),
+      getOne: jest.fn(),
+    })),
+    save: jest.fn(),
+    find: jest.fn(),
+    findOne: jest.fn(),
+    remove: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -31,7 +39,7 @@ describe('TaskRepository', () => {
         TaskRepository,
         {
           provide: getRepositoryToken(Task),
-          useValue: mockRespository,
+          useValue: mockRepository,
         },
       ],
     }).compile();
@@ -55,28 +63,28 @@ describe('TaskRepository', () => {
         completedAt: null,
         createdBy: null,
       };
-      jest.spyOn(mockRespository, 'save').mockReturnValue(task);
+      jest.spyOn(mockRepository, 'save').mockReturnValue(task);
 
       //act
       const result = await taskRepository.save(task);
 
       //assert
       expect(result).toEqual(task);
-      expect(mockRespository.save).toBeCalledWith(task);
+      expect(mockRepository.save).toBeCalledWith(task);
     });
   });
 
   describe('TaskRepository.__findAll', () => {
     it('should return an array of tasks', async () => {
       //arrange
-      jest.spyOn(mockRespository, 'find').mockReturnValue(tasks);
+      jest.spyOn(mockRepository, 'find').mockReturnValue(tasks);
 
       //act
       const result = await taskRepository.findAll();
 
       //assert
       expect(result).toEqual(tasks);
-      expect(mockRespository.find).toBeCalled();
+      expect(mockRepository.find).toBeCalled();
     });
   });
 
@@ -84,18 +92,18 @@ describe('TaskRepository', () => {
     it('should find by id and return a task', async () => {
       //arrange
       const id = 1;
-      jest.spyOn(mockRespository, 'findOne').mockReturnValue(task);
+      jest.spyOn(mockRepository, 'findOne').mockReturnValue(task);
 
       //act
       const result = await taskRepository.findById(id);
 
       //assert
       expect(result).toEqual(task);
-      expect(mockRespository.findOne).toBeCalledWith({
+      expect(mockRepository.findOne).toBeCalledWith({
         where: { id: id, parent: undefined },
         relations: ['children', 'project', 'parent'],
       });
-      expect(mockRespository.findOne).toBeCalledTimes(1);
+      expect(mockRepository.findOne).toBeCalledTimes(1);
     });
   });
 
@@ -115,15 +123,16 @@ describe('TaskRepository', () => {
         completedAt: null,
         createdBy: null,
       };
-      jest.spyOn(mockRespository, 'remove').mockReturnValue(task);
+
+      const expectedResult = { ...task, isDeleted: true };
+      jest.spyOn(mockRepository, 'save').mockReturnValue(expectedResult);
 
       //act
       const result = await taskRepository.remove(task);
 
       // assert
-      expect(result).toEqual(task);
-      expect(mockRespository.remove).toBeCalledTimes(1);
-      expect(mockRespository.remove).toBeCalledWith(task);
+      expect(result).toEqual(expectedResult);
+      expect(mockRepository.save).toBeCalledWith(expectedResult);
     });
   });
 });
