@@ -236,7 +236,7 @@ const TaskDetails: React.FC = () => {
               </div>
               {isChildrenVisible && (
                 <div className="">
-                  {task.children.map((task: Task) => (
+                  {(task.children || []).map((task: Task) => (
                     <TaskItem
                       key={task.id}
                       task={task}
