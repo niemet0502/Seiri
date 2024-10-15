@@ -40,6 +40,14 @@ const shipped = [
     title: "Archive projects",
     description: "Archive projects",
   },
+  {
+    title: "Favorite a note",
+    description: "User can fav notes and they will be displayed first.",
+  },
+  {
+    title: "Soft deletion",
+    description: "Tasks are no longer completely deleted from the database.",
+  },
 ]
 
 const progress = [
