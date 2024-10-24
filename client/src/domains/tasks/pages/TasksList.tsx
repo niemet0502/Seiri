@@ -194,7 +194,7 @@ export const TasksList: React.FC = () => {
                 </>
               )}
 
-              {tasks.length === 0 && !project.isDefault && (
+              {tasks.length === 0 && project && !project.isDefault && (
                 <div
                   className="flex flex-column align-items-center justify-content-center gap-2"
                   style={{ marginTop: "180px" }}
