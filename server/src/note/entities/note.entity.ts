@@ -9,7 +9,7 @@ export class Note {
   @Column('text')
   title: string;
 
-  @Column({ type: 'longtext', nullable: true, collation: 'utf8mb4_unicode_ci' })
+  @Column({ type: 'text', nullable: true })
   content: string;
 
   @ManyToOne(() => Project, (project) => project.notes, { onDelete: 'CASCADE' })

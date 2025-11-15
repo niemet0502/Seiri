@@ -8,8 +8,8 @@ services:
     restart: always
     environment:
       DB_HOST: db
-      DB_PORT: 3306
-      DB_USERNAME: marius
+      DB_PORT: 5432
+      DB_USERNAME: postgres
       DB_PASSWORD: root
       DB_NAME: thot
       CACHE_HOST: redis
@@ -32,18 +32,18 @@ services:
     
 
   db:
-    image: mysql:5.7.41
+    platform: linux/amd64
+    image: postgres:15
     container_name: db
     restart: always   
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: thot
-      MYSQL_USER: marius
-      MYSQL_PASSWORD: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: thot
+      POSTGRES_USER: postgres
     ports:
-      - "3307:3306" 
+      - "5433:5432" 
     volumes:
-      - mysql-data:/var/lib/mysql
+      - pg-data:/var/lib/postgresql/data
   
   redis:
     image: redis:latest
@@ -56,4 +56,4 @@ services:
 
 volumes:
   redis-data:
-  mysql-data:
+  pg-data:

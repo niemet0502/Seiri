@@ -1,44 +1,23 @@
-# Use a multi-stage build for smaller final image size
-FROM node:16-alpine AS base
+# Use a suitable Node.js base image (e.g., LTS version)
+FROM node:20-alpine AS development
 
-# Set working directory
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json to leverage Docker's cache
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --only=production
+RUN npm install --legacy-peer-deps
 
-# Second stage for development
-FROM base AS dev
-
-# Install all dependencies (including dev dependencies)
-RUN npm install
-
-# Expose port 3000
-EXPOSE 3000
-
-# Copy source code
+# Copy the rest of the application code
 COPY . .
 
-# Start app in development mode
-CMD ["npm", "run", "start:dev"]
-
-# Third stage for production
-FROM base AS prod
-
-# Set environment variables
-ENV NODE_ENV=production
-
-# Copy source code
-COPY . .
-
-# Build TypeScript code
+# Build the application
 RUN npm run build
 
-# Expose port 3000
+# Expose the port your NestJS application listens on (e.g., 3000)
 EXPOSE 3000
 
-# Start app in production mode
+# Command to run the application
 CMD ["node", "dist/main.js"]
