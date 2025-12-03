@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+        - name: seiri-front
+          image: seiri-front:1.9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 82
+          env:
+            - name: API_URL
+              value: http://backend-service:3000

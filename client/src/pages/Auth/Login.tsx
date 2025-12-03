@@ -29,17 +29,33 @@ export const Login: React.FC = () => {
 
         push("/");
       } catch (e: any) {
-        setError(e.response.data.message);
+        setError(e.response?.data?.message || "Login failed");
       } finally {
         setLoading(false);
       }
     },
     [apiClient, setCurrentUser, push]
   );
+
   return (
     <div className="login-wrapper-content flex flex-row ">
       <div className="login-wrapper-content-child flex justify-content-center ">
         <div className="form-container flex flex-column justify-content-center ">
+          {/* 🔧 DEBUG INFO BLOCK */}
+          <div
+            style={{
+              background: "#222",
+              color: "lime",
+              padding: "10px",
+              marginBottom: "15px",
+              borderRadius: "4px",
+              fontSize: "12px",
+            }}
+          >
+            <strong>DEBUG:</strong> REACT_APP_API_URL ={" "}
+            {process.env.REACT_APP_API_URL || "NOT SET"}
+          </div>
+
           <div className="form-header">
             <h3>Sign in to your account</h3>
             <span>
@@ -96,7 +112,8 @@ export const Login: React.FC = () => {
           </form>
         </div>
       </div>
-      <div className="login-wrapper-content-child flex  justify-content-center">
+
+      <div className="login-wrapper-content-child flex justify-content-center">
         <div
           style={{ width: "100px" }}
           className="flex flex-column justify-content"

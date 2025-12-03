@@ -17,9 +17,7 @@ import {
 } from "../types";
 
 export class Client {
-  baseApiUrl: string = `${
-    process.env.REACT_APP_API_URL || "https://apiseiri.mariusniemet.me/api/"
-  }`;
+  baseApiUrl: string = "/api/";
 
   protected getAuthToken() {
     try {
@@ -237,5 +235,9 @@ export class Client {
     return this.tranformOptions()
       .post(url, data)
       .then((r) => r.data);
+  }
+
+  public getToken() {
+    return this.baseApiUrl;
   }
 }
