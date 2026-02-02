@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { ProjectCard } from '../../components/projects/ProjectCard';
 import { ProjectFormModal } from '../../components/projects/ProjectFormModal';
@@ -43,7 +44,7 @@ export const TaskProjectsListScreen: React.FC<TaskProjectsListScreenProps> = ({
   const regularProjects = projects?.filter((p: Project) => !p.isDefault) || [];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Tasks</Text>
@@ -112,7 +113,7 @@ export const TaskProjectsListScreen: React.FC<TaskProjectsListScreenProps> = ({
         onClose={() => setShowCreateModal(false)}
         feature={FeatureEnum.Task}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

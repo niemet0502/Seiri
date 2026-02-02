@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { TaskCard } from '../../components/tasks/TaskCard';
 import { TaskFormModal } from '../../components/tasks/TaskFormModal';
@@ -14,6 +15,7 @@ import { useDeleteTask, useTask, useUpdateTask } from '../../hooks/useTasks';
 import { colors } from '../../theme/colors';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
+import { Task } from '../../types';
 import { displayDuedate } from '../../utils/date';
 
 export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
@@ -79,7 +81,7 @@ export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
   const completedSubTasks = subTasks.filter((t) => t.isDone).length;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -212,7 +214,7 @@ export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
         project={project}
         parentTask={task}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

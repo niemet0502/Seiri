@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { TaskCard } from '../../components/tasks/TaskCard';
 import { TaskFormModal } from '../../components/tasks/TaskFormModal';
@@ -53,7 +54,7 @@ export const ProjectTasksScreen: React.FC<any> = ({
   const completedTasks = tasks?.filter((t: Task) => t.isDone) || [];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -122,7 +123,7 @@ export const ProjectTasksScreen: React.FC<any> = ({
         onClose={() => setShowCreateModal(false)}
         project={project}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

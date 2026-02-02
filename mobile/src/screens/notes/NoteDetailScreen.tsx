@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme/colors';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
@@ -15,7 +16,7 @@ export const NoteDetailScreen: React.FC<any> = ({ navigation, route }) => {
   const { note, project } = route.params;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -48,7 +49,7 @@ export const NoteDetailScreen: React.FC<any> = ({ navigation, route }) => {
           <Text style={styles.content}>{note.content || 'No content'}</Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

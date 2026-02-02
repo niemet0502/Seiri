@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { NoteCard } from '../../components/notes/NoteCard';
 import { useNotes } from '../../hooks/useNotes';
@@ -36,7 +37,7 @@ export const ProjectNotesScreen: React.FC<any> = ({
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -82,7 +83,7 @@ export const ProjectNotesScreen: React.FC<any> = ({
       <TouchableOpacity style={styles.fab} onPress={handleCreateNote}>
         <Text style={styles.fabIcon}>+</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
