@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { ProfileScreen } from '../screens/ProfileScreen';
 import { ProjectTasksScreen } from '../screens/tasks/ProjectTasksScreen';
 import { TaskDetailScreen } from '../screens/tasks/TaskDetailScreen';
 import { TaskProjectsListScreen } from '../screens/tasks/TaskProjectsListScreen';
@@ -17,6 +18,7 @@ export const TasksNavigator = () => {
       <Stack.Screen name="TaskProjects" component={TaskProjectsListScreen} />
       <Stack.Screen name="ProjectTasks" component={ProjectTasksScreen} />
       <Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };
