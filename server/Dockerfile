@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --only=production
+RUN npm install --only=production --legacy-peer-deps
 
 # Second stage for development
 FROM base AS dev
 
 # Install all dependencies (including dev dependencies)
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Expose port 3000
 EXPOSE 3000
