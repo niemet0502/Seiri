@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Note } from '../../note/entities/note.entity';
 import { Task } from '../../task/entities/task.entity';
+import { Tracking } from '../../tracking/entities/tracking.entity';
 import { User } from '../../user/entities/user.entity';
 @Entity()
 export class Project {
@@ -25,6 +26,8 @@ export class Project {
   tasks: Task[];
 
   @OneToMany(() => Note, (note) => note.project) notes: Note[];
+
+  @OneToMany(() => Tracking, (tracking) => tracking.project) trackings: Tracking[];
 
   @Column('boolean', { default: false })
   isArchive: boolean;

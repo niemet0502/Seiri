@@ -13,6 +13,7 @@ import { SendEmailProcessor } from './mails/send-email-processor.service';
 import { NoteModule } from './note/note.module';
 import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
+import { TrackingModule } from './tracking/tracking.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -41,6 +42,7 @@ import { UserModule } from './user/user.module';
     ProjectModule,
     TaskModule,
     NoteModule,
+    TrackingModule,
     AuthModule,
   ],
   controllers: [AppController],

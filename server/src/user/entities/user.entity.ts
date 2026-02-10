@@ -1,6 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Session } from '../../auth/entities/session.entity';
 import { Project } from '../../project/entities/project.entity';
+import { Tracking } from '../../tracking/entities/tracking.entity';
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -26,4 +28,5 @@ export class User {
 
   @OneToMany(() => Project, (project) => project.user) projects: Project[];
   @OneToMany(() => Session, (session) => session.user) sessions: Session[];
+  @OneToMany(() => Tracking, (tracking) => tracking.user) trackings: Tracking[];
 }

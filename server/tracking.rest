@@ -1,0 +1,74 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+@trackingId = 1
+@authToken = YOUR_AUTH_TOKEN_HERE
+
+### Create a new tracking
+POST {{baseUrl}}/tracking
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Save for vacation",
+  "description": "Saving money for summer vacation",
+  "dueDate": "2026-12-31",
+  "target": 5000,
+  "balance": 1000
+}
+
+### Create a tracking with minimal fields
+POST {{baseUrl}}/tracking
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Emergency Fund",
+  "target": 10000
+}
+
+### Get all trackings
+GET {{baseUrl}}/tracking
+Authorization: Bearer {{authToken}}
+
+### Get a specific tracking by ID
+GET {{baseUrl}}/tracking/{{trackingId}}
+Authorization: Bearer {{authToken}}
+
+### Get tracking history
+GET {{baseUrl}}/tracking/{{trackingId}}/history
+Authorization: Bearer {{authToken}}
+
+### Update a tracking
+PATCH {{baseUrl}}/tracking/{{trackingId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Save for vacation - Updated",
+  "description": "Saving money for summer vacation in Hawaii",
+  "target": 6000
+}
+
+### Update tracking balance
+PATCH {{baseUrl}}/tracking/{{trackingId}}/balance
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "amount": 500
+}
+
+### Update tracking balance with negative amount (withdrawal)
+PATCH {{baseUrl}}/tracking/{{trackingId}}/balance
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "amount": -200
+}
+
+### Delete a tracking
+DELETE {{baseUrl}}/tracking/{{trackingId}}
+Authorization: Bearer {{authToken}}
+
+###
