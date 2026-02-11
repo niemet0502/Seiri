@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
     Alert,
+    RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -20,7 +21,7 @@ import { displayDuedate } from '../../utils/date';
 
 export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
   const { task: initialTask, project } = route.params;
-  const { data: task, isLoading } = useTask(initialTask.id);
+  const { data: task, isLoading, refetch, isRefetching } = useTask(initialTask.id);
   const { mutate: updateTask } = useUpdateTask();
   const { mutate: deleteTask } = useDeleteTask();
 
@@ -60,6 +61,10 @@ export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
     );
   };
 
+  const handleRefresh = async () => {
+    await refetch();
+  };
+
   const { status, label } = displayDuedate(task.dueDate);
 
   const getDueDateColor = () => {
@@ -78,7 +83,7 @@ export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
   };
 
   const subTasks = task.children || [];
-  const completedSubTasks = subTasks.filter((t) => t.isDone).length;
+  const completedSubTasks = subTasks.filter((t: Task) => t.isDone).length;
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
@@ -125,7 +130,17 @@ export const TaskDetailScreen: React.FC<any> = ({ navigation, route }) => {
         </View>
       )}
 
-      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+      <ScrollView 
+        style={styles.content} 
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+          />
+        }
+      >
         {/* Task Header */}
         <View style={styles.taskHeader}>
           <TouchableOpacity

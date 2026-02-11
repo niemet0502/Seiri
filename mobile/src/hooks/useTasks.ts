@@ -67,7 +67,9 @@ export const useDeleteTask = () => {
   return useMutation({
     mutationFn: (taskId: number) => apiClient.deleteTask(taskId),
     onSuccess: () => {
+      // Invalidate both lists and all detail queries to refresh parent tasks
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: taskKeys.details() });
     },
   });
 };
