@@ -94,7 +94,12 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   };
 
   const getTitle = () => {
-    const type = feature === FeatureEnum.Task ? 'Task' : 'Note';
+    let type = 'Task';
+    if (feature === FeatureEnum.Note) {
+      type = 'Note';
+    } else if (feature === FeatureEnum.Tracking) {
+      type = 'Tracking';
+    }
     return isEditing ? `Edit ${type} Project` : `Create ${type} Project`;
   };
 

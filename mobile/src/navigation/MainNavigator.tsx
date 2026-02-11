@@ -5,6 +5,7 @@ import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { NotesNavigator } from './NotesNavigator';
 import { TasksNavigator } from './TasksNavigator';
+import { TrackingsNavigator } from './TrackingsNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +47,16 @@ export const MainNavigator = () => {
           tabBarLabel: 'Notes',
           tabBarIcon: ({ color, size }) => (
             <TabIcon icon="📝" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="TrackingTab"
+        component={TrackingsNavigator}
+        options={{
+          tabBarLabel: 'Tracking',
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon icon="📊" color={color} size={size} />
           ),
         }}
       />

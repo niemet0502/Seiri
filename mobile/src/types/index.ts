@@ -31,6 +31,18 @@ export interface Task {
   parent?: Task;
 }
 
+export interface Tracking {
+  id: number;
+  title: string;
+  description?: string;
+  dueDate?: Date;
+  target: number;
+  balance: number;
+  project?: Project;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
 export interface Project {
   id: number;
   name: string;
@@ -38,6 +50,7 @@ export interface Project {
   color?: string;
   tasks?: Task[];
   notes?: Note[];
+  trackings?: Tracking[];
   isArchive?: boolean;
   user?: User;
   isDefault?: boolean;
@@ -47,6 +60,7 @@ export enum FeatureEnum {
   Undefined = 0,
   Task = 1,
   Note = 2,
+  Tracking = 3,
 }
 
 export interface IAuthLogin {
