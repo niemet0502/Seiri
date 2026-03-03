@@ -16,7 +16,7 @@ import {
     TrackingFormModal,
 } from '../../components/tracking/TrackingFormModal';
 import { useThemeColors } from '../../contexts/ThemeContext';
-import { useTrackingStorage } from '../../hooks/useTrackingStorage';
+import { useCreateTracking, useTrackings } from '../../hooks/useTrackings';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
@@ -24,7 +24,8 @@ export const ProjectTrackingsScreen: React.FC<any> = ({ navigation, route }) => 
   const colors = useThemeColors();
   const { project } = route.params;
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const { data: trackings, isLoading, refetch, createTracking } = useTrackingStorage(project.id);
+  const { data: trackings = [], isLoading, refetch } = useTrackings(project.id);
+  const createTrackingMutation = useCreateTracking();
 
   const totalBalance = useMemo(
     () => trackings.reduce((sum, t) => sum + Number(t.balance), 0),
@@ -32,11 +33,12 @@ export const ProjectTrackingsScreen: React.FC<any> = ({ navigation, route }) => 
   );
 
   const handleCreateTracking = async (formData: TrackingFormData) => {
-    await createTracking({
+    await createTrackingMutation.mutateAsync({
       title: formData.title,
-      description: formData.description,
+      description: formData.description || undefined,
       target: parseFloat(formData.target),
-      dueDate: formData.dueDate,
+      ...(formData.dueDate ? { dueDate: formData.dueDate } : {}),
+      projectId: project.id,
     });
   };
 

@@ -35,6 +35,7 @@ export interface TrackingHistory {
   id: number;
   amount: number;
   date: Date;
+  createdAt?: Date;
 }
 
 export interface Tracking {
@@ -118,6 +119,28 @@ export interface EditNoteApi {
 export interface DeleteMultipleTasksApi {
   projectId: string;
   completed: boolean;
+}
+
+export interface CreateTrackingApi {
+  title: string;
+  description?: string;
+  target: number;
+  dueDate?: string;
+  balance?: number;
+  projectId: number;
+}
+
+export interface UpdateTrackingApi {
+  id: number;
+  title?: string;
+  description?: string;
+  target?: number;
+  dueDate?: Date;
+}
+
+export interface UpdateBalanceApi {
+  trackingId: number;
+  amount: number;
 }
 
 export interface UserFormApi {

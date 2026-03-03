@@ -5,6 +5,7 @@ import {
     CreateNoteApi,
     CreateProject,
     CreateTaskApi,
+    CreateTrackingApi,
     DeleteMultipleTasksApi,
     EditProject,
     EditTaskApi,
@@ -14,6 +15,10 @@ import {
     Note,
     PasswordUpdateApi,
     ResetPasswordApi,
+    Tracking,
+    TrackingHistory,
+    UpdateBalanceApi,
+    UpdateTrackingApi,
     UpdateUser,
 } from '../types';
 import { storage } from '../utils/storage';
@@ -177,6 +182,44 @@ export class ApiClient {
 
   async deleteNote(id: number) {
     const response = await this.axiosInstance.delete(`/note/${id}`);
+    return response.data;
+  }
+
+  // Tracking
+  async getTrackingsByProject(projectId: number): Promise<Tracking[]> {
+    const response = await this.axiosInstance.get(`/tracking/project/${projectId}`);
+    return response.data;
+  }
+
+  async getTracking(trackingId: number): Promise<Tracking> {
+    const response = await this.axiosInstance.get(`/tracking/${trackingId}`);
+    return response.data;
+  }
+
+  async getTrackingHistory(trackingId: number): Promise<TrackingHistory[]> {
+    const response = await this.axiosInstance.get(`/tracking/${trackingId}/history`);
+    return response.data;
+  }
+
+  async createTracking(data: CreateTrackingApi): Promise<Tracking> {
+    const response = await this.axiosInstance.post('/tracking', data);
+    return response.data;
+  }
+
+  async updateTracking(data: UpdateTrackingApi): Promise<Tracking> {
+    const { id, ...body } = data;
+    const response = await this.axiosInstance.patch(`/tracking/${id}`, body);
+    return response.data;
+  }
+
+  async updateBalance(data: UpdateBalanceApi): Promise<Tracking> {
+    const { trackingId, amount } = data;
+    const response = await this.axiosInstance.patch(`/tracking/${trackingId}/balance`, { amount });
+    return response.data;
+  }
+
+  async deleteTracking(trackingId: number) {
+    const response = await this.axiosInstance.delete(`/tracking/${trackingId}`);
     return response.data;
   }
 }

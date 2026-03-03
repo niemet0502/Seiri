@@ -1,32 +1,33 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    FlatList,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { useThemeColors } from '../../contexts/ThemeContext';
-import { useTrackingStorage } from '../../hooks/useTrackingStorage';
+import { useTracking, useUpdateBalance, useUpdateTracking } from '../../hooks/useTrackings';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { TrackingHistory } from '../../types';
 
 export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
   const colors = useThemeColors();
-  const { trackingId, projectId } = route.params;
-  const { getTracking, updateTracking, addTransaction, refetch } = useTrackingStorage(projectId);
-
-  const tracking = getTracking(trackingId);
+  const { trackingId } = route.params;
+  const { data: tracking, isLoading } = useTracking(trackingId);
+  const updateTrackingMutation = useUpdateTracking();
+  const updateBalanceMutation = useUpdateBalance();
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(tracking?.title || '');
+  const [editedTitle, setEditedTitle] = useState('');
   const [isEditingTarget, setIsEditingTarget] = useState(false);
-  const [editedTarget, setEditedTarget] = useState(tracking?.target?.toString() || '');
+  const [editedTarget, setEditedTarget] = useState('');
   const [amountText, setAmountText] = useState('');
 
   useEffect(() => {
@@ -35,6 +36,8 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
       setEditedTarget(tracking.target?.toString() || '');
     }
   }, [tracking?.title, tracking?.target]);
+
+  if (isLoading) return <LoadingSpinner />;
 
   if (!tracking) {
     return (
@@ -62,8 +65,7 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
 
   const handleSaveTitle = async () => {
     if (editedTitle.trim() && editedTitle !== tracking.title) {
-      await updateTracking(tracking.id, { title: editedTitle.trim() });
-      await refetch();
+      await updateTrackingMutation.mutateAsync({ id: tracking.id, title: editedTitle.trim() });
     }
     setIsEditingTitle(false);
   };
@@ -71,8 +73,7 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
   const handleSaveTarget = async () => {
     const targetValue = parseFloat(editedTarget);
     if (!isNaN(targetValue) && targetValue > 0 && targetValue !== tracking.target) {
-      await updateTracking(tracking.id, { target: targetValue });
-      await refetch();
+      await updateTrackingMutation.mutateAsync({ id: tracking.id, target: targetValue });
     } else if (isNaN(targetValue) || targetValue <= 0) {
       Alert.alert('Error', 'Please enter a valid target greater than 0');
       setEditedTarget(tracking.target?.toString() || '');
@@ -86,17 +87,17 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
       Alert.alert('Error', 'Please enter a valid amount');
       return;
     }
-    await addTransaction(tracking.id, amount);
-    await refetch();
+    await updateBalanceMutation.mutateAsync({ trackingId: tracking.id, amount });
     setAmountText('');
   };
 
   const history = [...(tracking.history || [])].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    (a, b) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime(),
   );
 
   const renderHistoryItem = ({ item }: { item: TrackingHistory }) => {
     const isPositive = item.amount >= 0;
+    const itemDate = item.date || item.createdAt;
     return (
       <View style={[styles.historyItem, { backgroundColor: colors.backgroundCard, borderColor: colors.border }]}>
         <View style={styles.historyLeft}>
@@ -106,7 +107,7 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
               {isPositive ? '+' : ''}{Number(item.amount).toLocaleString('fr-FR')}
             </Text>
             <Text style={[styles.historyDate, { color: colors.textMuted }]}>
-              {new Date(item.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              {new Date(itemDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </Text>
           </View>
         </View>
@@ -214,8 +215,15 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
                   returnKeyType="done"
                   onSubmitEditing={handleAddAmount}
                 />
-                <TouchableOpacity style={[styles.addButton, { backgroundColor: colors.primary }]} onPress={handleAddAmount} activeOpacity={0.8}>
-                  <Text style={[styles.addButtonText, { color: colors.white }]}>Add</Text>
+                <TouchableOpacity
+                  style={[styles.addButton, { backgroundColor: colors.primary }]}
+                  onPress={handleAddAmount}
+                  activeOpacity={0.8}
+                  disabled={updateBalanceMutation.isPending}
+                >
+                  <Text style={[styles.addButtonText, { color: colors.white }]}>
+                    {updateBalanceMutation.isPending ? '...' : 'Add'}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
