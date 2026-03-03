@@ -15,7 +15,7 @@ export class TrackingHistory {
   @Column('decimal', { precision: 10, scale: 2, nullable: false })
   amount: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'createdAt' })
   date: Date;
 
   @ManyToOne(() => Tracking, (tracking) => tracking.history, {
