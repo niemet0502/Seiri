@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
     KeyboardAvoidingView,
@@ -9,7 +10,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { colors } from '../../theme/colors';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
@@ -26,6 +27,8 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
   title,
   children,
 }) => {
+  const colors = useThemeColors();
+
   return (
     <Modal
       visible={visible}
@@ -37,12 +40,20 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.overlay}
       >
-        <View style={styles.modalContainer}>
+        <View
+          style={[
+            styles.modalContainer,
+            {
+              backgroundColor: colors.backgroundCard,
+              borderBottomColor: colors.border,
+            },
+          ]}
+        >
           {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.title}>{title}</Text>
+          <View style={[styles.header, { borderBottomColor: colors.border }]}>
+            <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Text style={styles.closeIcon}>✕</Text>
+              <Ionicons name="close" size={24} color={colors.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -68,7 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: colors.backgroundCard,
     borderTopLeftRadius: borderRadius.xl,
     borderTopRightRadius: borderRadius.xl,
     maxHeight: '90%',
@@ -81,22 +91,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
   },
   title: {
     fontSize: typography.fontSize.xl,
     fontWeight: typography.fontWeight.bold,
-    color: colors.text,
   },
   closeButton: {
     width: 32,
     height: 32,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  closeIcon: {
-    fontSize: 24,
-    color: colors.textSecondary,
   },
   content: {
     flexGrow: 1,

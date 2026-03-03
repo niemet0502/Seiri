@@ -1,16 +1,19 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { useThemeColors } from '../contexts/ThemeContext';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { SignupScreen } from '../screens/auth/SignupScreen';
 
 const Stack = createStackNavigator();
 
 export const AuthNavigator = () => {
+  const colors = useThemeColors();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        cardStyle: { backgroundColor: '#0f0f1a' },
+        cardStyle: { backgroundColor: colors.background },
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} />

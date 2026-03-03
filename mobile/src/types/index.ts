@@ -31,6 +31,12 @@ export interface Task {
   parent?: Task;
 }
 
+export interface TrackingHistory {
+  id: number;
+  amount: number;
+  date: Date;
+}
+
 export interface Tracking {
   id: number;
   title: string;
@@ -41,6 +47,7 @@ export interface Tracking {
   project?: Project;
   createdAt: Date;
   updatedAt?: Date;
+  history?: TrackingHistory[];
 }
 
 export interface Project {

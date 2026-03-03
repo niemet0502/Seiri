@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
 import {
@@ -7,13 +8,13 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { colors } from '../../theme/colors';
+import { useTheme, useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
 interface DatePickerInputProps {
   label: string;
-  value?: string; // YYYY-MM-DD format
+  value?: string;
   onChange: (date: string) => void;
   error?: string;
   placeholder?: string;
@@ -32,6 +33,8 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
   const [selectedDate, setSelectedDate] = useState<Date>(
     value ? new Date(value) : new Date()
   );
+  const colors = useThemeColors();
+  const { isDark } = useTheme();
 
   const handleDateChange = (event: any, date?: Date) => {
     if (Platform.OS === 'android') {
@@ -40,7 +43,6 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
 
     if (date) {
       setSelectedDate(date);
-      // Format date as YYYY-MM-DD
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
@@ -50,7 +52,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
 
   const formatDisplayDate = (dateString?: string) => {
     if (!dateString) return placeholder;
-    
+
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString('en-US', {
@@ -71,25 +73,36 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.labelRow}>
-        <Text style={styles.label}>{label}</Text>
+        <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
         {value && (
           <TouchableOpacity onPress={handleClearDate}>
-            <Text style={styles.clearButton}>Clear</Text>
+            <Text style={[styles.clearButton, { color: colors.primary }]}>Clear</Text>
           </TouchableOpacity>
         )}
       </View>
 
       <TouchableOpacity
-        style={[styles.input, error && styles.inputError]}
+        style={[
+          styles.input,
+          {
+            backgroundColor: colors.backgroundCard,
+            borderColor: error ? colors.error : colors.border,
+          },
+        ]}
         onPress={() => setShowPicker(true)}
       >
-        <Text style={[styles.inputText, !value && styles.placeholder]}>
+        <Text
+          style={[
+            styles.inputText,
+            { color: value ? colors.text : colors.textMuted },
+          ]}
+        >
           {formatDisplayDate(value)}
         </Text>
-        <Text style={styles.calendarIcon}>📅</Text>
+        <Ionicons name="calendar-outline" size={20} color={colors.textMuted} />
       </TouchableOpacity>
 
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>}
 
       {showPicker && (
         <DateTimePicker
@@ -98,15 +111,14 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={handleDateChange}
           textColor={colors.text}
-          themeVariant="dark"
+          themeVariant={isDark ? 'dark' : 'light'}
         />
       )}
 
-      {/* iOS: Show done button */}
       {showPicker && Platform.OS === 'ios' && (
         <View style={styles.iosButtonContainer}>
           <TouchableOpacity
-            style={styles.iosButton}
+            style={[styles.iosButton, { backgroundColor: colors.primary }]}
             onPress={() => setShowPicker(false)}
           >
             <Text style={styles.iosButtonText}>Done</Text>
@@ -130,17 +142,13 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.fontSize.sm,
     fontWeight: typography.fontWeight.medium,
-    color: colors.text,
   },
   clearButton: {
     fontSize: typography.fontSize.sm,
-    color: colors.primary,
     fontWeight: typography.fontWeight.medium,
   },
   input: {
-    backgroundColor: colors.backgroundCard,
     borderWidth: 1,
-    borderColor: colors.border,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm + 4,
@@ -149,24 +157,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  inputError: {
-    borderColor: colors.error,
-  },
   inputText: {
     fontSize: typography.fontSize.base,
-    color: colors.text,
     flex: 1,
-  },
-  placeholder: {
-    color: colors.textMuted,
-  },
-  calendarIcon: {
-    fontSize: 20,
-    marginLeft: spacing.sm,
   },
   errorText: {
     fontSize: typography.fontSize.xs,
-    color: colors.error,
     marginTop: spacing.xs,
   },
   iosButtonContainer: {
@@ -174,13 +170,12 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   iosButton: {
-    backgroundColor: colors.primary,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.md,
   },
   iosButtonText: {
-    color: colors.white,
+    color: '#ffffff',
     fontSize: typography.fontSize.base,
     fontWeight: typography.fontWeight.semibold,
   },

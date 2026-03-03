@@ -1,6 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../../theme/colors';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { Task } from '../../types';
@@ -17,6 +18,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onPress,
   onToggleComplete,
 }) => {
+  const colors = useThemeColors();
   const { status, label } = displayDuedate(task.dueDate);
 
   const getDueDateColor = () => {
@@ -39,20 +41,36 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
   return (
     <TouchableOpacity
-      style={[styles.card, task.isDone && styles.completedCard]}
+      style={[
+        styles.card,
+        { backgroundColor: colors.backgroundCard, borderColor: colors.border },
+        task.isDone && styles.completedCard,
+      ]}
       onPress={onPress}
       activeOpacity={0.7}
     >
       <View style={styles.content}>
         <TouchableOpacity
-          style={[styles.checkbox, task.isDone && styles.checkboxChecked]}
+          style={[
+            styles.checkbox,
+            { borderColor: colors.border },
+            task.isDone && { backgroundColor: colors.primary, borderColor: colors.primary },
+          ]}
           onPress={() => onToggleComplete?.(task)}
         >
-          {task.isDone && <Text style={styles.checkmark}>✓</Text>}
+          {task.isDone && (
+            <Ionicons name="checkmark" size={14} color={colors.white} />
+          )}
         </TouchableOpacity>
 
         <View style={styles.taskContent}>
-          <Text style={[styles.title, task.isDone && styles.completedTitle]}>
+          <Text
+            style={[
+              styles.title,
+              { color: colors.text },
+              task.isDone && { textDecorationLine: 'line-through', color: colors.textMuted },
+            ]}
+          >
             {task.title}
           </Text>
 
@@ -66,16 +84,19 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             )}
 
             {childrenCount > 0 && (
-              <View style={styles.subtaskBadge}>
-                <Text style={styles.subtaskText}>
-                  👥 {completedChildren}/{childrenCount}
+              <View style={[styles.subtaskBadge, { backgroundColor: colors.backgroundLight }]}>
+                <Text style={[styles.subtaskText, { color: colors.textSecondary }]}>
+                  <Ionicons name="people-outline" size={12} color={colors.textSecondary} />{' '}
+                  {completedChildren}/{childrenCount}
                 </Text>
               </View>
             )}
 
             {task.isDone && (
-              <View style={styles.completedBadge}>
-                <Text style={styles.completedBadgeText}>Completed</Text>
+              <View style={[styles.completedBadge, { backgroundColor: colors.success + '30' }]}>
+                <Text style={[styles.completedBadgeText, { color: colors.success }]}>
+                  Completed
+                </Text>
               </View>
             )}
           </View>
@@ -87,11 +108,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.backgroundCard,
     borderRadius: borderRadius.lg,
     marginBottom: spacing.md,
     borderWidth: 1,
-    borderColor: colors.border,
   },
   completedCard: {
     opacity: 0.7,
@@ -106,20 +125,10 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: borderRadius.sm,
     borderWidth: 2,
-    borderColor: colors.border,
     marginRight: spacing.md,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 2,
-  },
-  checkboxChecked: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  checkmark: {
-    color: colors.white,
-    fontSize: 14,
-    fontWeight: typography.fontWeight.bold,
   },
   taskContent: {
     flex: 1,
@@ -127,12 +136,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.fontSize.base,
     fontWeight: typography.fontWeight.medium,
-    color: colors.text,
     marginBottom: spacing.xs,
-  },
-  completedTitle: {
-    textDecorationLine: 'line-through',
-    color: colors.textMuted,
   },
   metadata: {
     flexDirection: 'row',
@@ -152,21 +156,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs / 2,
     borderRadius: borderRadius.sm,
-    backgroundColor: colors.backgroundLight,
   },
   subtaskText: {
     fontSize: typography.fontSize.xs,
-    color: colors.textSecondary,
   },
   completedBadge: {
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs / 2,
     borderRadius: borderRadius.sm,
-    backgroundColor: colors.success + '30',
   },
   completedBadgeText: {
     fontSize: typography.fontSize.xs,
-    color: colors.success,
     fontWeight: typography.fontWeight.semibold,
   },
 });

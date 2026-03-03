@@ -14,15 +14,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { useAuth } from '../../contexts/AuthContext';
-import { colors } from '../../theme/colors';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
-interface SignupScreenProps {
-  navigation: any;
-}
-
-export const SignupScreen: React.FC<SignupScreenProps> = ({ navigation }) => {
+export const SignupScreen: React.FC<any> = ({ navigation }) => {
+  const colors = useThemeColors();
   const { signup } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,191 +27,77 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ navigation }) => {
   const [error, setError] = useState('');
 
   const handleSignup = async () => {
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
+    if (!email || !password) { setError('Please fill in all fields'); return; }
+    if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
+    setLoading(true); setError('');
     try {
       await signup({ email, password });
-      Alert.alert(
-        'Success',
-        'Your account has been created successfully!',
-        [{ text: 'OK' }]
-      );
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Signup failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+      Alert.alert('Success', 'Your account has been created successfully!', [{ text: 'OK' }]);
+    } catch (err: any) { setError(err.response?.data?.message || 'Signup failed. Please try again.'); }
+    finally { setLoading(false); }
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* Logo Section */}
-        <View style={styles.logoSection}>
-          <View style={styles.logoContainer}>
-            <View style={styles.logoBorder} />
-            <View style={styles.logoContent}>
-              <Image
-                source={require('../../../assets/white-logo.png')}
-                style={styles.logo}
-                resizeMode="contain"
-              />
-              <Text style={styles.appTitle}>Seiri</Text>
-            </View>
-            <View style={styles.logoBorder} />
-          </View>
-        </View>
-
-        {/* Form Section */}
-        <View style={styles.formSection}>
-          <View style={styles.formHeader}>
-            <Text style={styles.title}>Create a new account</Text>
-            <View style={styles.subtitleContainer}>
-              <Text style={styles.subtitle}>Already have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.link}>Sign in</Text>
-              </TouchableOpacity>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'bottom']}>
+      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+          <View style={styles.logoSection}>
+            <View style={styles.logoContainer}>
+              <View style={[styles.logoBorder, { backgroundColor: colors.primary }]} />
+              <View style={styles.logoContent}>
+                <Image source={require('../../../assets/white-logo.png')} style={styles.logo} resizeMode="contain" />
+                <Text style={[styles.appTitle, { color: colors.text }]}>Seiri</Text>
+              </View>
+              <View style={[styles.logoBorder, { backgroundColor: colors.primary }]} />
             </View>
           </View>
 
-          {error ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{error}</Text>
+          <View style={styles.formSection}>
+            <View style={styles.formHeader}>
+              <Text style={[styles.title, { color: colors.text }]}>Create a new account</Text>
+              <View style={styles.subtitleContainer}>
+                <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Already have an account? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                  <Text style={[styles.link, { color: colors.primary }]}>Sign in</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          ) : null}
 
-          <View style={styles.form}>
-            <Input
-              label="Email address"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-              placeholder="Enter your email"
-            />
+            {error ? (
+              <View style={[styles.errorContainer, { backgroundColor: colors.error + '20', borderColor: colors.error }]}>
+                <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
+              </View>
+            ) : null}
 
-            <Input
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              autoCapitalize="none"
-              autoComplete="password"
-              placeholder="Enter your password (min 6 characters)"
-            />
-
-            <Button onPress={handleSignup} loading={loading} disabled={loading}>
-              Sign up
-            </Button>
+            <View style={styles.form}>
+              <Input label="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoComplete="email" placeholder="Enter your email" />
+              <Input label="Password" value={password} onChangeText={setPassword} secureTextEntry autoCapitalize="none" autoComplete="password" placeholder="Enter your password (min 6 characters)" />
+              <Button onPress={handleSignup} loading={loading} disabled={loading}>Sign up</Button>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: spacing.lg,
-  },
-  logoSection: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: spacing.xxl,
-  },
-  logoContainer: {
-    alignItems: 'center',
-  },
-  logoBorder: {
-    width: 100,
-    height: 2,
-    backgroundColor: colors.primary,
-    marginVertical: spacing.md,
-  },
-  logoContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  logo: {
-    width: 40,
-    height: 40,
-  },
-  appTitle: {
-    fontSize: typography.fontSize['3xl'],
-    fontWeight: typography.fontWeight.bold,
-    color: colors.text,
-  },
-  formSection: {
-    flex: 1.5,
-    justifyContent: 'center',
-    paddingBottom: spacing.xxl,
-  },
-  formHeader: {
-    marginBottom: spacing.xl,
-  },
-  title: {
-    fontSize: typography.fontSize['2xl'],
-    fontWeight: typography.fontWeight.bold,
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  subtitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  subtitle: {
-    fontSize: typography.fontSize.sm,
-    color: colors.textSecondary,
-  },
-  link: {
-    fontSize: typography.fontSize.sm,
-    color: colors.primary,
-    fontWeight: typography.fontWeight.semibold,
-  },
-  errorContainer: {
-    backgroundColor: colors.error + '20',
-    borderWidth: 1,
-    borderColor: colors.error,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  errorText: {
-    color: colors.error,
-    fontSize: typography.fontSize.sm,
-  },
-  form: {
-    gap: spacing.md,
-  },
+  safeArea: { flex: 1 },
+  container: { flex: 1 },
+  scrollContent: { flexGrow: 1, paddingHorizontal: spacing.lg },
+  logoSection: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: spacing.xxl },
+  logoContainer: { alignItems: 'center' },
+  logoBorder: { width: 100, height: 2, marginVertical: spacing.md },
+  logoContent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  logo: { width: 40, height: 40 },
+  appTitle: { fontSize: typography.fontSize['3xl'], fontWeight: typography.fontWeight.bold },
+  formSection: { flex: 1.5, justifyContent: 'center', paddingBottom: spacing.xxl },
+  formHeader: { marginBottom: spacing.xl },
+  title: { fontSize: typography.fontSize['2xl'], fontWeight: typography.fontWeight.bold, marginBottom: spacing.sm },
+  subtitleContainer: { flexDirection: 'row', alignItems: 'center' },
+  subtitle: { fontSize: typography.fontSize.sm },
+  link: { fontSize: typography.fontSize.sm, fontWeight: typography.fontWeight.semibold },
+  errorContainer: { borderWidth: 1, borderRadius: borderRadius.md, padding: spacing.md, marginBottom: spacing.lg },
+  errorText: { fontSize: typography.fontSize.sm },
+  form: { gap: spacing.md },
 });

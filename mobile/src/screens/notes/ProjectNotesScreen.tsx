@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
     FlatList,
@@ -10,160 +11,69 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { NoteCard } from '../../components/notes/NoteCard';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { useNotes } from '../../hooks/useNotes';
-import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
-import { Note } from '../../types';
 
-export const ProjectNotesScreen: React.FC<any> = ({
-  navigation,
-  route,
-}) => {
+export const ProjectNotesScreen: React.FC<any> = ({ navigation, route }) => {
+  const colors = useThemeColors();
   const { project } = route.params;
   const { data: notes, isLoading, refetch } = useNotes(project.id);
 
-  const handleNotePress = (note: Note) => {
-    navigation.navigate('NoteDetail', { note, project });
-  };
-
-  const handleCreateNote = () => {
-    // TODO: Navigate to create note modal
-    console.log('Create note');
-  };
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      {/* Header */}
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top', 'bottom']}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backIcon}>←</Text>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.title} numberOfLines={1}>
-          {project.name}
-        </Text>
+        <Text style={[styles.title, { color: colors.text }]} numberOfLines={1}>{project.name}</Text>
         <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuIcon}>⋮</Text>
+          <Ionicons name="ellipsis-vertical" size={22} color={colors.text} />
         </TouchableOpacity>
       </View>
 
-      {/* Notes List */}
       <FlatList
         data={notes || []}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={refetch}
-            tintColor={colors.primary}
-          />
-        }
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={colors.primary} />}
         renderItem={({ item }) => (
-          <NoteCard note={item} onPress={() => handleNotePress(item)} />
+          <NoteCard note={item} onPress={() => navigation.navigate('NoteDetail', { note: item, project })} />
         )}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No notes yet</Text>
-            <Text style={styles.emptySubtext}>
-              Tap the + button to create your first note
-            </Text>
+            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>No notes yet</Text>
+            <Text style={[styles.emptySubtext, { color: colors.textMuted }]}>Tap the + button to create your first note</Text>
           </View>
         }
       />
 
-      {/* FAB */}
-      <TouchableOpacity style={styles.fab} onPress={handleCreateNote}>
-        <Text style={styles.fabIcon}>+</Text>
+      <TouchableOpacity style={[styles.fab, { backgroundColor: colors.primary }]} onPress={() => console.log('Create note')}>
+        <Ionicons name="add" size={28} color={colors.white} />
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+  container: { flex: 1 },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.md,
-    gap: spacing.md,
+    flexDirection: 'row', alignItems: 'center',
+    paddingHorizontal: spacing.lg, paddingTop: spacing.xl, paddingBottom: spacing.md, gap: spacing.md,
   },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backIcon: {
-    fontSize: 24,
-    color: colors.text,
-  },
-  title: {
-    flex: 1,
-    fontSize: typography.fontSize['2xl'],
-    fontWeight: typography.fontWeight.bold,
-    color: colors.text,
-  },
-  menuButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 24,
-    color: colors.text,
-  },
-  listContent: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: 100,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.xxl,
-  },
-  emptyText: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.semibold,
-    color: colors.textSecondary,
-    marginBottom: spacing.xs,
-  },
-  emptySubtext: {
-    fontSize: typography.fontSize.sm,
-    color: colors.textMuted,
-  },
+  backButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+  title: { flex: 1, fontSize: typography.fontSize['2xl'], fontWeight: typography.fontWeight.bold },
+  menuButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+  listContent: { paddingHorizontal: spacing.lg, paddingBottom: 100 },
+  emptyContainer: { alignItems: 'center', justifyContent: 'center', paddingVertical: spacing.xxl },
+  emptyText: { fontSize: typography.fontSize.lg, fontWeight: typography.fontWeight.semibold, marginBottom: spacing.xs },
+  emptySubtext: { fontSize: typography.fontSize.sm },
   fab: {
-    position: 'absolute',
-    bottom: 90,
-    right: spacing.lg,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  fabIcon: {
-    fontSize: 32,
-    color: colors.white,
-    fontWeight: typography.fontWeight.bold,
+    position: 'absolute', bottom: 90, right: spacing.lg, width: 56, height: 56, borderRadius: 28,
+    justifyContent: 'center', alignItems: 'center', elevation: 8,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8,
   },
 });

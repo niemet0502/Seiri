@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { useCreateTask, useUpdateTask } from '../../hooks/useTasks';
-import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { Project, Task } from '../../types';
@@ -32,6 +32,7 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
   task,
   parentTask,
 }) => {
+  const colors = useThemeColors();
   const isEditing = !!task;
   const isSubTask = !!parentTask;
 
@@ -172,8 +173,8 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
         />
 
         {isSubTask && (
-          <View style={styles.infoBox}>
-            <Text style={styles.infoText}>
+          <View style={[styles.infoBox, { backgroundColor: colors.primary + '20', borderLeftColor: colors.primary }]}>
+            <Text style={[styles.infoText, { color: colors.text }]}>
               This will be a sub-task of: {parentTask?.title}
             </Text>
           </View>
@@ -207,15 +208,12 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   infoBox: {
-    backgroundColor: colors.primary + '20',
     borderRadius: spacing.sm,
     padding: spacing.md,
     borderLeftWidth: 3,
-    borderLeftColor: colors.primary,
   },
   infoText: {
     fontSize: typography.fontSize.sm,
-    color: colors.text,
   },
   buttonContainer: {
     flexDirection: 'row',

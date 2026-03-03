@@ -1,6 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../../theme/colors';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { Project } from '../../types';
@@ -18,11 +19,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   taskCount = 0,
   isDefault = false,
 }) => {
+  const colors = useThemeColors();
+
   return (
     <TouchableOpacity
       style={[
         styles.card,
-        isDefault && styles.defaultCard,
+        { backgroundColor: colors.backgroundCard },
+        isDefault && { borderWidth: 2, borderColor: colors.primary },
         { borderLeftColor: project.color || colors.primary },
       ]}
       onPress={onPress}
@@ -30,19 +34,30 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     >
       <View style={styles.content}>
         <View style={styles.leftContent}>
-          <Text style={styles.icon}>{isDefault ? '⭐' : '📁'}</Text>
+          <Ionicons
+            name={isDefault ? 'star' : 'folder-outline'}
+            size={24}
+            color={isDefault ? colors.warning : colors.textSecondary}
+            style={styles.icon}
+          />
           <View style={styles.textContent}>
-            <Text style={styles.projectName}>{project.name}</Text>
+            <Text style={[styles.projectName, { color: colors.text }]}>
+              {project.name}
+            </Text>
             {isDefault && (
-              <Text style={styles.description}>Default list for all new items</Text>
+              <Text style={[styles.description, { color: colors.textSecondary }]}>
+                Default list for all new items
+              </Text>
             )}
             {project.description && !isDefault && (
-              <Text style={styles.description}>{project.description}</Text>
+              <Text style={[styles.description, { color: colors.textSecondary }]}>
+                {project.description}
+              </Text>
             )}
           </View>
         </View>
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{taskCount}</Text>
+        <View style={[styles.badge, { backgroundColor: colors.primary + '30' }]}>
+          <Text style={[styles.badgeText, { color: colors.primary }]}>{taskCount}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -51,16 +66,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.backgroundCard,
     borderRadius: borderRadius.lg,
     borderLeftWidth: 4,
     marginBottom: spacing.md,
     overflow: 'hidden',
-  },
-  defaultCard: {
-    borderWidth: 2,
-    borderColor: colors.primary,
-    borderLeftWidth: 4,
   },
   content: {
     flexDirection: 'row',
@@ -74,7 +83,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   icon: {
-    fontSize: 24,
     marginRight: spacing.md,
   },
   textContent: {
@@ -83,15 +91,12 @@ const styles = StyleSheet.create({
   projectName: {
     fontSize: typography.fontSize.lg,
     fontWeight: typography.fontWeight.semibold,
-    color: colors.text,
     marginBottom: spacing.xs / 2,
   },
   description: {
     fontSize: typography.fontSize.sm,
-    color: colors.textSecondary,
   },
   badge: {
-    backgroundColor: colors.primary + '30',
     borderRadius: borderRadius.full,
     minWidth: 32,
     height: 32,
@@ -102,6 +107,5 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: typography.fontSize.sm,
     fontWeight: typography.fontWeight.semibold,
-    color: colors.primary,
   },
 });

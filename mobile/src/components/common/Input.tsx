@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { colors } from '../../theme/colors';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
@@ -25,13 +25,21 @@ export const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   const [isSecure, setIsSecure] = useState(secureTextEntry);
+  const colors = useThemeColors();
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
       <View style={styles.inputWrapper}>
         <TextInput
-          style={[styles.input, error && styles.inputError]}
+          style={[
+            styles.input,
+            {
+              backgroundColor: colors.backgroundCard,
+              borderColor: error ? colors.error : colors.border,
+              color: colors.text,
+            },
+          ]}
           placeholderTextColor={colors.textMuted}
           secureTextEntry={isSecure}
           {...props}
@@ -45,7 +53,7 @@ export const Input: React.FC<InputProps> = ({
           </TouchableOpacity>
         )}
       </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>}
     </View>
   );
 };
@@ -57,29 +65,21 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.fontSize.sm,
     fontWeight: typography.fontWeight.medium,
-    color: colors.text,
     marginBottom: spacing.xs,
   },
   inputWrapper: {
     position: 'relative',
   },
   input: {
-    backgroundColor: colors.backgroundCard,
     borderWidth: 1,
-    borderColor: colors.border,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm + 4,
     fontSize: typography.fontSize.base,
-    color: colors.text,
     minHeight: 48,
-  },
-  inputError: {
-    borderColor: colors.error,
   },
   errorText: {
     fontSize: typography.fontSize.xs,
-    color: colors.error,
     marginTop: spacing.xs,
   },
   eyeButton: {

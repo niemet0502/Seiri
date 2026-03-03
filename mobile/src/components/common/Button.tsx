@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     ViewStyle,
 } from 'react-native';
-import { colors } from '../../theme/colors';
+import { useThemeColors } from '../../contexts/ThemeContext';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
@@ -30,25 +30,25 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   textStyle,
 }) => {
-  const getButtonStyle = () => {
+  const colors = useThemeColors();
+
+  const getButtonStyle = (): ViewStyle => {
     switch (variant) {
       case 'secondary':
-        return styles.secondaryButton;
+        return { backgroundColor: colors.backgroundCard, borderWidth: 1, borderColor: colors.border };
       case 'danger':
-        return styles.dangerButton;
+        return { backgroundColor: colors.error };
       default:
-        return styles.primaryButton;
+        return { backgroundColor: colors.primary };
     }
   };
 
-  const getTextStyle = () => {
+  const getTextColor = () => {
     switch (variant) {
       case 'secondary':
-        return styles.secondaryText;
-      case 'danger':
-        return styles.dangerText;
+        return colors.text;
       default:
-        return styles.primaryText;
+        return colors.white;
     }
   };
 
@@ -67,7 +67,7 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={colors.white} size="small" />
       ) : (
-        <Text style={[styles.text, getTextStyle(), textStyle]}>{children}</Text>
+        <Text style={[styles.text, { color: getTextColor() }, textStyle]}>{children}</Text>
       )}
     </TouchableOpacity>
   );
@@ -82,31 +82,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 48,
   },
-  primaryButton: {
-    backgroundColor: colors.primary,
-  },
-  secondaryButton: {
-    backgroundColor: colors.backgroundCard,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  dangerButton: {
-    backgroundColor: colors.error,
-  },
   disabledButton: {
     opacity: 0.5,
   },
   text: {
     fontSize: typography.fontSize.base,
     fontWeight: typography.fontWeight.semibold,
-  },
-  primaryText: {
-    color: colors.white,
-  },
-  secondaryText: {
-    color: colors.text,
-  },
-  dangerText: {
-    color: colors.white,
   },
 });
