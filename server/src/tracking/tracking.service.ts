@@ -40,7 +40,7 @@ export class TrackingService {
     const tracking = new Tracking();
     tracking.title = title;
     tracking.description = description;
-    tracking.dueDate = dueDate;
+    tracking.dueDate = dueDate || null;
     tracking.target = target;
     tracking.balance = balance || 0;
     tracking.user = user;
@@ -83,6 +83,10 @@ export class TrackingService {
 
     if (!toUpdate) {
       throw new BadRequestException({ errors: { tracking: 'Tracking not found' } });
+    }
+
+    if ('dueDate' in updateTrackingDto && !updateTrackingDto.dueDate) {
+      updateTrackingDto.dueDate = null;
     }
 
     const updated = Object.assign(toUpdate, updateTrackingDto);
