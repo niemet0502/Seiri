@@ -1,9 +1,9 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Tracking } from './tracking.entity';
 
@@ -16,7 +16,7 @@ export class TrackingHistory {
   amount: number;
 
   @CreateDateColumn({ name: 'createdAt' })
-  date: Date;
+  createdAt: Date;
 
   @ManyToOne(() => Tracking, (tracking) => tracking.history, {
     onDelete: 'CASCADE',
