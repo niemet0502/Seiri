@@ -1,7 +1,7 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { BullModule } from '@nestjs/bull';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { DataSource } from 'typeorm';
@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { dataSourceOptions } from './db/data-source';
 import { SendEmailProcessor } from './mails/send-email-processor.service';
+import { RequestLoggerMiddleware } from './middleware/request-logger.middleware';
 import { NoteModule } from './note/note.module';
 import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
@@ -48,6 +49,10 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService, SendEmailProcessor],
 })
-export class AppModule {
+export class AppModule implements NestModule {
   constructor(private readonly dataSource: DataSource) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+  }
 }
