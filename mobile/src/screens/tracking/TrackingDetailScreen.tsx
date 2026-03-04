@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { useThemeColors } from '../../contexts/ThemeContext';
-import { useTracking, useUpdateBalance, useUpdateTracking } from '../../hooks/useTrackings';
+import { useDeleteTracking, useTracking, useUpdateBalance, useUpdateTracking } from '../../hooks/useTrackings';
 import { borderRadius, spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { TrackingHistory } from '../../types';
@@ -23,6 +23,7 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
   const { data: tracking, isLoading } = useTracking(trackingId);
   const updateTrackingMutation = useUpdateTracking();
   const updateBalanceMutation = useUpdateBalance();
+  const deleteTrackingMutation = useDeleteTracking();
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
@@ -91,6 +92,24 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
     setAmountText('');
   };
 
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Tracker',
+      `Are you sure you want to delete "${tracking.title}"? This action cannot be undone.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await deleteTrackingMutation.mutateAsync(tracking.id);
+            navigation.goBack();
+          },
+        },
+      ],
+    );
+  };
+
   const history = [...(tracking.history || [])].sort(
     (a, b) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime(),
   );
@@ -122,7 +141,9 @@ export const TrackingDetailScreen: React.FC<any> = ({ navigation, route }) => {
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]} numberOfLines={1}>Tracker Details</Text>
-        <View style={styles.placeholder} />
+        <TouchableOpacity style={styles.backButton} onPress={handleDelete}>
+          <Ionicons name="trash-outline" size={22} color={colors.error} />
+        </TouchableOpacity>
       </View>
 
       <FlatList
