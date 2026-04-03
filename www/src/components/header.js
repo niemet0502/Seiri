@@ -47,7 +47,7 @@ const Header = ({ siteTitle }) => {
         </div>
         <div className="header__child">
           <a
-            href="https://mariusniemet.me/building-seiri-my-tasks-notes-app/"
+            href="https://mariusniemet.com/building-seiri-my-tasks-notes-app/"
             target="_blank"
             rel="noreferrer"
           >
@@ -57,11 +57,11 @@ const Header = ({ siteTitle }) => {
           <Link to="/roadmap">Roadmap</Link>
         </div>
         <div className="header__child">
-          <a href="https://apiseiri.mariusniemet.me/">
+          <a href="https://apiseiri.mariusniemet.com/">
             <button className="btn terciary">Login</button>
           </a>
 
-          <a href="https://apiseiri.mariusniemet.me/auth/signin">
+          <a href="https://apiseiri.mariusniemet.com/auth/signin">
             <button className="btn secondary">Start for free</button>
           </a>
           <div className="mobile-navigation-toogle">

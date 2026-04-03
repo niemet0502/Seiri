@@ -14,23 +14,23 @@ services:
             - node_modules/
         - action: rebuild
           path: package.json
-  client:
-    build: 
-      context: ./client
-      dockerfile: Dockerfile
-      target: development
-    image: seiri-web
-    ports:
-      - "3005:3000" 
-    environment:
-      REACT_APP_API_URL: http://localhost:3004/api/
-    develop:
-      watch:
-        - action: sync
-          path: ./client
-          target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json
+  # client:
+  #   build: 
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #     target: development
+  #   image: seiri-web
+  #   ports:
+  #     - "3005:3000" 
+  #   environment:
+  #     REACT_APP_API_URL: http://localhost:3004/api/
+  #   develop:
+  #     watch:
+  #       - action: sync
+  #         path: ./client
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: package.json
   

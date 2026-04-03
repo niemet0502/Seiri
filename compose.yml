@@ -20,19 +20,19 @@ services:
       PORT: 3000
       TOKEN_SECRET: secret
 
-  client:
-    image: mariusniemet/seiri-web
-    depends_on:
-      - server
-    ports:
-      - "82:82"
-    restart: always
-    environment:
-      REACT_APP_API_URL: https://apiseiri.mariusniemet.me/api/
+  # client:
+  #   image: mariusniemet/seiri-web
+  #   depends_on:
+  #     - server
+  #   ports:
+  #     - "82:82"
+  #   restart: always
+  #   environment:
+  #     REACT_APP_API_URL: https://apiseiri.mariusniemet.com/api/
     
 
   db:
-    image: mysql:5.7.41
+    image: mysql:8.0
     container_name: db
     restart: always   
     environment:
@@ -44,6 +44,7 @@ services:
       - "3307:3306" 
     volumes:
       - mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
   
   redis:
     image: redis:latest
